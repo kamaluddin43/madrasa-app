@@ -1,4 +1,4 @@
-const CACHE = 'madrasa-v1';
+const CACHE = 'talimat-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -22,9 +22,7 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  if (e.request.url.includes('script.google.com')) {
-    return; // API ক্যাশ করব না
-  }
+  if (e.request.url.includes('script.google.com')) return;
   e.respondWith(
     caches.match(e.request).then(r => r || fetch(e.request).catch(()=>caches.match('./index.html')))
   );
