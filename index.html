@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0b3d2e">
+<title>মাদরাসা শিক্ষক ট্র্যাকার</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Noto Sans Bengali',sans-serif;background:#f0f4f2;color:#1a1a1a;font-size:15px;padding-bottom:70px}
+body.ar{direction:rtl}
+body.ar .arabic-text{font-family:'Amiri',serif}
+.hidden{display:none!important}
+
+/* Header */
+header{background:linear-gradient(135deg,#0b3d2e,#145c46);color:#fff;padding:14px 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.header-row{display:flex;justify-content:space-between;align-items:center}
+header h1{font-size:17px;font-weight:700}
+.lang-btn{background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);padding:6px 12px;border-radius:20px;font-size:13px;cursor:pointer;font-family:inherit}
+.lang-btn:active{background:rgba(255,255,255,.35)}
+
+/* Layout */
+.container{max-width:600px;margin:0 auto;padding:14px}
+.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.card h3{font-size:16px;margin-bottom:12px;color:#0b3d2e;display:flex;align-items:center;gap:8px}
+.card h4{font-size:15px;margin-bottom:10px;color:#0b3d2e}
+
+/* Inputs */
+input,select,textarea{width:100%;padding:12px;border:2px solid #e0e0e0;border-radius:10px;margin:6px 0;font-family:inherit;font-size:15px;background:#fafafa;transition:.2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#0b3d2e;background:#fff}
+label{font-size:14px;color:#444;font-weight:600;display:block;margin-top:10px}
+
+button{background:linear-gradient(135deg,#0b3d2e,#145c46);color:#fff;border:none;padding:14px;border-radius:10px;width:100%;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:10px;transition:.2s}
+button:active{transform:scale(.98);opacity:.9}
+button.secondary{background:#e8ecea;color:#0b3d2e}
+button.danger{background:linear-gradient(135deg,#c0392b,#e74c3c)}
+button.small{padding:10px;font-size:14px;width:auto;display:inline-block;padding-left:16px;padding-right:16px}
+
+/* Teacher row */
+.t-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f0f0f0;cursor:pointer}
+.t-row:last-child{border-bottom:none}
+.t-name{font-weight:600;font-size:14px}
+.t-dept{font-size:12px;color:#888;margin-top:2px}
+.t-score{font-weight:700;font-size:16px}
+.good{color:#0a7d3e}
+.bad{color:#c0392b}
+.mid{color:#d68910}
+
+/* Slider */
+.slider-box{margin:12px 0;padding:12px;background:#f8faf9;border-radius:10px}
+.slider-box label{display:flex;justify-content:space-between;margin-bottom:6px}
+.slider-val{background:#0b3d2e;color:#fff;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700}
+input[type=range]{width:100%;-webkit-appearance:none;background:transparent;padding:0;margin:0;border:none}
+input[type=range]::-webkit-slider-runnable-track{height:6px;background:#d0d8d4;border-radius:3px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;height:22px;width:22px;background:#0b3d2e;border-radius:50%;margin-top:-8px;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+
+/* Alerts */
+.alert{padding:12px;border-radius:10px;margin-bottom:8px;font-size:14px;display:flex;justify-content:space-between;align-items:center}
+.alert.warn{background:#fdeaea;border-left:4px solid #c0392b}
+.alert.info{background:#e8f4ff;border-left:4px solid #2980b9}
+.alert.good{background:#e8f5ee;border-left:4px solid #0a7d3e}
+
+/* Message card */
+.msg{padding:14px;border-radius:10px;margin-bottom:10px;font-size:14px;line-height:1.6}
+.msg.appreciation{background:#e8f5ee;border-left:4px solid #0a7d3e}
+.msg.warning{background:#fdeaea;border-left:4px solid #c0392b}
+.msg small{color:#666;display:block;margin-bottom:6px}
+.msg .ar{font-family:'Amiri',serif;direction:rtl;text-align:right;margin-top:8px;padding-top:8px;border-top:1px dashed #ccc;font-size:16px}
+
+/* Stats grid */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat{background:#fff;padding:14px;border-radius:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.stat .num{font-size:24px;font-weight:700;color:#0b3d2e}
+.stat .lbl{font-size:12px;color:#666;margin-top:4px}
+
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;box-shadow:0 -2px 10px rgba(0,0,0,.08);z-index:99;border-top:1px solid #eee}
+.bottom-nav button{flex:1;background:transparent;color:#888;padding:10px 4px;border-radius:0;font-size:11px;margin:0;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:600}
+.bottom-nav button.active{color:#0b3d2e}
+.bottom-nav button .ico{font-size:20px}
+
+/* Loading */
+.loading{text-align:center;padding:30px;color:#666}
+.spinner{display:inline-block;width:30px;height:30px;border:3px solid #ddd;border-top-color:#0b3d2e;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Toast */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;z-index:999;opacity:0;transition:.3s;pointer-events:none}
+.toast.show{opacity:1}
+
+/* Progress bar */
+.progress{height:8px;background:#e0e0e0;border-radius:4px;overflow:hidden;margin-top:6px}
+.progress-bar{height:100%;background:linear-gradient(90deg,#0b3d2e,#2ecc71);transition:width .5s}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-row">
+    <h1 id="appTitle">মাদরাসা শিক্ষক ট্র্যাকার</h1>
+    <button class="lang-btn" onclick="toggleLang()" id="langBtn">🌐 عربي</button>
+  </div>
+</header>
+
+<div class="container" id="app"></div>
+
+<nav class="bottom-nav hidden" id="nav">
+  <button data-tab="home" onclick="switchTab('home')"><span class="ico">🏠</span><span data-t="home">হোম</span></button>
+  <button data-tab="entry" onclick="switchTab('entry')"><span class="ico">✍️</span><span data-t="entry">এন্ট্রি</span></button>
+  <button data-tab="teachers" onclick="switchTab('teachers')"><span class="ico">👥</span><span data-t="teachers">শিক্ষক</span></button>
+  <button data-tab="messages" onclick="switchTab('messages')"><span class="ico">💬</span><span data-t="messages">বার্তা</span></button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================
+// কনফিগারেশন
+// ============================================
+const API_URL = "https://script.google.com/macros/s/AKfycbzPWOJws10I0jXlNe6CkdNd68nmgV-6JS35Rch0FF64ChmX0_-tOFs_mbgjVm5_5CLTXw/exec";
+
+// ============================================
+// গ্লোবাল স্টেট
+// ============================================
+let LANG = localStorage.getItem('lang') || 'bn';
+let USER = JSON.parse(localStorage.getItem('user') || 'null');
+let CACHE = { teachers: [], supervisors: [], entries: [], messages: [], dashboard: null };
+let CURRENT_TAB = 'home';
+
+// ============================================
+// অনুবাদ
+// ============================================
+const I18N = {
+  bn: {
+    appTitle: "মাদরাসা শিক্ষক ট্র্যাকার",
+    login: "লগইন", username: "ইউজারনেম", password: "পাসওয়ার্ড",
+    loginBtn: "প্রবেশ করুন", logout: "লগআউট",
+    home: "হোম", entry: "এন্ট্রি", teachers: "শিক্ষক", messages: "বার্তা",
+    dashboard: "ড্যাশবোর্ড", todayEntry: "আজকের এন্ট্রি", totalTeachers: "মোট শিক্ষক",
+    alerts: "⚠️ সতর্কতা প্রয়োজন", topPerformers: "🏆 শীর্ষ পারফর্মার",
+    dailyEntry: "দৈনিক এন্ট্রি", selectTeacher: "শিক্ষক নির্বাচন করুন",
+    remark: "মন্তব্য (ঐচ্ছিক)", submit: "সাবমিট করুন",
+    appreciation: "অভিবাদন", warning: "সতর্কতা",
+    noData: "কোনো ডাটা নেই", loading: "লোড হচ্ছে...",
+    avgScore: "গড় স্কোর", lastStatus: "সর্বশেষ স্ট্যাটাস",
+    improving: "উন্নতি", declining: "অবনতি",
+    entrySuccess: "✅ এন্ট্রি সফলভাবে জমা হয়েছে",
+    loginError: "ভুল ইউজারনেম বা পাসওয়ার্ড",
+    score: "স্কোর", date: "তারিখ"
+  },
+  ar: {
+    appTitle: "متتبع معلمي المدرسة",
+    login: "تسجيل الدخول", username: "اسم المستخدم", password: "كلمة المرور",
+    loginBtn: "دخول", logout: "خروج",
+    home: "الرئيسية", entry: "الإدخال", teachers: "المعلمون", messages: "الرسائل",
+    dashboard: "لوحة التحكم", todayEntry: "إدخال اليوم", totalTeachers: "إجمالي المعلمين",
+    alerts: "⚠️ يحتاج تحذير", topPerformers: "🏆 الأفضل أداءً",
+    dailyEntry: "الإدخال اليومي", selectTeacher: "اختر المعلم",
+    remark: "ملاحظة (اختياري)", submit: "إرسال",
+    appreciation: "تقدير", warning: "تحذير",
+    noData: "لا توجد بيانات", loading: "جار التحميل...",
+    avgScore: "متوسط الدرجات", lastStatus: "آخر حالة",
+    improving: "تحسن", declining: "تراجع",
+    entrySuccess: "✅ تم حفظ الإدخال بنجاح",
+    loginError: "اسم المستخدم أو كلمة المرور خاطئة",
+    score: "الدرجة", date: "التاريخ"
+  }
+};
+function t(k){ return I18N[LANG][k] || k; }
+
+// ============================================
+// API হেল্পার
+// ============================================
+async function api(action, params = {}) {
+  const qs = new URLSearchParams({ action, ...params }).toString();
+  const res = await fetch(`${API_URL}?${qs}`);
+  return res.json();
+}
+
+// ============================================
+// UI হেল্পার
+// ============================================
+function toast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 2500);
+}
+
+function loading(){
+  return `<div class="loading"><div class="spinner"></div><p style="margin-top:10px">${t('loading')}</p></div>`;
+}
+
+function scoreClass(avg){
+  avg = parseFloat(avg);
+  if (avg >= 7) return 'good';
+  if (avg <= 4) return 'bad';
+  return 'mid';
+}
+
+function toggleLang(){
+  LANG = LANG === 'bn' ? 'ar' : 'bn';
+  localStorage.setItem('lang', LANG);
+  document.body.classList.toggle('ar', LANG === 'ar');
+  document.getElementById('langBtn').textContent = LANG === 'bn' ? '🌐 عربي' : '🌐 বাংলা';
+  document.getElementById('appTitle').textContent = t('appTitle');
+  render();
+}
+
+// ============================================
+// রেন্ডার
+// ============================================
+function render(){
+  if (!USER) return renderLogin();
+  document.getElementById('nav').classList.remove('hidden');
+  if (USER.role === 'admin') renderAdmin();
+  else if (USER.role === 'supervisor') renderSupervisor();
+  else renderTeacher();
+  updateNavActive();
+}
+
+function updateNavActive(){
+  document.querySelectorAll('.bottom-nav button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.tab === CURRENT_TAB);
+  });
+}
+
+function switchTab(tab){
+  CURRENT_TAB = tab;
+  render();
+}
+
+// ============================================
+// লগইন স্ক্রিন
+// ============================================
+function renderLogin(){
+  document.getElementById('nav').classList.add('hidden');
+  document.getElementById('app').innerHTML = `
+    <div class="card" style="margin-top:40px">
+      <h3>🔐 ${t('login')}</h3>
+      <input id="u" placeholder="${t('username')}" autocomplete="username">
+      <input id="p" type="password" placeholder="${t('password')}" autocomplete="current-password">
+      <button onclick="doLogin()">${t('loginBtn')}</button>
+      <p id="err" style="color:#c0392b;margin-top:10px;font-size:14px"></p>
+    </div>
+  `;
+  document.getElementById('p').addEventListener('keypress', e=>{
+    if (e.key === 'Enter') doLogin();
+  });
+}
+
+async function doLogin(){
+  const u = document.getElementById('u').value.trim();
+  const p = document.getElementById('p').value.trim();
+  if (!u || !p) return;
+  document.getElementById('err').textContent = '';
+  document.getElementById('app').innerHTML = loading();
+  try {
+    const r = await api('login', { username: u, password: p });
+    if (r.success) {
+      USER = r;
+      localStorage.setItem('user', JSON.stringify(r));
+      toast('স্বাগতম, ' + (r.name || r.id));
+      CURRENT_TAB = 'home';
+      loadAllData();
+    } else {
+      document.getElementById('err').textContent = r.error || t('loginError');
+      renderLogin();
+    }
+  } catch(e) {
+    document.getElementById('err').textContent = 'সার্ভারে সমস্যা: ' + e.message;
+    renderLogin();
+  }
+}
+
+function logout(){
+  USER = null;
+  localStorage.removeItem('user');
+  CURRENT_TAB = 'home';
+  render();
+}
+
+// ============================================
+// ডাটা লোড
+// ============================================
+async function loadAllData(){
+  try {
+    const [teachers, entries, dashboard, messages] = await Promise.all([
+      api('getTeachers'),
+      api('getEntries', USER.role === 'teacher' ? { teacher_id: USER.id } : {}),
+      api('getDashboard'),
+      api('getMessages', USER.role === 'teacher' ? { teacher_id: USER.id } : {})
+    ]);
+    if (teachers.success) CACHE.teachers = teachers.data;
+    if (entries.success) CACHE.entries = entries.data;
+    if (dashboard.success) CACHE.dashboard = dashboard;
+    if (messages.success) CACHE.messages = messages.data;
+  } catch(e) {
+    console.warn('ডাটা লোড ব্যর্থ', e);
+  }
+  render();
+}
+
+// ============================================
+// অ্যাডমিন ড্যাশবোর্ড
+// ============================================
+function renderAdmin(){
+  if (CURRENT_TAB === 'home') {
+    const d = CACHE.dashboard;
+    document.getElementById('app').innerHTML = `
+      <div class="stats">
+        <div class="stat"><div class="num">${d?.todayCount || 0}</div><div class="lbl">${t('todayEntry')}</div></div>
+        <div class="stat"><div class="num">${d?.totalTeachers || 60}</div><div class="lbl">${t('totalTeachers')}</div></div>
+      </div>
+      <div class="card">
+        <h4>${t('alerts')}</h4>
+        ${(d?.low && d.low.length)
+          ? d.low.slice(0,10).map(x=>`
+            <div class="alert warn">
+              <span>${x.name}</span>
+              <span class="bad">${x.avg}</span>
+            </div>`).join('')
+          : '<p style="color:#666;font-size:14px">✅ কোনো সতর্কতা নেই</p>'}
+      </div>
+      <div class="card">
+        <h4>${t('topPerformers')}</h4>
+        ${(d?.top && d.top.length)
+          ? d.top.map((x,i)=>`
+            <div class="t-row">
+              <div><div class="t-name">${i+1}. ${x.name}</div><div class="t-dept">${x.count} এন্ট্রি</div></div>
+              <span class="t-score good">${x.avg}</span>
+            </div>`).join('')
+          : '<p style="color:#666;font-size:14px">কোনো ডাটা নেই</p>'}
+      </div>
+      <button class="secondary" onclick="logout()">${t('logout')}</button>
+    `;
+  }
+  else if (CURRENT_TAB === 'teachers') renderTeachersList();
+  else if (CURRENT_TAB === 'entry') renderEntryForm();
+  else if (CURRENT_TAB === 'messages') renderMessagesList();
+}
+
+// ============================================
+// সুপারভাইজার ভিউ
+// ============================================
+function renderSupervisor(){
+  if (CURRENT_TAB === 'home') {
+    const assigned = USER.assigned || [];
+    const myEntries = CACHE.entries.filter(e => e.Supervisor_ID === USER.id);
+    const today = new Date().toISOString().slice(0,10);
+    const todayCount = myEntries.filter(e => String(e.Date).startsWith(today)).length;
+
+    document.getElementById('app').innerHTML = `
+      <div class="card" style="background:linear-gradient(135deg,#0b3d2e,#145c46);color:#fff">
+        <h3 style="color:#fff">👋 ${USER.name}</h3>
+        <p style="opacity:.9;font-size:14px;margin-top:4px">আপনার অধীনে: ${assigned.length} জন শিক্ষক</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="num">${todayCount}</div><div class="lbl">আজকের এন্ট্রি</div></div>
+        <div class="stat"><div class="num">${assigned.length - todayCount}</div><div class="lbl">বাকি আছে</div></div>
+      </div>
+      <button onclick="switchTab('entry')">➕ নতুন এন্ট্রি দিন</button>
+      <button class="secondary" onclick="logout()">${t('logout')}</button>
+    `;
+  }
+  else if (CURRENT_TAB === 'entry') renderEntryForm();
+  else if (CURRENT_TAB === 'teachers') renderTeachersList();
+  else if (CURRENT_TAB === 'messages') renderMessagesList();
+}
+
+// ============================================
+// শিক্ষক ভিউ
+// ============================================
+function renderTeacher(){
+  if (CURRENT_TAB === 'home') {
+    const entries = CACHE.entries.filter(e => e.Teacher_ID === USER.id);
+    const avg = entries.length
+      ? (entries.reduce((a,e)=>a+parseFloat(e.Average),0)/entries.length).toFixed(2)
+      : '—';
+    const status = parseFloat(avg) >= 7 ? t('improving') : t('declining');
+
+    document.getElementById('app').innerHTML = `
+      <div class="card" style="background:linear-gradient(135deg,#0b3d2e,#145c46);color:#fff">
+        <h3 style="color:#fff">${USER.name}</h3>
+        <p style="opacity:.9;font-size:13px;margin-top:4px">${USER.designation || ''}</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="num ${scoreClass(avg)}">${avg}</div><div class="lbl">${t('avgScore')}</div></div>
+        <div class="stat"><div class="num" style="font-size:16px">${status}</div><div class="lbl">${t('lastStatus')}</div></div>
+      </div>
+      <div class="card">
+        <h4>সাম্প্রতিক স্কোর</h4>
+        ${entries.slice(0,5).map(e=>`
+          <div class="t-row">
+            <div><div class="t-name">${String(e.Date).slice(0,10)}</div><div class="t-dept">${e.Remark || ''}</div></div>
+            <span class="t-score ${scoreClass(e.Average)}">${e.Average}</span>
+          </div>
+        `).join('') || '<p style="color:#666">কোনো এন্ট্রি নেই</p>'}
+      </div>
+      <button class="secondary" onclick="logout()">${t('logout')}</button>
+    `;
+  }
+  else if (CURRENT_TAB === 'messages') renderMessagesList();
+  else renderTeacher(); // অন্য ট্যাব শিক্ষকের জন্য নিষ্ক্রিয়
+}
+
+// ============================================
+// শিক্ষক তালিকা
+// ============================================
+function renderTeachersList(){
+  let list = CACHE.teachers;
+  if (USER.role === 'supervisor') {
+    list = list.filter(t => (USER.assigned || []).includes(t.ID));
+  }
+  const avgMap = {};
+  CACHE.entries.forEach(e => {
+    if (!avgMap[e.Teacher_ID]) avgMap[e.Teacher_ID] = { sum: 0, n: 0 };
+    avgMap[e.Teacher_ID].sum += parseFloat(e.Average);
+    avgMap[e.Teacher_ID].n++;
+  });
+
+  document.getElementById('app').innerHTML = `
+    <div class="card">
+      <h3>👥 ${t('teachers')} (${list.length})</h3>
+      <input id="search" placeholder="🔍 খুঁজুন..." oninput="filterTeachers(this.value)">
+      <div id="tlist">
+        ${list.map(t => {
+          const a = avgMap[t.ID];
+          const avg = a ? (a.sum/a.n).toFixed(2) : '—';
+          return `
+            <div class="t-row" data-name="${t.Name_Bangla} ${t.Name_Arabic} ${t.ID}" onclick="showTeacher('${t.ID}')">
+              <div>
+                <div class="t-name">${LANG === 'bn' ? t.Name_Bangla : t.Name_Arabic}</div>
+                <div class="t-dept">${t.ID} • ${t.Department || ''}</div>
+              </div>
+              <span class="t-score ${scoreClass(avg)}">${avg}</span>
+            </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function filterTeachers(q){
+  q = q.toLowerCase();
+  document.querySelectorAll('#tlist .t-row').forEach(r=>{
+    r.style.display = r.dataset.name.toLowerCase().includes(q) ? 'flex' : 'none';
+  });
+}
+
+function showTeacher(id){
+  const t = CACHE.teachers.find(x => x.ID === id);
+  if (!t) return;
+  const entries = CACHE.entries.filter(e => e.Teacher_ID === id);
+  const avg = entries.length
+    ? (entries.reduce((a,e)=>a+parseFloat(e.Average),0)/entries.length).toFixed(2)
+    : '—';
+
+  document.getElementById('app').innerHTML = `
+    <div class="card">
+      <button class="secondary small" onclick="switchTab('teachers')" style="margin-bottom:12px">← ফিরে যান</button>
+      <h3>${LANG === 'bn' ? t.Name_Bangla : t.Name_Arabic}</h3>
+      <p style="font-size:14px;color:#666">${t.Designation_Bangla || ''} • ${t.Department || ''}</p>
+      <p style="font-size:13px;color:#888;margin-top:4px">ID: ${t.ID}</p>
+      <p style="font-size:13px;color:#888">📞 ${t.Phone || '—'}</p>
+      <div class="progress" style="margin-top:14px"><div class="progress-bar" style="width:${(parseFloat(avg)||0)*10}%"></div></div>
+      <p style="text-align:center;margin-top:8px;font-size:14px">গড়: <b class="${scoreClass(avg)}">${avg}</b> / ১০</p>
+    </div>
+    <div class="card">
+      <h4>📊 সাম্প্রতিক এন্ট্রি</h4>
+      ${entries.slice(0,10).map(e=>`
+        <div class="t-row">
+          <div><div class="t-name">${String(e.Date).slice(0,10)}</div><div class="t-dept">${e.Remark || ''}</div></div>
+          <span class="t-score ${scoreClass(e.Average)}">${e.Average}</span>
+        </div>
+      `).join('') || '<p style="color:#666;font-size:14px">কোনো এন্ট্রি নেই</p>'}
+    </div>
+  `;
+}
+
+// ============================================
+// এন্ট্রি ফর্ম
+// ============================================
+const DUTIES = [
+  { id:'d1', bn:'নির্ধারিত সময়ে ক্লাসে উপস্থিতি', ar:'الحضور في الوقت المحدد' },
+  { id:'d2', bn:'পাঠদানের মান', ar:'جودة التدريس' },
+  { id:'d3', bn:'ছাত্রদের তালিম ও তারবিয়াত', ar:'تعليم الطلاب وتربيتهم' },
+  { id:'d4', bn:'পরীক্ষার খাতা মূল্যায়ন', ar:'تقييم أوراق الامتحان' },
+  { id:'d5', bn:'মাদরাসার নিয়ম-শৃঙ্খলা পালন', ar:'الالتزام بنظام المدرسة' },
+  { id:'d6', bn:'অভিভাবকদের সাথে যোগাযোগ', ar:'التواصل مع أولياء الأمور' },
+  { id:'d7', bn:'সহকর্মীদের সাথে আচরণ', ar:'التعامل مع الزملاء' },
+  { id:'d8', bn:'নিজের ইলম চর্চা', ar:'المطالعة الذاتية' }
+];
+
+function renderEntryForm(){
+  let list = CACHE.teachers;
+  if (USER.role === 'supervisor') {
+    list = list.filter(t => (USER.assigned || []).includes(t.ID));
+  }
+  if (!list.length) {
+    document.getElementById('app').innerHTML = `<div class="card"><p>${t('noData')}</p></div>`;
+    return;
+  }
+
+  document.getElementById('app').innerHTML = `
+    <div class="card">
+      <h3>✍️ ${t('dailyEntry')}</h3>
+      <label>${t('selectTeacher')}</label>
+      <select id="tid">
+        ${list.map(t=>`<option value="${t.ID}">${LANG==='bn'?t.Name_Bangla:t.Name_Arabic} (${t.ID})</option>`).join('')}
+      </select>
+      <label>${t('date')}</label>
+      <input type="date" id="dt" value="${new Date().toISOString().slice(0,10)}">
+      ${DUTIES.map(d=>`
+        <div class="slider-box">
+          <label>
+            <span>${LANG==='bn'?d.bn:d.ar}</span>
+            <span class="slider-val" id="v-${d.id}">7</span>
+          </label>
+          <input type="range" min="1" max="10" value="7" id="${d.id}"
+                 oninput="document.getElementById('v-${d.id}').textContent=this.value">
+        </div>
+      `).join('')}
+      <label>${t('remark')}</label>
+      <textarea id="rmk" rows="2"></textarea>
+      <button onclick="submitEntry()">${t('submit')}</button>
+    </div>
+  `;
+}
+
+async function submitEntry(){
+  const params = {
+    teacher_id: document.getElementById('tid').value,
+    supervisor_id: USER.role === 'supervisor' ? USER.id : 'ADMIN',
+    date: document.getElementById('dt').value,
+    remark: document.getElementById('rmk').value
+  };
+  DUTIES.forEach(d => params[d.id] = document.getElementById(d.id).value);
+
+  document.getElementById('app').innerHTML = loading();
+  try {
+    const r = await api('addEntry', params);
+    if (r.success) {
+      toast(t('entrySuccess') + ' গড়: ' + r.average);
+      await loadAllData();
+      CURRENT_TAB = 'home';
+      render();
+    } else {
+      toast('ব্যর্থ: ' + (r.error || ''));
+      render();
+    }
+  } catch(e) {
+    toast('ত্রুটি: ' + e.message);
+    render();
+  }
+}
+
+// ============================================
+// বার্তা তালিকা
+// ============================================
+function renderMessagesList(){
+  let list = CACHE.messages;
+  if (USER.role === 'teacher') {
+    list = list.filter(m => m.Teacher_ID === USER.id);
+  }
+  document.getElementById('app').innerHTML = `
+    <div class="card">
+      <h3>💬 ${t('messages')}</h3>
+      ${list.length ? list.map(m=>`
+        <div class="msg ${m.Type === 'appreciation' ? 'appreciation' : 'warning'}">
+          <small>${String(m.Timestamp).slice(0,10)} • ${m.Teacher_ID}</small>
+          <div>${LANG === 'bn' ? m.Message_Bangla : m.Message_Arabic}</div>
+          <div class="ar">${m.Message_Arabic}</div>
+        </div>
+      `).join('') : `<p style="color:#666">${t('noData')}</p>`}
+    </div>
+    <button class="secondary" onclick="logout()">${t('logout')}</button>
+  `;
+}
+
+// ============================================
+// ইনিশিয়ালাইজ
+// ============================================
+(function init(){
+  document.body.classList.toggle('ar', LANG === 'ar');
+  document.getElementById('langBtn').textContent = LANG === 'bn' ? '🌐 عربي' : '🌐 বাংলা';
+  document.getElementById('appTitle').textContent = t('appTitle');
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  }
+  if (USER) loadAllData();
+  else render();
+})();
+</script>
+</body>
+</html>
