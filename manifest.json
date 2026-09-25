@@ -1,7 +1,7 @@
 {
-  "name": "মাদরাসা শিক্ষক ট্র্যাকার",
-  "short_name": "মাদরাসা",
-  "description": "কওমি মাদরাসা শিক্ষকদের দৈনিক মূল্যায়ন",
+  "name": "তালিমাত",
+  "short_name": "তালিমাত",
+  "description": "কওমি মাদরাসা শিক্ষকদের দৈনিক মূল্যায়ন - তালিমাত",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
