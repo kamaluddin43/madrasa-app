@@ -4,104 +4,140 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0b3d2e">
-<title>মাদরাসা শিক্ষক ট্র্যাকার</title>
+<title>তালিমাত</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
+/* ===== থিম ভেরিয়েবল ===== */
+:root{
+  --primary:#0b3d2e;
+  --primary-light:#145c46;
+  --accent:#2ecc71;
+  --bg:#f0f4f2;
+  --card:#ffffff;
+  --text:#1a1a1a;
+  --text-muted:#666;
+  --border:#e0e0e0;
+  --good:#0a7d3e;
+  --warn:#d68910;
+  --bad:#c0392b;
+}
+[data-theme="blue"]{--primary:#1a3a6e;--primary-light:#2c5aa0;--accent:#4a90e2;--bg:#eef4fb}
+[data-theme="purple"]{--primary:#4a1a6e;--primary-light:#6c2aa0;--accent:#a855f7;--bg:#f4eefb}
+[data-theme="dark"]{--primary:#1a1a1a;--primary-light:#2d2d2d;--bg:#121212;--card:#1e1e1e;--text:#e8e8e8;--text-muted:#aaa;--border:#333}
+[data-theme="sepia"]{--primary:#5d4e37;--primary-light:#7d6e57;--accent:#c9a96e;--bg:#f5f0e6;--card:#fffaf0}
+[data-theme="rose"]{--primary:#6e1a3a;--primary-light:#a02c5a;--accent:#ec4899;--bg:#fbeef4}
+
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:'Noto Sans Bengali',sans-serif;background:#f0f4f2;color:#1a1a1a;font-size:15px;padding-bottom:70px}
+body{font-family:'Noto Sans Bengali',sans-serif;background:var(--bg);color:var(--text);font-size:15px;padding-bottom:80px;transition:background .3s}
 body.ar{direction:rtl}
-body.ar .arabic-text{font-family:'Amiri',serif}
 .hidden{display:none!important}
 
 /* Header */
-header{background:linear-gradient(135deg,#0b3d2e,#145c46);color:#fff;padding:14px 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-.header-row{display:flex;justify-content:space-between;align-items:center}
-header h1{font-size:17px;font-weight:700}
-.lang-btn{background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);padding:6px 12px;border-radius:20px;font-size:13px;cursor:pointer;font-family:inherit}
-.lang-btn:active{background:rgba(255,255,255,.35)}
+header{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:14px 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.header-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+header h1{font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px}
+header h1 .ar{font-family:'Amiri',serif;font-size:20px;opacity:.85}
+.icon-btn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.28);width:38px;height:38px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;margin:0}
+.icon-btn:active{background:rgba(255,255,255,.35)}
 
 /* Layout */
 .container{max-width:600px;margin:0 auto;padding:14px}
-.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-.card h3{font-size:16px;margin-bottom:12px;color:#0b3d2e;display:flex;align-items:center;gap:8px}
-.card h4{font-size:15px;margin-bottom:10px;color:#0b3d2e}
+.card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.card h3{font-size:16px;margin-bottom:12px;color:var(--primary);display:flex;align-items:center;gap:8px}
+.card h4{font-size:15px;margin-bottom:10px;color:var(--primary)}
 
 /* Inputs */
-input,select,textarea{width:100%;padding:12px;border:2px solid #e0e0e0;border-radius:10px;margin:6px 0;font-family:inherit;font-size:15px;background:#fafafa;transition:.2s}
-input:focus,select:focus,textarea:focus{outline:none;border-color:#0b3d2e;background:#fff}
-label{font-size:14px;color:#444;font-weight:600;display:block;margin-top:10px}
+input,select,textarea{width:100%;padding:12px;border:2px solid var(--border);border-radius:10px;margin:6px 0;font-family:inherit;font-size:15px;background:var(--card);color:var(--text);transition:.2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)}
+label{font-size:14px;color:var(--text-muted);font-weight:600;display:block;margin-top:10px}
 
-button{background:linear-gradient(135deg,#0b3d2e,#145c46);color:#fff;border:none;padding:14px;border-radius:10px;width:100%;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:10px;transition:.2s}
+button{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;border:none;padding:14px;border-radius:10px;width:100%;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:10px;transition:.2s}
 button:active{transform:scale(.98);opacity:.9}
-button.secondary{background:#e8ecea;color:#0b3d2e}
+button.secondary{background:var(--border);color:var(--primary)}
 button.danger{background:linear-gradient(135deg,#c0392b,#e74c3c)}
-button.small{padding:10px;font-size:14px;width:auto;display:inline-block;padding-left:16px;padding-right:16px}
+button.small{padding:10px 16px;font-size:14px;width:auto}
 
 /* Teacher row */
-.t-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f0f0f0;cursor:pointer}
+.t-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer}
 .t-row:last-child{border-bottom:none}
 .t-name{font-weight:600;font-size:14px}
-.t-dept{font-size:12px;color:#888;margin-top:2px}
+.t-dept{font-size:12px;color:var(--text-muted);margin-top:2px}
 .t-score{font-weight:700;font-size:16px}
-.good{color:#0a7d3e}
-.bad{color:#c0392b}
-.mid{color:#d68910}
+.good{color:var(--good)}.bad{color:var(--bad)}.mid{color:var(--warn)}
 
 /* Slider */
-.slider-box{margin:12px 0;padding:12px;background:#f8faf9;border-radius:10px}
-.slider-box label{display:flex;justify-content:space-between;margin-bottom:6px}
-.slider-val{background:#0b3d2e;color:#fff;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700}
+.slider-box{margin:10px 0;padding:12px;background:var(--bg);border-radius:10px}
+.slider-box label{display:flex;justify-content:space-between;margin-bottom:6px;color:var(--text)}
+.slider-val{background:var(--primary);color:#fff;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700}
 input[type=range]{width:100%;-webkit-appearance:none;background:transparent;padding:0;margin:0;border:none}
-input[type=range]::-webkit-slider-runnable-track{height:6px;background:#d0d8d4;border-radius:3px}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;height:22px;width:22px;background:#0b3d2e;border-radius:50%;margin-top:-8px;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+input[type=range]::-webkit-slider-runnable-track{height:6px;background:var(--border);border-radius:3px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;height:22px;width:22px;background:var(--primary);border-radius:50%;margin-top:-8px;box-shadow:0 2px 4px rgba(0,0,0,.2)}
 
 /* Alerts */
 .alert{padding:12px;border-radius:10px;margin-bottom:8px;font-size:14px;display:flex;justify-content:space-between;align-items:center}
-.alert.warn{background:#fdeaea;border-left:4px solid #c0392b}
-.alert.info{background:#e8f4ff;border-left:4px solid #2980b9}
-.alert.good{background:#e8f5ee;border-left:4px solid #0a7d3e}
+.alert.warn{background:#fdeaea;border-left:4px solid var(--bad);color:#1a1a1a}
+.alert.good{background:#e8f5ee;border-left:4px solid var(--good);color:#1a1a1a}
 
 /* Message card */
 .msg{padding:14px;border-radius:10px;margin-bottom:10px;font-size:14px;line-height:1.6}
-.msg.appreciation{background:#e8f5ee;border-left:4px solid #0a7d3e}
-.msg.warning{background:#fdeaea;border-left:4px solid #c0392b}
+.msg.appreciation{background:#e8f5ee;border-left:4px solid var(--good);color:#1a1a1a}
+.msg.warning{background:#fdeaea;border-left:4px solid var(--bad);color:#1a1a1a}
 .msg small{color:#666;display:block;margin-bottom:6px}
 .msg .ar{font-family:'Amiri',serif;direction:rtl;text-align:right;margin-top:8px;padding-top:8px;border-top:1px dashed #ccc;font-size:16px}
 
 /* Stats grid */
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.stat{background:#fff;padding:14px;border-radius:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.stat .num{font-size:24px;font-weight:700;color:#0b3d2e}
-.stat .lbl{font-size:12px;color:#666;margin-top:4px}
+.stat{background:var(--card);padding:14px;border-radius:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.stat .num{font-size:24px;font-weight:700;color:var(--primary)}
+.stat .lbl{font-size:12px;color:var(--text-muted);margin-top:4px}
 
 /* Bottom nav */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;box-shadow:0 -2px 10px rgba(0,0,0,.08);z-index:99;border-top:1px solid #eee}
-.bottom-nav button{flex:1;background:transparent;color:#888;padding:10px 4px;border-radius:0;font-size:11px;margin:0;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:600}
-.bottom-nav button.active{color:#0b3d2e}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);display:flex;box-shadow:0 -2px 10px rgba(0,0,0,.08);z-index:99;border-top:1px solid var(--border)}
+.bottom-nav button{flex:1;background:transparent;color:var(--text-muted);padding:10px 4px;border-radius:0;font-size:11px;margin:0;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:600}
+.bottom-nav button.active{color:var(--primary)}
 .bottom-nav button .ico{font-size:20px}
 
 /* Loading */
-.loading{text-align:center;padding:30px;color:#666}
-.spinner{display:inline-block;width:30px;height:30px;border:3px solid #ddd;border-top-color:#0b3d2e;border-radius:50%;animation:spin 1s linear infinite}
+.loading{text-align:center;padding:30px;color:var(--text-muted)}
+.spinner{display:inline-block;width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* Toast */
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;z-index:999;opacity:0;transition:.3s;pointer-events:none}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;z-index:999;opacity:0;transition:.3s;pointer-events:none;max-width:90%}
 .toast.show{opacity:1}
 
-/* Progress bar */
-.progress{height:8px;background:#e0e0e0;border-radius:4px;overflow:hidden;margin-top:6px}
-.progress-bar{height:100%;background:linear-gradient(90deg,#0b3d2e,#2ecc71);transition:width .5s}
+/* Progress */
+.progress{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-top:6px}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .5s}
+
+/* Theme grid */
+.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.theme-item{border-radius:12px;padding:12px;text-align:center;cursor:pointer;border:3px solid transparent;transition:.2s}
+.theme-item.active{border-color:var(--primary);transform:scale(1.02)}
+.theme-item .dot{width:32px;height:32px;border-radius:50%;margin:0 auto 6px}
+.theme-item .name{font-size:12px;font-weight:600;color:#1a1a1a}
+
+/* Chart */
+.chart-box{background:var(--bg);border-radius:10px;padding:10px;margin-top:10px;overflow-x:auto}
+canvas{display:block;max-width:100%}
+
+/* Tabs */
+.tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px}
+.tabs button{flex:0 0 auto;padding:8px 14px;font-size:13px;border-radius:20px;background:var(--border);color:var(--text);font-weight:600;width:auto;margin:0}
+.tabs button.active{background:var(--primary);color:#fff}
+
+/* Edit form */
+.edit-form{background:var(--bg);padding:12px;border-radius:10px;margin-top:10px}
 </style>
 </head>
 <body>
 
 <header>
   <div class="header-row">
-    <h1 id="appTitle">মাদরাসা শিক্ষক ট্র্যাকার</h1>
-    <button class="lang-btn" onclick="toggleLang()" id="langBtn">🌐 عربي</button>
+    <h1>📚 <span id="appTitleBn">তালিমাত</span> <span class="ar" id="appTitleAr">تعليمات</span></h1>
+    <button class="icon-btn" onclick="openSettings()" title="Settings">⚙️</button>
   </div>
 </header>
 
@@ -111,6 +147,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;height:22px;widt
   <button data-tab="home" onclick="switchTab('home')"><span class="ico">🏠</span><span data-t="home">হোম</span></button>
   <button data-tab="entry" onclick="switchTab('entry')"><span class="ico">✍️</span><span data-t="entry">এন্ট্রি</span></button>
   <button data-tab="teachers" onclick="switchTab('teachers')"><span class="ico">👥</span><span data-t="teachers">শিক্ষক</span></button>
+  <button data-tab="reports" onclick="switchTab('reports')"><span class="ico">📊</span><span data-t="reports">রিপোর্ট</span></button>
   <button data-tab="messages" onclick="switchTab('messages')"><span class="ico">💬</span><span data-t="messages">বার্তা</span></button>
 </nav>
 
@@ -121,24 +158,29 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;height:22px;widt
 // কনফিগারেশন
 // ============================================
 const API_URL = "https://script.google.com/macros/s/AKfycbzPWOJws10I0jXlNe6CkdNd68nmgV-6JS35Rch0FF64ChmX0_-tOFs_mbgjVm5_5CLTXw/exec";
+const APP_NAME_BN = "তালিমাত";
+const APP_NAME_AR = "تعليمات";
 
 // ============================================
-// গ্লোবাল স্টেট
+// স্টেট
 // ============================================
 let LANG = localStorage.getItem('lang') || 'bn';
+let THEME = localStorage.getItem('theme') || 'green';
 let USER = JSON.parse(localStorage.getItem('user') || 'null');
-let CACHE = { teachers: [], supervisors: [], entries: [], messages: [], dashboard: null };
+let CACHE = { teachers: [], entries: [], messages: [], dashboard: null, supervisorList: [] };
 let CURRENT_TAB = 'home';
+let MSG_FILTER = 'all';
+let SHOW_SETTINGS = false;
 
 // ============================================
 // অনুবাদ
 // ============================================
 const I18N = {
   bn: {
-    appTitle: "মাদরাসা শিক্ষক ট্র্যাকার",
+    appName: APP_NAME_BN,
     login: "লগইন", username: "ইউজারনেম", password: "পাসওয়ার্ড",
     loginBtn: "প্রবেশ করুন", logout: "লগআউট",
-    home: "হোম", entry: "এন্ট্রি", teachers: "শিক্ষক", messages: "বার্তা",
+    home: "হোম", entry: "এন্ট্রি", teachers: "শিক্ষক", messages: "বার্তা", reports: "রিপোর্ট",
     dashboard: "ড্যাশবোর্ড", todayEntry: "আজকের এন্ট্রি", totalTeachers: "মোট শিক্ষক",
     alerts: "⚠️ সতর্কতা প্রয়োজন", topPerformers: "🏆 শীর্ষ পারফর্মার",
     dailyEntry: "দৈনিক এন্ট্রি", selectTeacher: "শিক্ষক নির্বাচন করুন",
@@ -149,13 +191,24 @@ const I18N = {
     improving: "উন্নতি", declining: "অবনতি",
     entrySuccess: "✅ এন্ট্রি সফলভাবে জমা হয়েছে",
     loginError: "ভুল ইউজারনেম বা পাসওয়ার্ড",
-    score: "স্কোর", date: "তারিখ"
+    date: "তারিখ", fromDate: "শুরুর তারিখ", toDate: "শেষের তারিখ",
+    monthlyReport: "মাসিক রিপোর্ট", selectMonth: "মাস নির্বাচন",
+    performanceChart: "পারফরম্যান্স চার্ট", dutyBreakdown: "দায়িত্বভিত্তিক গড়",
+    editTeacher: "শিক্ষক তথ্য সম্পাদনা", nameBn: "নাম (বাংলা)", nameAr: "নাম (আরবী)",
+    phone: "ফোন", designation: "পদবী", save: "সেভ করুন", cancel: "বাতিল",
+    settings: "সেটিংস", theme: "থিম", language: "ভাষা", notification: "নোটিফিকেশন",
+    enableNotif: "নোটিফিকেশন চালু করুন", about: "সম্পর্কে", version: "সংস্করণ",
+    backup: "ব্যাকআপ নিন", adminPanel: "অ্যাডমিন প্যানেল",
+    totalEntries: "মোট এন্ট্রি", saved: "✅ সেভ হয়েছে", editSuccess: "✅ আপডেট সফল",
+    viewAll: "সব দেখুন", filter: "ফিল্টার", all: "সব", appreciationOnly: "শুধু অভিবাদন",
+    warningOnly: "শুধু সতর্কতা", score: "স্কোর", days: "দিন", days30: "শেষ ৩০ দিন",
+    months6: "শেষ ৬ মাস"
   },
   ar: {
-    appTitle: "متتبع معلمي المدرسة",
+    appName: APP_NAME_AR,
     login: "تسجيل الدخول", username: "اسم المستخدم", password: "كلمة المرور",
     loginBtn: "دخول", logout: "خروج",
-    home: "الرئيسية", entry: "الإدخال", teachers: "المعلمون", messages: "الرسائل",
+    home: "الرئيسية", entry: "الإدخال", teachers: "المعلمون", messages: "الرسائل", reports: "التقارير",
     dashboard: "لوحة التحكم", todayEntry: "إدخال اليوم", totalTeachers: "إجمالي المعلمين",
     alerts: "⚠️ يحتاج تحذير", topPerformers: "🏆 الأفضل أداءً",
     dailyEntry: "الإدخال اليومي", selectTeacher: "اختر المعلم",
@@ -166,13 +219,24 @@ const I18N = {
     improving: "تحسن", declining: "تراجع",
     entrySuccess: "✅ تم حفظ الإدخال بنجاح",
     loginError: "اسم المستخدم أو كلمة المرور خاطئة",
-    score: "الدرجة", date: "التاريخ"
+    date: "التاريخ", fromDate: "من تاريخ", toDate: "إلى تاريخ",
+    monthlyReport: "التقرير الشهري", selectMonth: "اختر الشهر",
+    performanceChart: "مخطط الأداء", dutyBreakdown: "متوسط المهام",
+    editTeacher: "تعديل بيانات المعلم", nameBn: "الاسم (بنغالي)", nameAr: "الاسم (عربي)",
+    phone: "الهاتف", designation: "المنصب", save: "حفظ", cancel: "إلغاء",
+    settings: "الإعدادات", theme: "المظهر", language: "اللغة", notification: "الإشعارات",
+    enableNotif: "تفعيل الإشعارات", about: "حول", version: "الإصدار",
+    backup: "نسخ احتياطي", adminPanel: "لوحة الإدارة",
+    totalEntries: "إجمالي الإدخالات", saved: "✅ تم الحفظ", editSuccess: "✅ تم التحديث",
+    viewAll: "عرض الكل", filter: "تصفية", all: "الكل", appreciationOnly: "التقدير فقط",
+    warningOnly: "التحذير فقط", score: "الدرجة", days: "أيام", days30: "آخر ٣٠ يوم",
+    months6: "آخر ٦ أشهر"
   }
 };
 function t(k){ return I18N[LANG][k] || k; }
 
 // ============================================
-// API হেল্পার
+// API
 // ============================================
 async function api(action, params = {}) {
   const qs = new URLSearchParams({ action, ...params }).toString();
@@ -201,12 +265,34 @@ function scoreClass(avg){
   return 'mid';
 }
 
-function toggleLang(){
-  LANG = LANG === 'bn' ? 'ar' : 'bn';
-  localStorage.setItem('lang', LANG);
+// ============================================
+// Settings/Theme
+// ============================================
+function applyTheme(){
+  document.documentElement.setAttribute('data-theme', THEME);
+}
+
+function setTheme(name){
+  THEME = name;
+  localStorage.setItem('theme', name);
+  applyTheme();
+  render();
+}
+
+function setLang(lang){
+  LANG = lang;
+  localStorage.setItem('lang', lang);
   document.body.classList.toggle('ar', LANG === 'ar');
-  document.getElementById('langBtn').textContent = LANG === 'bn' ? '🌐 عربي' : '🌐 বাংলা';
-  document.getElementById('appTitle').textContent = t('appTitle');
+  render();
+}
+
+function openSettings(){
+  SHOW_SETTINGS = true;
+  render();
+}
+
+function closeSettings(){
+  SHOW_SETTINGS = false;
   render();
 }
 
@@ -214,6 +300,13 @@ function toggleLang(){
 // রেন্ডার
 // ============================================
 function render(){
+  applyTheme();
+  document.body.classList.toggle('ar', LANG === 'ar');
+  document.getElementById('appTitleBn').textContent = APP_NAME_BN;
+  document.getElementById('appTitleAr').textContent = APP_NAME_AR;
+
+  if (SHOW_SETTINGS) return renderSettings();
+
   if (!USER) return renderLogin();
   document.getElementById('nav').classList.remove('hidden');
   if (USER.role === 'admin') renderAdmin();
@@ -225,16 +318,91 @@ function render(){
 function updateNavActive(){
   document.querySelectorAll('.bottom-nav button').forEach(b=>{
     b.classList.toggle('active', b.dataset.tab === CURRENT_TAB);
+    const span = b.querySelector('[data-t]');
+    if (span) span.textContent = t(span.dataset.t);
   });
 }
 
 function switchTab(tab){
   CURRENT_TAB = tab;
+  SHOW_SETTINGS = false;
   render();
 }
 
 // ============================================
-// লগইন স্ক্রিন
+// Settings Page
+// ============================================
+function renderSettings(){
+  document.getElementById('nav').classList.add('hidden');
+  const themes = [
+    {id:'green', name:'সবুজ', color:'#0b3d2e'},
+    {id:'blue', name:'নীল', color:'#1a3a6e'},
+    {id:'purple', name:'বেগুনি', color:'#4a1a6e'},
+    {id:'rose', name:'গোলাপি', color:'#6e1a3a'},
+    {id:'sepia', name:'সেপিয়া', color:'#5d4e37'},
+    {id:'dark', name:'ডার্ক', color:'#1a1a1a'}
+  ];
+
+  document.getElementById('app').innerHTML = `
+    <div class="card">
+      <h3>⚙️ ${t('settings')}</h3>
+      <button class="secondary small" onclick="closeSettings()">← ফিরে যান</button>
+    </div>
+
+    <div class="card">
+      <h4>🌐 ${t('language')}</h4>
+      <div class="tabs" style="margin-top:8px">
+        <button class="${LANG==='bn'?'active':''}" onclick="setLang('bn')">বাংলা</button>
+        <button class="${LANG==='ar'?'active':''}" onclick="setLang('ar')">العربية</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4>🎨 ${t('theme')}</h4>
+      <div class="theme-grid">
+        ${themes.map(th=>`
+          <div class="theme-item ${THEME===th.id?'active':''}" onclick="setTheme('${th.id}')">
+            <div class="dot" style="background:${th.color}"></div>
+            <div class="name">${th.name}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <div class="card">
+      <h4>🔔 ${t('notification')}</h4>
+      <button onclick="enableNotifications()">${t('enableNotif')}</button>
+    </div>
+
+    ${USER ? `
+    <div class="card">
+      <h4>👤 ${USER.name || USER.id}</h4>
+      <p style="font-size:13px;color:var(--text-muted)">${USER.role === 'admin' ? 'অ্যাডমিন' : USER.role === 'supervisor' ? 'সুপারভাইজার' : 'শিক্ষক'}</p>
+      <button class="danger" onclick="logout()">${t('logout')}</button>
+    </div>
+    ` : ''}
+
+    <div class="card">
+      <h4>ℹ️ ${t('about')}</h4>
+      <p style="font-size:14px;color:var(--text-muted)">${APP_NAME_BN} / ${APP_NAME_AR}</p>
+      <p style="font-size:13px;color:var(--text-muted);margin-top:4px">${t('version')}: 2.0</p>
+    </div>
+  `;
+}
+
+async function enableNotifications(){
+  if (!('Notification' in window)) return toast('এই ব্রাউজারে নোটিফিকেশন নেই');
+  const perm = await Notification.requestPermission();
+  if (perm === 'granted') {
+    new Notification(APP_NAME_BN, { body: 'নোটিফিকেশন চালু হয়েছে ✅' });
+    toast('✅ নোটিফিকেশন চালু');
+  } else {
+    toast('❌ অনুমতি দেওয়া হয়নি');
+  }
+}
+
+// ============================================
+// লগইন
 // ============================================
 function renderLogin(){
   document.getElementById('nav').classList.add('hidden');
@@ -265,7 +433,7 @@ async function doLogin(){
       localStorage.setItem('user', JSON.stringify(r));
       toast('স্বাগতম, ' + (r.name || r.id));
       CURRENT_TAB = 'home';
-      loadAllData();
+      await loadAllData();
     } else {
       document.getElementById('err').textContent = r.error || t('loginError');
       renderLogin();
@@ -280,6 +448,7 @@ function logout(){
   USER = null;
   localStorage.removeItem('user');
   CURRENT_TAB = 'home';
+  SHOW_SETTINGS = false;
   render();
 }
 
@@ -288,16 +457,18 @@ function logout(){
 // ============================================
 async function loadAllData(){
   try {
-    const [teachers, entries, dashboard, messages] = await Promise.all([
+    const [teachers, entries, dashboard, messages, sups] = await Promise.all([
       api('getTeachers'),
       api('getEntries', USER.role === 'teacher' ? { teacher_id: USER.id } : {}),
       api('getDashboard'),
-      api('getMessages', USER.role === 'teacher' ? { teacher_id: USER.id } : {})
+      api('getMessages', USER.role === 'teacher' ? { teacher_id: USER.id } : {}),
+      api('getSupervisors')
     ]);
     if (teachers.success) CACHE.teachers = teachers.data;
     if (entries.success) CACHE.entries = entries.data;
     if (dashboard.success) CACHE.dashboard = dashboard;
     if (messages.success) CACHE.messages = messages.data;
+    if (sups.success) CACHE.supervisorList = sups.data;
   } catch(e) {
     console.warn('ডাটা লোড ব্যর্থ', e);
   }
@@ -305,7 +476,7 @@ async function loadAllData(){
 }
 
 // ============================================
-// অ্যাডমিন ড্যাশবোর্ড
+// অ্যাডমিন
 // ============================================
 function renderAdmin(){
   if (CURRENT_TAB === 'home') {
@@ -313,66 +484,70 @@ function renderAdmin(){
     document.getElementById('app').innerHTML = `
       <div class="stats">
         <div class="stat"><div class="num">${d?.todayCount || 0}</div><div class="lbl">${t('todayEntry')}</div></div>
-        <div class="stat"><div class="num">${d?.totalTeachers || 60}</div><div class="lbl">${t('totalTeachers')}</div></div>
+        <div class="stat"><div class="num">${d?.totalTeachers || 0}</div><div class="lbl">${t('totalTeachers')}</div></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="num">${d?.totalEntries || 0}</div><div class="lbl">${t('totalEntries')}</div></div>
+        <div class="stat"><div class="num">${CACHE.messages.length}</div><div class="lbl">${t('messages')}</div></div>
       </div>
       <div class="card">
         <h4>${t('alerts')}</h4>
         ${(d?.low && d.low.length)
           ? d.low.slice(0,10).map(x=>`
             <div class="alert warn">
-              <span>${x.name}</span>
+              <span>${LANG==='bn'?x.name:x.nameAr||x.name}</span>
               <span class="bad">${x.avg}</span>
             </div>`).join('')
-          : '<p style="color:#666;font-size:14px">✅ কোনো সতর্কতা নেই</p>'}
+          : '<p style="color:var(--text-muted);font-size:14px">✅ কোনো সতর্কতা নেই</p>'}
       </div>
       <div class="card">
         <h4>${t('topPerformers')}</h4>
         ${(d?.top && d.top.length)
           ? d.top.map((x,i)=>`
             <div class="t-row">
-              <div><div class="t-name">${i+1}. ${x.name}</div><div class="t-dept">${x.count} এন্ট্রি</div></div>
+              <div><div class="t-name">${i+1}. ${LANG==='bn'?x.name:x.nameAr||x.name}</div><div class="t-dept">${x.count} ${t('entries')||'এন্ট্রি'}</div></div>
               <span class="t-score good">${x.avg}</span>
             </div>`).join('')
-          : '<p style="color:#666;font-size:14px">কোনো ডাটা নেই</p>'}
+          : '<p style="color:var(--text-muted);font-size:14px">কোনো ডাটা নেই</p>'}
       </div>
-      <button class="secondary" onclick="logout()">${t('logout')}</button>
     `;
   }
   else if (CURRENT_TAB === 'teachers') renderTeachersList();
   else if (CURRENT_TAB === 'entry') renderEntryForm();
   else if (CURRENT_TAB === 'messages') renderMessagesList();
+  else if (CURRENT_TAB === 'reports') renderReports();
 }
 
 // ============================================
-// সুপারভাইজার ভিউ
+// সুপারভাইজার
 // ============================================
 function renderSupervisor(){
   if (CURRENT_TAB === 'home') {
     const assigned = USER.assigned || [];
-    const myEntries = CACHE.entries.filter(e => e.Supervisor_ID === USER.id);
     const today = new Date().toISOString().slice(0,10);
-    const todayCount = myEntries.filter(e => String(e.Date).startsWith(today)).length;
+    const myEntries = CACHE.entries.filter(e => String(e.Date).startsWith(today));
+    const doneCount = new Set(myEntries.map(e => e.Teacher_ID)).size;
 
     document.getElementById('app').innerHTML = `
-      <div class="card" style="background:linear-gradient(135deg,#0b3d2e,#145c46);color:#fff">
-        <h3 style="color:#fff">👋 ${USER.name}</h3>
-        <p style="opacity:.9;font-size:14px;margin-top:4px">আপনার অধীনে: ${assigned.length} জন শিক্ষক</p>
+      <div class="card" style="background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff">
+        <h3 style="color:#fff">👋 ${LANG==='bn'?USER.name:USER.nameAr}</h3>
+        <p style="opacity:.9;font-size:14px;margin-top:4px">${assigned.length} জন শিক্ষকের দায়িত্বে</p>
       </div>
       <div class="stats">
-        <div class="stat"><div class="num">${todayCount}</div><div class="lbl">আজকের এন্ট্রি</div></div>
-        <div class="stat"><div class="num">${assigned.length - todayCount}</div><div class="lbl">বাকি আছে</div></div>
+        <div class="stat"><div class="num">${doneCount}</div><div class="lbl">${t('todayEntry')}</div></div>
+        <div class="stat"><div class="num">${assigned.length - doneCount}</div><div class="lbl">বাকি</div></div>
       </div>
       <button onclick="switchTab('entry')">➕ নতুন এন্ট্রি দিন</button>
-      <button class="secondary" onclick="logout()">${t('logout')}</button>
     `;
   }
   else if (CURRENT_TAB === 'entry') renderEntryForm();
   else if (CURRENT_TAB === 'teachers') renderTeachersList();
   else if (CURRENT_TAB === 'messages') renderMessagesList();
+  else if (CURRENT_TAB === 'reports') renderReports();
 }
 
 // ============================================
-// শিক্ষক ভিউ
+// শিক্ষক
 // ============================================
 function renderTeacher(){
   if (CURRENT_TAB === 'home') {
@@ -380,16 +555,20 @@ function renderTeacher(){
     const avg = entries.length
       ? (entries.reduce((a,e)=>a+parseFloat(e.Average),0)/entries.length).toFixed(2)
       : '—';
-    const status = parseFloat(avg) >= 7 ? t('improving') : t('declining');
+    const status = parseFloat(avg) >= 7 ? t('improving') : (entries.length?t('declining'):'—');
 
     document.getElementById('app').innerHTML = `
-      <div class="card" style="background:linear-gradient(135deg,#0b3d2e,#145c46);color:#fff">
-        <h3 style="color:#fff">${USER.name}</h3>
+      <div class="card" style="background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff">
+        <h3 style="color:#fff">${LANG==='bn'?USER.name:USER.nameAr}</h3>
         <p style="opacity:.9;font-size:13px;margin-top:4px">${USER.designation || ''}</p>
       </div>
       <div class="stats">
         <div class="stat"><div class="num ${scoreClass(avg)}">${avg}</div><div class="lbl">${t('avgScore')}</div></div>
         <div class="stat"><div class="num" style="font-size:16px">${status}</div><div class="lbl">${t('lastStatus')}</div></div>
+      </div>
+      <div class="card">
+        <h4>📊 ${t('performanceChart')}</h4>
+        <div class="chart-box"><canvas id="tChart" width="500" height="180"></canvas></div>
       </div>
       <div class="card">
         <h4>সাম্প্রতিক স্কোর</h4>
@@ -398,13 +577,18 @@ function renderTeacher(){
             <div><div class="t-name">${String(e.Date).slice(0,10)}</div><div class="t-dept">${e.Remark || ''}</div></div>
             <span class="t-score ${scoreClass(e.Average)}">${e.Average}</span>
           </div>
-        `).join('') || '<p style="color:#666">কোনো এন্ট্রি নেই</p>'}
+        `).join('') || `<p style="color:var(--text-muted)">${t('noData')}</p>`}
       </div>
-      <button class="secondary" onclick="logout()">${t('logout')}</button>
     `;
+    // চার্ট আঁকা
+    setTimeout(()=>drawLineChart('tChart', entries.slice(0,15).reverse().map(e=>({
+      label: String(e.Date).slice(5,10),
+      value: parseFloat(e.Average)
+    }))), 100);
   }
   else if (CURRENT_TAB === 'messages') renderMessagesList();
-  else renderTeacher(); // অন্য ট্যাব শিক্ষকের জন্য নিষ্ক্রিয়
+  else if (CURRENT_TAB === 'reports') renderReports();
+  else renderTeacher();
 }
 
 // ============================================
@@ -412,9 +596,7 @@ function renderTeacher(){
 // ============================================
 function renderTeachersList(){
   let list = CACHE.teachers;
-  if (USER.role === 'supervisor') {
-    list = list.filter(t => (USER.assigned || []).includes(t.ID));
-  }
+  if (USER.role === 'supervisor') list = list.filter(t => (USER.assigned || []).includes(t.ID));
   const avgMap = {};
   CACHE.entries.forEach(e => {
     if (!avgMap[e.Teacher_ID]) avgMap[e.Teacher_ID] = { sum: 0, n: 0 };
@@ -452,9 +634,9 @@ function filterTeachers(q){
 }
 
 function showTeacher(id){
-  const t = CACHE.teachers.find(x => x.ID === id);
-  if (!t) return;
-  const entries = CACHE.entries.filter(e => e.Teacher_ID === id);
+  const tch = CACHE.teachers.find(x => x.ID === id);
+  if (!tch) return;
+  const entries = CACHE.entries.filter(e => e.Teacher_ID === id).sort((a,b)=>new Date(b.Date)-new Date(a.Date));
   const avg = entries.length
     ? (entries.reduce((a,e)=>a+parseFloat(e.Average),0)/entries.length).toFixed(2)
     : '—';
@@ -462,23 +644,77 @@ function showTeacher(id){
   document.getElementById('app').innerHTML = `
     <div class="card">
       <button class="secondary small" onclick="switchTab('teachers')" style="margin-bottom:12px">← ফিরে যান</button>
-      <h3>${LANG === 'bn' ? t.Name_Bangla : t.Name_Arabic}</h3>
-      <p style="font-size:14px;color:#666">${t.Designation_Bangla || ''} • ${t.Department || ''}</p>
-      <p style="font-size:13px;color:#888;margin-top:4px">ID: ${t.ID}</p>
-      <p style="font-size:13px;color:#888">📞 ${t.Phone || '—'}</p>
+      <h3>${LANG === 'bn' ? tch.Name_Bangla : tch.Name_Arabic}</h3>
+      <p style="font-size:14px;color:var(--text-muted)">${tch.Designation_Bangla || ''} • ${tch.Department || ''}</p>
+      <p style="font-size:13px;color:var(--text-muted);margin-top:4px">ID: ${tch.ID}</p>
+      <p style="font-size:13px;color:var(--text-muted)">📞 ${tch.Phone || '—'}</p>
       <div class="progress" style="margin-top:14px"><div class="progress-bar" style="width:${(parseFloat(avg)||0)*10}%"></div></div>
       <p style="text-align:center;margin-top:8px;font-size:14px">গড়: <b class="${scoreClass(avg)}">${avg}</b> / ১০</p>
+      ${(USER.role === 'admin' || USER.id === tch.Supervisor_ID) ? `
+        <button class="secondary" onclick="toggleEdit('${tch.ID}')" style="margin-top:12px">✏️ ${t('editTeacher')}</button>
+        <div id="editBox"></div>
+      ` : ''}
     </div>
+
     <div class="card">
-      <h4>📊 সাম্প্রতিক এন্ট্রি</h4>
-      ${entries.slice(0,10).map(e=>`
+      <h4>📈 ${t('performanceChart')}</h4>
+      <div class="chart-box"><canvas id="tChart" width="500" height="200"></canvas></div>
+    </div>
+
+    <div class="card">
+      <h4>📊 সাম্প্রতিক এন্ট্রি (${entries.length})</h4>
+      ${entries.slice(0,15).map(e=>`
         <div class="t-row">
           <div><div class="t-name">${String(e.Date).slice(0,10)}</div><div class="t-dept">${e.Remark || ''}</div></div>
           <span class="t-score ${scoreClass(e.Average)}">${e.Average}</span>
         </div>
-      `).join('') || '<p style="color:#666;font-size:14px">কোনো এন্ট্রি নেই</p>'}
+      `).join('') || `<p style="color:var(--text-muted);font-size:14px">${t('noData')}</p>`}
     </div>
   `;
+  setTimeout(()=>drawLineChart('tChart', entries.slice(0,20).reverse().map(e=>({
+    label: String(e.Date).slice(5,10),
+    value: parseFloat(e.Average)
+  }))), 100);
+}
+
+function toggleEdit(id){
+  const tch = CACHE.teachers.find(x => x.ID === id);
+  const box = document.getElementById('editBox');
+  if (box.innerHTML) { box.innerHTML = ''; return; }
+  box.innerHTML = `
+    <div class="edit-form">
+      <label>${t('nameBn')}</label>
+      <input id="e_bn" value="${tch.Name_Bangla || ''}">
+      <label>${t('nameAr')}</label>
+      <input id="e_ar" value="${tch.Name_Arabic || ''}" dir="rtl">
+      <label>${t('designation')}</label>
+      <input id="e_dg" value="${tch.Designation_Bangla || ''}">
+      <label>${t('phone')}</label>
+      <input id="e_ph" value="${tch.Phone || ''}">
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button onclick="saveEdit('${id}')" style="margin:0">${t('save')}</button>
+        <button class="secondary" onclick="toggleEdit('${id}')" style="margin:0">${t('cancel')}</button>
+      </div>
+    </div>
+  `;
+}
+
+async function saveEdit(id){
+  const params = {
+    id,
+    name_bn: document.getElementById('e_bn').value.trim(),
+    name_ar: document.getElementById('e_ar').value.trim(),
+    designation: document.getElementById('e_dg').value.trim(),
+    phone: document.getElementById('e_ph').value.trim()
+  };
+  const r = await api('editTeacher', params);
+  if (r.success) {
+    toast(t('editSuccess'));
+    await loadAllData();
+    showTeacher(id);
+  } else {
+    toast('❌ ব্যর্থ: ' + (r.error || ''));
+  }
 }
 
 // ============================================
@@ -497,9 +733,7 @@ const DUTIES = [
 
 function renderEntryForm(){
   let list = CACHE.teachers;
-  if (USER.role === 'supervisor') {
-    list = list.filter(t => (USER.assigned || []).includes(t.ID));
-  }
+  if (USER.role === 'supervisor') list = list.filter(t => (USER.assigned || []).includes(t.ID));
   if (!list.length) {
     document.getElementById('app').innerHTML = `<div class="card"><p>${t('noData')}</p></div>`;
     return;
@@ -510,7 +744,7 @@ function renderEntryForm(){
       <h3>✍️ ${t('dailyEntry')}</h3>
       <label>${t('selectTeacher')}</label>
       <select id="tid">
-        ${list.map(t=>`<option value="${t.ID}">${LANG==='bn'?t.Name_Bangla:t.Name_Arabic} (${t.ID})</option>`).join('')}
+        ${list.map(tch=>`<option value="${tch.ID}">${LANG==='bn'?tch.Name_Bangla:tch.Name_Arabic} (${tch.ID})</option>`).join('')}
       </select>
       <label>${t('date')}</label>
       <input type="date" id="dt" value="${new Date().toISOString().slice(0,10)}">
@@ -559,39 +793,363 @@ async function submitEntry(){
 }
 
 // ============================================
-// বার্তা তালিকা
+// বার্তা
 // ============================================
 function renderMessagesList(){
   let list = CACHE.messages;
-  if (USER.role === 'teacher') {
-    list = list.filter(m => m.Teacher_ID === USER.id);
-  }
+  if (USER.role === 'teacher') list = list.filter(m => m.Teacher_ID === USER.id);
+  if (MSG_FILTER === 'appreciation') list = list.filter(m => m.Type === 'appreciation');
+  if (MSG_FILTER === 'warning') list = list.filter(m => m.Type === 'warning');
+
   document.getElementById('app').innerHTML = `
     <div class="card">
-      <h3>💬 ${t('messages')}</h3>
+      <h3>💬 ${t('messages')} (${list.length})</h3>
+      <div class="tabs">
+        <button class="${MSG_FILTER==='all'?'active':''}" onclick="setMsgFilter('all')">${t('all')}</button>
+        <button class="${MSG_FILTER==='appreciation'?'active':''}" onclick="setMsgFilter('appreciation')">${t('appreciationOnly')}</button>
+        <button class="${MSG_FILTER==='warning'?'active':''}" onclick="setMsgFilter('warning')">${t('warningOnly')}</button>
+      </div>
       ${list.length ? list.map(m=>`
         <div class="msg ${m.Type === 'appreciation' ? 'appreciation' : 'warning'}">
           <small>${String(m.Timestamp).slice(0,10)} • ${m.Teacher_ID}</small>
           <div>${LANG === 'bn' ? m.Message_Bangla : m.Message_Arabic}</div>
           <div class="ar">${m.Message_Arabic}</div>
         </div>
-      `).join('') : `<p style="color:#666">${t('noData')}</p>`}
+      `).join('') : `<p style="color:var(--text-muted)">${t('noData')}</p>`}
     </div>
-    <button class="secondary" onclick="logout()">${t('logout')}</button>
   `;
+}
+
+function setMsgFilter(f){ MSG_FILTER = f; render(); }
+
+// ============================================
+// রিপোর্ট
+// ============================================
+let REPORT_VIEW = 'overview';
+let REPORT_MONTH = new Date().toISOString().slice(0,7);
+
+function renderReports(){
+  if (USER.role === 'teacher') {
+    document.getElementById('app').innerHTML = `
+      <div class="card"><h3>📊 ${t('reports')}</h3>
+      <div class="tabs">
+        <button class="${REPORT_VIEW==='overview'?'active':''}" onclick="setReportView('overview')">সারসংক্ষেপ</button>
+        <button class="${REPORT_VIEW==='monthly'?'active':''}" onclick="setReportView('monthly')">মাসিক</button>
+      </div>
+      <div id="reportContent"></div></div>
+    `;
+    renderTeacherReport();
+    return;
+  }
+
+  document.getElementById('app').innerHTML = `
+    <div class="card">
+      <h3>📊 ${t('reports')}</h3>
+      <div class="tabs">
+        <button class="${REPORT_VIEW==='overview'?'active':''}" onclick="setReportView('overview')">ড্যাশবোর্ড</button>
+        <button class="${REPORT_VIEW==='monthly'?'active':''}" onclick="setReportView('monthly')">${t('monthlyReport')}</button>
+        <button class="${REPORT_VIEW==='dept'?'active':''}" onclick="setReportView('dept')">বিভাগভিত্তিক</button>
+      </div>
+      <div id="reportContent"></div>
+    </div>
+  `;
+  if (REPORT_VIEW === 'overview') renderReportOverview();
+  else if (REPORT_VIEW === 'monthly') renderReportMonthly();
+  else if (REPORT_VIEW === 'dept') renderReportDept();
+}
+
+function setReportView(v){ REPORT_VIEW = v; renderReports(); }
+
+function renderReportOverview(){
+  const d = CACHE.dashboard;
+  const box = document.getElementById('reportContent');
+  box.innerHTML = `
+    <h4>🏆 Top 10</h4>
+    <div class="chart-box"><canvas id="topChart" width="500" height="260"></canvas></div>
+    <h4 style="margin-top:16px">📅 সাম্প্রতিক এন্ট্রি ট্রেন্ড</h4>
+    <div class="chart-box"><canvas id="trendChart" width="500" height="200"></canvas></div>
+  `;
+  setTimeout(()=>{
+    if (d?.teacherAvgs) {
+      const top10 = [...d.teacherAvgs].sort((a,b)=>b.avg-a.avg).slice(0,10);
+      drawBarChart('topChart', top10.map(x=>({
+        label: (LANG==='bn'?x.name:x.nameAr||x.name).substring(0,10),
+        value: parseFloat(x.avg)
+      })));
+    }
+    const recent = CACHE.entries.slice(0,30).reverse();
+    const dailyAvg = {};
+    recent.forEach(e=>{
+      const day = String(e.Date).slice(5,10);
+      if (!dailyAvg[day]) dailyAvg[day] = { s:0, n:0 };
+      dailyAvg[day].s += parseFloat(e.Average);
+      dailyAvg[day].n++;
+    });
+    const trendData = Object.keys(dailyAvg).map(k=>({
+      label: k, value: dailyAvg[k].s / dailyAvg[k].n
+    }));
+    drawLineChart('trendChart', trendData);
+  }, 100);
+}
+
+function renderReportMonthly(){
+  const box = document.getElementById('reportContent');
+  box.innerHTML = `
+    <label>${t('selectMonth')}</label>
+    <input type="month" id="rm" value="${REPORT_MONTH}" onchange="REPORT_MONTH=this.value; renderReportMonthly()">
+    <div id="monthlyContent" style="margin-top:14px">${loading()}</div>
+  `;
+  loadMonthlyReport();
+}
+
+async function loadMonthlyReport(){
+  const r = await api('getMonthlyReport', { month: REPORT_MONTH });
+  const box = document.getElementById('monthlyContent');
+  if (!r.success || !r.report.length) {
+    box.innerHTML = `<p style="color:var(--text-muted)">${t('noData')}</p>`;
+    return;
+  }
+  box.innerHTML = `
+    <p style="font-size:14px;margin-bottom:10px"><b>${REPORT_MONTH}</b> — ${r.report.length} জন শিক্ষক</p>
+    <div class="chart-box"><canvas id="monthChart" width="500" height="${Math.max(200, r.report.length*22)}"></canvas></div>
+    <h4 style="margin-top:16px">বিস্তারিত তালিকা</h4>
+    ${r.report.map((x,i)=>`
+      <div class="t-row">
+        <div><div class="t-name">${i+1}. ${LANG==='bn'?x.name:x.nameAr||x.name}</div><div class="t-dept">${x.department||''} • ${x.entryCount} এন্ট্রি</div></div>
+        <span class="t-score ${scoreClass(x.avg)}">${x.avg}</span>
+      </div>
+    `).join('')}
+  `;
+  setTimeout(()=>{
+    drawBarChart('monthChart', r.report.map(x=>({
+      label: (LANG==='bn'?x.name:x.nameAr||x.name).substring(0,10),
+      value: parseFloat(x.avg)
+    })), true);
+  }, 100);
+}
+
+function renderReportDept(){
+  const deptMap = {};
+  CACHE.dashboard?.teacherAvgs?.forEach(x=>{
+    const d = x.department || 'অন্যান্য';
+    if (!deptMap[d]) deptMap[d] = { sum:0, n:0 };
+    deptMap[d].sum += parseFloat(x.avg);
+    deptMap[d].n++;
+  });
+  const depts = Object.keys(deptMap).map(k=>({
+    dept: k, avg: (deptMap[k].sum/deptMap[k].n).toFixed(2), count: deptMap[k].n
+  })).sort((a,b)=>b.avg-a.avg);
+
+  const box = document.getElementById('reportContent');
+  if (!depts.length) { box.innerHTML = `<p>${t('noData')}</p>`; return; }
+  box.innerHTML = `
+    <div class="chart-box"><canvas id="deptChart" width="500" height="${Math.max(180, depts.length*40)}"></canvas></div>
+    <h4 style="margin-top:16px">বিভাগসমূহ</h4>
+    ${depts.map(d=>`
+      <div class="t-row">
+        <div><div class="t-name">${d.dept}</div><div class="t-dept">${d.count} জন শিক্ষক</div></div>
+        <span class="t-score ${scoreClass(d.avg)}">${d.avg}</span>
+      </div>
+    `).join('')}
+  `;
+  setTimeout(()=>{
+    drawBarChart('deptChart', depts.map(d=>({
+      label: d.dept.substring(0,12), value: parseFloat(d.avg)
+    })), true);
+  }, 100);
+}
+
+function renderTeacherReport(){
+  const entries = CACHE.entries.filter(e => e.Teacher_ID === USER.id).sort((a,b)=>new Date(a.Date)-new Date(b.Date));
+  const box = document.getElementById('reportContent');
+  if (!entries.length) { box.innerHTML = `<p>${t('noData')}</p>`; return; }
+
+  const avg = (entries.reduce((a,e)=>a+parseFloat(e.Average),0)/entries.length).toFixed(2);
+  const last7 = entries.slice(-7);
+  const weekAvg = last7.length ? (last7.reduce((a,e)=>a+parseFloat(e.Average),0)/last7.length).toFixed(2) : '—';
+
+  // Trend: comparing first half vs second half
+  const half = Math.floor(entries.length/2);
+  const firstAvg = entries.slice(0,half).reduce((a,e)=>a+parseFloat(e.Average),0)/(half||1);
+  const secondAvg = entries.slice(half).reduce((a,e)=>a+parseFloat(e.Average),0)/(entries.length-half||1);
+  const trend = secondAvg > firstAvg + 0.3 ? '📈 উন্নতি' : (secondAvg < firstAvg - 0.3 ? '📉 অবনতি' : '➡️ স্থিতিশীল');
+
+  box.innerHTML = `
+    <div class="stats">
+      <div class="stat"><div class="num ${scoreClass(avg)}">${avg}</div><div class="lbl">সর্বমোট গড়</div></div>
+      <div class="stat"><div class="num ${scoreClass(weekAvg)}">${weekAvg}</div><div class="lbl">শেষ ৭ দিন</div></div>
+    </div>
+    <div class="card" style="background:var(--bg)">
+      <h4>ট্রেন্ড: ${trend}</h4>
+    </div>
+    <h4>📈 ${t('days30')}</h4>
+    <div class="chart-box"><canvas id="t30" width="500" height="200"></canvas></div>
+    <h4 style="margin-top:16px">📊 ${t('dutyBreakdown')}</h4>
+    <div class="chart-box"><canvas id="dutyC" width="500" height="220"></canvas></div>
+  `;
+  setTimeout(()=>{
+    const last30 = entries.slice(-30);
+    drawLineChart('t30', last30.map(e=>({
+      label: String(e.Date).slice(5,10),
+      value: parseFloat(e.Average)
+    })));
+    const duties = {
+      d1:'উপস্থিতি', d2:'পাঠদান', d3:'তারবিয়াত', d4:'খাতা',
+      d5:'শৃঙ্খলা', d6:'অভিভাবক', d7:'সহকর্মী', d8:'ইলম চর্চা'
+    };
+    const dutyAvg = {};
+    Object.keys(duties).forEach(k=>dutyAvg[k]=0);
+    last30.forEach(e=>{
+      Object.keys(duties).forEach(k=>{
+        dutyAvg[k] += parseFloat(e[k.toUpperCase().replace('D','D')+'_'+mapDutyName(k)] || e[`D${k[1]}_${mapDutyName(k)}`] || 0);
+      });
+    });
+    // সহজ পদ্ধতি
+    const dutyNames = {
+      d1:'D1_Attendance', d2:'D2_Teaching', d3:'D3_Tarbiyah', d4:'D4_Exam',
+      d5:'D5_Discipline', d6:'D6_Parents', d7:'D7_Colleagues', d8:'D8_SelfStudy'
+    };
+    const sums = {};
+    Object.keys(dutyNames).forEach(k=>sums[k]=0);
+    last30.forEach(e=>{
+      Object.keys(dutyNames).forEach(k=>{
+        sums[k] += parseFloat(e[dutyNames[k]] || 0);
+      });
+    });
+    const labels = ['উপস্থিতি','পাঠদান','তারবিয়াত','খাতা','শৃঙ্খলা','অভিভাবক','সহকর্মী','ইলম'];
+    drawBarChart('dutyC', labels.map((l,i)=>({
+      label: l, value: last30.length ? sums['d'+(i+1)]/last30.length : 0
+    })));
+  }, 100);
+}
+
+function mapDutyName(k){
+  return {d1:'Attendance',d2:'Teaching',d3:'Tarbiyah',d4:'Exam',d5:'Discipline',d6:'Parents',d7:'Colleagues',d8:'SelfStudy'}[k];
+}
+
+// ============================================
+// Canvas চার্ট
+// ============================================
+function drawLineChart(canvasId, data){
+  const c = document.getElementById(canvasId);
+  if (!c || !data.length) return;
+  const ctx = c.getContext('2d');
+  const W = c.width, H = c.height;
+  const pad = {l:32, r:12, t:16, b:28};
+  const innerW = W - pad.l - pad.r;
+  const innerH = H - pad.t - pad.b;
+
+  ctx.clearRect(0,0,W,H);
+
+  // Grid
+  ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--border') || '#e0e0e0';
+  ctx.lineWidth = 1;
+  for (let i=0; i<=5; i++){
+    const y = pad.t + (innerH/5)*i;
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W-pad.r, y); ctx.stroke();
+    ctx.fillStyle = '#888'; ctx.font = '10px sans-serif'; ctx.textAlign='right';
+    ctx.fillText((10 - i*2).toString(), pad.l-4, y+3);
+  }
+
+  // Data points
+  const stepX = innerW / Math.max(1, data.length-1);
+  const pts = data.map((d,i)=>({
+    x: pad.l + stepX*i,
+    y: pad.t + innerH - (d.value/10)*innerH
+  }));
+
+  // Line
+  const primary = getComputedStyle(document.body).getPropertyValue('--primary').trim() || '#0b3d2e';
+  ctx.strokeStyle = primary; ctx.lineWidth = 2.5; ctx.beginPath();
+  pts.forEach((p,i)=> i ? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y));
+  ctx.stroke();
+
+  // Area fill
+  ctx.fillStyle = primary + '22';
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, pad.t+innerH);
+  pts.forEach(p=>ctx.lineTo(p.x, p.y));
+  ctx.lineTo(pts[pts.length-1].x, pad.t+innerH);
+  ctx.closePath(); ctx.fill();
+
+  // Dots
+  ctx.fillStyle = primary;
+  pts.forEach(p=>{
+    ctx.beginPath(); ctx.arc(p.x, p.y, 3.5, 0, Math.PI*2); ctx.fill();
+  });
+
+  // X labels (every nth)
+  ctx.fillStyle = '#888'; ctx.font = '9px sans-serif'; ctx.textAlign='center';
+  const skip = Math.ceil(data.length/8);
+  data.forEach((d,i)=>{
+    if (i % skip === 0 || i === data.length-1)
+      ctx.fillText(d.label, pts[i].x, H-8);
+  });
+}
+
+function drawBarChart(canvasId, data, horizontal){
+  const c = document.getElementById(canvasId);
+  if (!c || !data.length) return;
+  const ctx = c.getContext('2d');
+  const W = c.width, H = c.height;
+  ctx.clearRect(0,0,W,H);
+  const primary = getComputedStyle(document.body).getPropertyValue('--primary').trim() || '#0b3d2e';
+  const accent = getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#2ecc71';
+
+  if (horizontal) {
+    const pad = {l:100, r:40, t:10, b:10};
+    const rowH = (H - pad.t - pad.b) / data.length;
+    data.forEach((d,i)=>{
+      const y = pad.t + rowH*i + rowH*0.15;
+      const bh = rowH*0.7;
+      const bw = ((d.value||0)/10) * (W - pad.l - pad.r);
+      ctx.fillStyle = 'rgba(0,0,0,.06)';
+      ctx.fillRect(pad.l, y, W-pad.l-pad.r, bh);
+      const grad = ctx.createLinearGradient(pad.l, 0, pad.l+bw, 0);
+      grad.addColorStop(0, primary); grad.addColorStop(1, accent);
+      ctx.fillStyle = grad;
+      ctx.fillRect(pad.l, y, bw, bh);
+      ctx.fillStyle = '#333'; ctx.font = '11px sans-serif'; ctx.textAlign='right';
+      ctx.fillText((d.label||'').substring(0,14), pad.l-6, y+bh/2+4);
+      ctx.fillStyle = primary; ctx.textAlign='left'; ctx.font='bold 11px sans-serif';
+      ctx.fillText((d.value||0).toFixed ? d.value.toFixed(2) : d.value, pad.l+bw+6, y+bh/2+4);
+    });
+  } else {
+    const pad = {l:30, r:10, t:10, b:60};
+    const innerW = W - pad.l - pad.r;
+    const innerH = H - pad.t - pad.b;
+    const bw = innerW / data.length * 0.7;
+    const gap = innerW / data.length * 0.3;
+    data.forEach((d,i)=>{
+      const bh = ((d.value||0)/10) * innerH;
+      const x = pad.l + i*(bw+gap) + gap/2;
+      const y = pad.t + innerH - bh;
+      const grad = ctx.createLinearGradient(0, y, 0, y+bh);
+      grad.addColorStop(0, accent); grad.addColorStop(1, primary);
+      ctx.fillStyle = grad;
+      ctx.fillRect(x, y, bw, bh);
+      ctx.fillStyle = primary; ctx.font='bold 10px sans-serif'; ctx.textAlign='center';
+      ctx.fillText((d.value||0).toFixed(1), x+bw/2, y-3);
+      ctx.save();
+      ctx.translate(x+bw/2, H-pad.b+8);
+      ctx.rotate(-Math.PI/4);
+      ctx.fillStyle = '#666'; ctx.font='9px sans-serif'; ctx.textAlign='right';
+      ctx.fillText((d.label||'').substring(0,12), 0, 0);
+      ctx.restore();
+    });
+  }
 }
 
 // ============================================
 // ইনিশিয়ালাইজ
 // ============================================
-(function init(){
+(async function init(){
+  applyTheme();
   document.body.classList.toggle('ar', LANG === 'ar');
-  document.getElementById('langBtn').textContent = LANG === 'bn' ? '🌐 عربي' : '🌐 বাংলা';
-  document.getElementById('appTitle').textContent = t('appTitle');
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(()=>{});
   }
-  if (USER) loadAllData();
+  if (USER) await loadAllData();
   else render();
 })();
 </script>
