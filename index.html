@@ -456,19 +456,48 @@ function logout(){
 // ডাটা লোড
 // ============================================
 async function loadAllData(){
+  // ---- আগের ক্যাশ থাকলে সাথে সাথে দেখাও ----
+  const saved = localStorage.getItem('talimat_cache');
+  if (saved) {
+    try {
+      const c = JSON.parse(saved);
+      if (c.teachers) CACHE.teachers = c.teachers;
+      if (c.supervisors) CACHE.supervisorList = c.supervisors;
+      if (c.dashboard) CACHE.dashboard = c.dashboard;
+      if (c.messages) CACHE.messages = c.messages;
+      if (c.entries) CACHE.entries = c.entries;
+      render();
+    } catch(e) {}
+  }
+
+  // ---- সব ডাটা এক কলে আনো ----
   try {
-    const [teachers, entries, dashboard, messages, sups] = await Promise.all([
-      api('getTeachers'),
-      api('getEntries', USER.role === 'teacher' ? { teacher_id: USER.id } : {}),
-      api('getDashboard'),
-      api('getMessages', USER.role === 'teacher' ? { teacher_id: USER.id } : {}),
-      api('getSupervisors')
-    ]);
-    if (teachers.success) CACHE.teachers = teachers.data;
-    if (entries.success) CACHE.entries = entries.data;
-    if (dashboard.success) CACHE.dashboard = dashboard;
-    if (messages.success) CACHE.messages = messages.data;
-    if (sups.success) CACHE.supervisorList = sups.data;
+    const r = await api('getAllData');
+    if (r.success) {
+      CACHE.teachers = r.teachers || [];
+      CACHE.supervisorList = r.supervisors || [];
+      CACHE.dashboard = r.dashboard || null;
+      CACHE.messages = r.messages || [];
+      CACHE.entries = r.entries || [];
+
+      // শিক্ষকের জন্য শুধু নিজের এন্ট্রি ও বার্তা
+      if (USER.role === 'teacher') {
+        CACHE.entries = CACHE.entries.filter(function(e){ return e.Teacher_ID === USER.id; });
+        CACHE.messages = CACHE.messages.filter(function(m){ return m.Teacher_ID === USER.id; });
+      }
+
+      // পরেরবারের জন্য সেভ করো
+      try {
+        localStorage.setItem('talimat_cache', JSON.stringify({
+          teachers: CACHE.teachers,
+          supervisors: CACHE.supervisorList,
+          dashboard: CACHE.dashboard,
+          messages: CACHE.messages,
+          entries: CACHE.entries,
+          time: Date.now()
+        }));
+      } catch(e) {}
+    }
   } catch(e) {
     console.warn('ডাটা লোড ব্যর্থ', e);
   }
