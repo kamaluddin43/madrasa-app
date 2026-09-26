@@ -4,24 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0b3d2e">
-<title>তালিমাত</title>
+<title>তালিমাত / تعليمات</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* ===== থিম ভেরিয়েবল ===== */
 :root{
-  --primary:#0b3d2e;
-  --primary-light:#145c46;
-  --accent:#2ecc71;
-  --bg:#f0f4f2;
-  --card:#ffffff;
-  --text:#1a1a1a;
-  --text-muted:#666;
-  --border:#e0e0e0;
-  --good:#0a7d3e;
-  --warn:#d68910;
-  --bad:#c0392b;
+--primary:#0b3d2e;--primary-light:#145c46;--accent:#2ecc71;
+--bg:#f0f4f2;--card:#ffffff;--text:#1a1a1a;--text-muted:#666;
+--border:#e0e0e0;--good:#0a7d3e;--warn:#d68910;--bad:#c0392b;--info:#2980b9;
 }
 [data-theme="blue"]{--primary:#1a3a6e;--primary-light:#2c5aa0;--accent:#4a90e2;--bg:#eef4fb}
 [data-theme="purple"]{--primary:#4a1a6e;--primary-light:#6c2aa0;--accent:#a855f7;--bg:#f4eefb}
@@ -34,32 +25,27 @@ body{font-family:'Noto Sans Bengali',sans-serif;background:var(--bg);color:var(-
 body.ar{direction:rtl}
 .hidden{display:none!important}
 
-/* Header */
 header{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:14px 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
 .header-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
 header h1{font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px}
 header h1 .ar{font-family:'Amiri',serif;font-size:20px;opacity:.85}
 .icon-btn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.28);width:38px;height:38px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;margin:0}
-.icon-btn:active{background:rgba(255,255,255,.35)}
 
-/* Layout */
 .container{max-width:600px;margin:0 auto;padding:14px}
 .card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
 .card h3{font-size:16px;margin-bottom:12px;color:var(--primary);display:flex;align-items:center;gap:8px}
 .card h4{font-size:15px;margin-bottom:10px;color:var(--primary)}
 
-/* Inputs */
-input,select,textarea{width:100%;padding:12px;border:2px solid var(--border);border-radius:10px;margin:6px 0;font-family:inherit;font-size:15px;background:var(--card);color:var(--text);transition:.2s}
+input,select,textarea{width:100%;padding:12px;border:2px solid var(--border);border-radius:10px;margin:6px 0;font-family:inherit;font-size:15px;background:var(--card);color:var(--text)}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)}
 label{font-size:14px;color:var(--text-muted);font-weight:600;display:block;margin-top:10px}
 
-button{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;border:none;padding:14px;border-radius:10px;width:100%;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:10px;transition:.2s}
+button{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;border:none;padding:14px;border-radius:10px;width:100%;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:10px}
 button:active{transform:scale(.98);opacity:.9}
 button.secondary{background:var(--border);color:var(--primary)}
 button.danger{background:linear-gradient(135deg,#c0392b,#e74c3c)}
 button.small{padding:10px 16px;font-size:14px;width:auto}
 
-/* Teacher row */
 .t-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer}
 .t-row:last-child{border-bottom:none}
 .t-name{font-weight:600;font-size:14px}
@@ -67,7 +53,6 @@ button.small{padding:10px 16px;font-size:14px;width:auto}
 .t-score{font-weight:700;font-size:16px}
 .good{color:var(--good)}.bad{color:var(--bad)}.mid{color:var(--warn)}
 
-/* Slider */
 .slider-box{margin:10px 0;padding:12px;background:var(--bg);border-radius:10px}
 .slider-box label{display:flex;justify-content:space-between;margin-bottom:6px;color:var(--text)}
 .slider-val{background:var(--primary);color:#fff;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700}
@@ -75,1111 +60,1419 @@ input[type=range]{width:100%;-webkit-appearance:none;background:transparent;padd
 input[type=range]::-webkit-slider-runnable-track{height:6px;background:var(--border);border-radius:3px}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;height:22px;width:22px;background:var(--primary);border-radius:50%;margin-top:-8px;box-shadow:0 2px 4px rgba(0,0,0,.2)}
 
-/* Alerts */
 .alert{padding:12px;border-radius:10px;margin-bottom:8px;font-size:14px;display:flex;justify-content:space-between;align-items:center}
 .alert.warn{background:#fdeaea;border-left:4px solid var(--bad);color:#1a1a1a}
 .alert.good{background:#e8f5ee;border-left:4px solid var(--good);color:#1a1a1a}
+.alert.info{background:#e8f4ff;border-left:4px solid var(--info);color:#1a1a1a}
 
-/* Message card */
 .msg{padding:14px;border-radius:10px;margin-bottom:10px;font-size:14px;line-height:1.6}
 .msg.appreciation{background:#e8f5ee;border-left:4px solid var(--good);color:#1a1a1a}
+.msg.encouragement{background:#fff8e1;border-left:4px solid var(--warn);color:#1a1a1a}
 .msg.warning{background:#fdeaea;border-left:4px solid var(--bad);color:#1a1a1a}
 .msg small{color:#666;display:block;margin-bottom:6px}
 .msg .ar{font-family:'Amiri',serif;direction:rtl;text-align:right;margin-top:8px;padding-top:8px;border-top:1px dashed #ccc;font-size:16px}
 
-/* Stats grid */
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .stat{background:var(--card);padding:14px;border-radius:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .stat .num{font-size:24px;font-weight:700;color:var(--primary)}
 .stat .lbl{font-size:12px;color:var(--text-muted);margin-top:4px}
 
-/* Bottom nav */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);display:flex;box-shadow:0 -2px 10px rgba(0,0,0,.08);z-index:99;border-top:1px solid var(--border)}
-.bottom-nav button{flex:1;background:transparent;color:var(--text-muted);padding:10px 4px;border-radius:0;font-size:11px;margin:0;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:600}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);display:flex;justify-content:space-around;box-shadow:0 -2px 10px rgba(0,0,0,.08);z-index:99;border-top:1px solid var(--border);padding:4px 0}
+.bottom-nav button{flex:1 1 0;min-width:0;background:transparent;color:var(--text-muted);padding:8px 2px;border-radius:0;font-size:10px;margin:0;display:flex;flex-direction:column;align-items:center;gap:3px;font-weight:600}
 .bottom-nav button.active{color:var(--primary)}
-.bottom-nav button .ico{font-size:20px}
+.bottom-nav button .ico{font-size:18px;line-height:1}
+.bottom-nav button span[data-t]{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center}
 
-/* Loading */
 .loading{text-align:center;padding:30px;color:var(--text-muted)}
 .spinner{display:inline-block;width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Toast */
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;z-index:999;opacity:0;transition:.3s;pointer-events:none;max-width:90%}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;z-index:999;opacity:0;transition:.3s;pointer-events:none;max-width:90%;text-align:center}
 .toast.show{opacity:1}
+.toast.err{background:#c0392b}
+.toast.ok{background:#0a7d3e}
 
-/* Progress */
 .progress{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-top:6px}
 .progress-bar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .5s}
 
-/* Theme grid */
 .theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
-.theme-item{border-radius:12px;padding:12px;text-align:center;cursor:pointer;border:3px solid transparent;transition:.2s}
-.theme-item.active{border-color:var(--primary);transform:scale(1.02)}
+.theme-item{border-radius:12px;padding:12px;text-align:center;cursor:pointer;border:3px solid transparent}
+.theme-item.active{border-color:var(--primary)}
 .theme-item .dot{width:32px;height:32px;border-radius:50%;margin:0 auto 6px}
 .theme-item .name{font-size:12px;font-weight:600;color:#1a1a1a}
 
-/* Chart */
 .chart-box{background:var(--bg);border-radius:10px;padding:10px;margin-top:10px;overflow-x:auto}
 canvas{display:block;max-width:100%}
 
-/* Tabs */
 .tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px}
 .tabs button{flex:0 0 auto;padding:8px 14px;font-size:13px;border-radius:20px;background:var(--border);color:var(--text);font-weight:600;width:auto;margin:0}
 .tabs button.active{background:var(--primary);color:#fff}
 
-/* Edit form */
-.edit-form{background:var(--bg);padding:12px;border-radius:10px;margin-top:10px}
+.trend-badge{padding:4px 12px;border-radius:16px;font-size:13px;font-weight:700;display:inline-block}
+.trend-improving{background:#e8f5ee;color:var(--good)}
+.trend-declining{background:#fdeaea;color:var(--bad)}
+.trend-stable{background:#f5f5f5;color:#666}
+.trend-new{background:#e8f4ff;color:var(--info)}
+
+.week-row{padding:14px;border-radius:12px;background:var(--bg);margin-bottom:10px}
+.week-row .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.week-row .name{font-weight:700;font-size:15px}
+.week-scores{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.week-score{background:var(--card);padding:10px;border-radius:10px;text-align:center}
+.week-score .lbl{font-size:11px;color:var(--text-muted);font-weight:600;margin-bottom:4px}
+.week-score .val{font-size:20px;font-weight:700}
+
+.attendance-row{padding:12px;border-radius:10px;background:var(--bg);margin-bottom:8px;font-size:14px}
+.attendance-reasons{font-size:13px;color:var(--text-muted);margin-top:6px;line-height:1.6}
+.attendance-reasons .reason{display:inline-block;background:var(--card);padding:3px 9px;border-radius:8px;margin:3px 3px 0 0;font-size:12px;font-weight:600}
+
+.divider{height:1px;background:var(--border);margin:14px 0}
+.big-score{text-align:center;padding:20px;background:var(--bg);border-radius:12px;margin:12px 0}
+.big-score .val{font-size:44px;font-weight:800;line-height:1}
+.big-score .lbl{font-size:14px;color:var(--text-muted);margin-top:6px}
+
+.entry-detail{background:var(--bg);border-radius:12px;padding:14px;margin-bottom:12px;border-left:4px solid var(--primary)}
+.entry-detail .entry-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.entry-detail .entry-date{font-size:14px;color:var(--text-muted);font-weight:600}
+.entry-detail .entry-avg{font-size:22px;font-weight:800;padding:4px 12px;border-radius:10px;background:var(--card)}
+.entry-detail .entry-avg.good{color:var(--good)}
+.entry-detail .entry-avg.mid{color:var(--warn)}
+.entry-detail .entry-avg.bad{color:var(--bad)}
+
+.duty-grid{display:grid;gap:8px;margin-top:10px}
+.duty-item{background:var(--card);border-radius:10px;padding:10px 12px}
+.duty-item .duty-info{margin-bottom:6px}
+.duty-item .duty-name{font-size:13px;font-weight:600;margin-bottom:4px;line-height:1.4}
+.duty-item .duty-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.duty-item .duty-bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .5s}
+.duty-item .duty-score-row{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.duty-item .duty-score{font-size:17px;font-weight:800;color:var(--primary)}
+.duty-item .duty-reason{font-size:12px;color:var(--bad);font-weight:600;font-style:italic;margin-top:4px;padding:4px 8px;background:#fdeaea;border-radius:6px;display:inline-block}
+
+.entry-remark{background:var(--card);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:13px;line-height:1.6}
+.entry-remark .label{font-weight:700;color:var(--primary);margin-bottom:4px;font-size:12px}
+
+.entry-msg{margin-top:10px;padding:10px 12px;border-radius:10px;font-size:13px;line-height:1.7}
+.entry-msg.appreciation{background:#e8f5ee;border-left:4px solid var(--good)}
+.entry-msg.encouragement{background:#fff8e1;border-left:4px solid var(--warn)}
+.entry-msg.warning{background:#fdeaea;border-left:4px solid var(--bad)}
+.entry-msg .label{font-weight:700;margin-bottom:4px;font-size:12px}
+.entry-msg .ar{font-family:'Amiri',serif;direction:rtl;text-align:right;font-size:15px;margin-top:6px;padding-top:6px;border-top:1px dashed #ccc}
+
+.entry-list-item{display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--bg);border-radius:10px;margin-bottom:8px;cursor:pointer}
+.entry-list-item .date{font-weight:700;font-size:14px;color:var(--primary)}
+.entry-list-item .meta{font-size:12px;color:var(--text-muted);margin-top:2px}
+.entry-list-item .score{font-size:20px;font-weight:800;min-width:44px;text-align:right}
+
+.summary-card{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;border-radius:14px;padding:18px;margin-bottom:14px}
+.summary-card .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center}
+.summary-card .item .num{font-size:24px;font-weight:800}
+.summary-card .item .lbl{font-size:12px;opacity:.9;margin-top:4px}
+
+.reason-input-row{display:flex;gap:8px;margin-top:8px}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="header-row">
-    <h1>📚 <span id="appTitleBn">তালিমাত</span> <span class="ar" id="appTitleAr">تعليمات</span></h1>
-    <button class="icon-btn" onclick="openSettings()" title="Settings">⚙️</button>
-  </div>
+<div class="header-row">
+<h1>📚 <span id="appTitleBn">তালিমাত</span> <span class="ar" id="appTitleAr">تعليمات</span></h1>
+<button class="icon-btn" onclick="openSettings()">⚙️</button>
+</div>
 </header>
 
 <div class="container" id="app"></div>
 
 <nav class="bottom-nav hidden" id="nav">
-  <button data-tab="home" onclick="switchTab('home')"><span class="ico">🏠</span><span data-t="home">হোম</span></button>
-  <button data-tab="entry" onclick="switchTab('entry')"><span class="ico">✍️</span><span data-t="entry">এন্ট্রি</span></button>
-  <button data-tab="teachers" onclick="switchTab('teachers')"><span class="ico">👥</span><span data-t="teachers">শিক্ষক</span></button>
-  <button data-tab="reports" onclick="switchTab('reports')"><span class="ico">📊</span><span data-t="reports">রিপোর্ট</span></button>
-  <button data-tab="messages" onclick="switchTab('messages')"><span class="ico">💬</span><span data-t="messages">বার্তা</span></button>
+<button data-tab="home" onclick="switchTab('home')"><span class="ico">🏠</span><span data-t="home">হোম</span></button>
+<button data-tab="entry" onclick="switchTab('entry')"><span class="ico">✍️</span><span data-t="entry">এন্ট্রি</span></button>
+<button data-tab="negrani" onclick="switchTab('negrani')"><span class="ico">👁️</span><span data-t="negrani">নেগরানী</span></button>
+<button data-tab="attendance" onclick="switchTab('attendance')"><span class="ico">🎓</span><span data-t="attendance">উপস্থিতি</span></button>
+<button data-tab="teachers" onclick="switchTab('teachers')"><span class="ico">👥</span><span data-t="teachers">শিক্ষক</span></button>
+<button data-tab="reports" onclick="switchTab('reports')"><span class="ico">📊</span><span data-t="reports">রিপোর্ট</span></button>
 </nav>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ============================================
-// কনফিগারেশন
-// ============================================
 const API_URL = "https://script.google.com/macros/s/AKfycbzPWOJws10I0jXlNe6CkdNd68nmgV-6JS35Rch0FF64ChmX0_-tOFs_mbgjVm5_5CLTXw/exec";
 const APP_NAME_BN = "তালিমাত";
 const APP_NAME_AR = "تعليمات";
 
-// ============================================
-// স্টেট
-// ============================================
 let LANG = localStorage.getItem('lang') || 'bn';
 let THEME = localStorage.getItem('theme') || 'green';
 let USER = JSON.parse(localStorage.getItem('user') || 'null');
-let CACHE = { teachers: [], entries: [], messages: [], dashboard: null, supervisorList: [] };
+let CACHE = { teachers: [], entries: [], messages: [], dashboard: null, supervisorList: [], attendance: [], negrani: [], attendanceSummary: null };
 let CURRENT_TAB = 'home';
-let MSG_FILTER = 'all';
 let SHOW_SETTINGS = false;
+let SHOW_ENTRY_DETAIL = null;
+let SHOW_TEACHER_PROFILE = null;
 
 // ============================================
-// অনুবাদ
+// ক্লাস স্ট্রাকচার
 // ============================================
+const CLASS_GROUPS = [
+  { name: "১ম", sections: ["ক","খ","গ","ঘ","ঙ","চ","ছ","জ"] },
+  { name: "২য়", sections: ["ক","খ","গ","ঘ","ঙ","চ","ছ","জ"] },
+  { name: "৩য়", sections: ["ক","খ","গ","ঘ","ঙ","চ","ছ","জ"] },
+  { name: "৪র্থ", sections: ["ক","খ","গ","ঘ","ঙ","চ","ছ","জ"] },
+  { name: "৫ম", sections: ["ক","খ","গ","ঘ","ঙ","চ","ছ","জ"] },
+  { name: "৬ষ্ঠ", sections: ["ক","খ","গ","ঘ","ঙ","চ","ছ","জ"] },
+  { name: "৭ম", sections: ["ক","খ","গ","ঘ","ঙ","চ","ছ","জ"] },
+  { name: "৮ম", sections: ["ক","খ","গ"] },
+  { name: "কাফিয়া", sections: ["ক","খ","গ"] },
+  { name: "শরহেবেকায়া", sections: ["ক","খ","গ"] },
+  { name: "জালালাইন", sections: ["ক","খ","গ"] },
+  { name: "মেশকাত", sections: ["ক","খ","গ"] },
+  { name: "দাওরা", sections: ["ক","খ","গ"] },
+  { name: "তাহফিযুল কুরআন", sections: ["গ্রুপ ১","গ্রুপ ২","গ্রুপ ৩","গ্রুপ ৪","গ্রুপ ৫","গ্রুপ ৬","গ্রুপ ৭","গ্রুপ ৮","গ্রুপ ৯","গ্রুপ ১০","গ্রুপ ১১","গ্রুপ ১২","গ্রুপ ১৩","গ্রুপ ১৪","গ্রুপ ১৫","গ্রুপ ১৬","গ্রুপ ১৭","গ্রুপ ১৮","গ্রুপ ১৯","গ্রুপ ২০"] },
+  { name: "প্লে (অনাবাসিক)", sections: ["ক","খ"] },
+  { name: "নার্সারী (অনাবাসিক)", sections: ["ক","খ"] },
+  { name: "১ম (অনাবাসিক)", sections: ["ক","খ"] },
+  { name: "২য় (অনাবাসিক)", sections: ["ক","খ"] },
+  { name: "৩য় (অনাবাসিক)", sections: ["ক","খ"] },
+  { name: "৪র্থ (অনাবাসিক)", sections: ["ক","খ"] },
+  { name: "৫ম (অনাবাসিক)", sections: ["ক","খ"] }
+];
+
 const I18N = {
-  bn: {
-    appName: APP_NAME_BN,
-    login: "লগইন", username: "ইউজারনেম", password: "পাসওয়ার্ড",
-    loginBtn: "প্রবেশ করুন", logout: "লগআউট",
-    home: "হোম", entry: "এন্ট্রি", teachers: "শিক্ষক", messages: "বার্তা", reports: "রিপোর্ট",
-    dashboard: "ড্যাশবোর্ড", todayEntry: "আজকের এন্ট্রি", totalTeachers: "মোট শিক্ষক",
-    alerts: "⚠️ সতর্কতা প্রয়োজন", topPerformers: "🏆 শীর্ষ পারফর্মার",
-    dailyEntry: "দৈনিক এন্ট্রি", selectTeacher: "শিক্ষক নির্বাচন করুন",
-    remark: "মন্তব্য (ঐচ্ছিক)", submit: "সাবমিট করুন",
-    appreciation: "অভিবাদন", warning: "সতর্কতা",
-    noData: "কোনো ডাটা নেই", loading: "লোড হচ্ছে...",
-    avgScore: "গড় স্কোর", lastStatus: "সর্বশেষ স্ট্যাটাস",
-    improving: "উন্নতি", declining: "অবনতি",
-    entrySuccess: "✅ এন্ট্রি সফলভাবে জমা হয়েছে",
-    loginError: "ভুল ইউজারনেম বা পাসওয়ার্ড",
-    date: "তারিখ", fromDate: "শুরুর তারিখ", toDate: "শেষের তারিখ",
-    monthlyReport: "মাসিক রিপোর্ট", selectMonth: "মাস নির্বাচন",
-    performanceChart: "পারফরম্যান্স চার্ট", dutyBreakdown: "দায়িত্বভিত্তিক গড়",
-    editTeacher: "শিক্ষক তথ্য সম্পাদনা", nameBn: "নাম (বাংলা)", nameAr: "নাম (আরবী)",
-    phone: "ফোন", designation: "পদবী", save: "সেভ করুন", cancel: "বাতিল",
-    settings: "সেটিংস", theme: "থিম", language: "ভাষা", notification: "নোটিফিকেশন",
-    enableNotif: "নোটিফিকেশন চালু করুন", about: "সম্পর্কে", version: "সংস্করণ",
-    backup: "ব্যাকআপ নিন", adminPanel: "অ্যাডমিন প্যানেল",
-    totalEntries: "মোট এন্ট্রি", saved: "✅ সেভ হয়েছে", editSuccess: "✅ আপডেট সফল",
-    viewAll: "সব দেখুন", filter: "ফিল্টার", all: "সব", appreciationOnly: "শুধু অভিবাদন",
-    warningOnly: "শুধু সতর্কতা", score: "স্কোর", days: "দিন", days30: "শেষ ৩০ দিন",
-    months6: "শেষ ৬ মাস"
-  },
-  ar: {
-    appName: APP_NAME_AR,
-    login: "تسجيل الدخول", username: "اسم المستخدم", password: "كلمة المرور",
-    loginBtn: "دخول", logout: "خروج",
-    home: "الرئيسية", entry: "الإدخال", teachers: "المعلمون", messages: "الرسائل", reports: "التقارير",
-    dashboard: "لوحة التحكم", todayEntry: "إدخال اليوم", totalTeachers: "إجمالي المعلمين",
-    alerts: "⚠️ يحتاج تحذير", topPerformers: "🏆 الأفضل أداءً",
-    dailyEntry: "الإدخال اليومي", selectTeacher: "اختر المعلم",
-    remark: "ملاحظة (اختياري)", submit: "إرسال",
-    appreciation: "تقدير", warning: "تحذير",
-    noData: "لا توجد بيانات", loading: "جار التحميل...",
-    avgScore: "متوسط الدرجات", lastStatus: "آخر حالة",
-    improving: "تحسن", declining: "تراجع",
-    entrySuccess: "✅ تم حفظ الإدخال بنجاح",
-    loginError: "اسم المستخدم أو كلمة المرور خاطئة",
-    date: "التاريخ", fromDate: "من تاريخ", toDate: "إلى تاريخ",
-    monthlyReport: "التقرير الشهري", selectMonth: "اختر الشهر",
-    performanceChart: "مخطط الأداء", dutyBreakdown: "متوسط المهام",
-    editTeacher: "تعديل بيانات المعلم", nameBn: "الاسم (بنغالي)", nameAr: "الاسم (عربي)",
-    phone: "الهاتف", designation: "المنصب", save: "حفظ", cancel: "إلغاء",
-    settings: "الإعدادات", theme: "المظهر", language: "اللغة", notification: "الإشعارات",
-    enableNotif: "تفعيل الإشعارات", about: "حول", version: "الإصدار",
-    backup: "نسخ احتياطي", adminPanel: "لوحة الإدارة",
-    totalEntries: "إجمالي الإدخالات", saved: "✅ تم الحفظ", editSuccess: "✅ تم التحديث",
-    viewAll: "عرض الكل", filter: "تصفية", all: "الكل", appreciationOnly: "التقدير فقط",
-    warningOnly: "التحذير فقط", score: "الدرجة", days: "أيام", days30: "آخر ٣٠ يوم",
-    months6: "آخر ٦ أشهر"
-  }
+bn: {
+appName: APP_NAME_BN, login: "লগইন", username: "ইউজারনেম", password: "পাসওয়ার্ড",
+loginBtn: "প্রবেশ করুন", logout: "লগআউট",
+home: "হোম", entry: "এন্ট্রি", teachers: "শিক্ষক", reports: "রিপোর্ট",
+negrani: "নেগরানী", attendance: "উপস্থিতি",
+todayEntry: "আজকের এন্ট্রি", totalTeachers: "মোট শিক্ষক", totalEntries: "মোট এন্ট্রি",
+alerts: "⚠️ সতর্কতা প্রয়োজন", topPerformers: "🏆 শীর্ষ পারফর্মার", allTeachers: "সকল শিক্ষক",
+dailyEntry: "দৈনিক এন্ট্রি", selectTeacher: "শিক্ষক নির্বাচন করুন",
+remark: "মন্তব্য (ঐচ্ছিক)", submit: "সাবমিট করুন",
+appreciation: "অভিবাদন", encouragement: "উৎসাহ", warning: "সতর্কতা",
+noData: "কোনো ডাটা নেই", loading: "লোড হচ্ছে...",
+avgScore: "গড় স্কোর", entrySuccess: "✅ এন্ট্রি সফল",
+loginError: "ভুল ইউজারনেম বা পাসওয়ার্ড",
+date: "তারিখ", monthlyReport: "মাসিক রিপোর্ট", selectMonth: "মাস নির্বাচন",
+performanceChart: "পারফরম্যান্স চার্ট", editTeacher: "সম্পাদনা",
+nameBn: "নাম (বাংলা)", nameAr: "নাম (আরবী)", phone: "ফোন", designation: "পদবী",
+save: "সেভ", cancel: "বাতিল", settings: "সেটিংস", theme: "থিম", language: "ভাষা",
+notification: "নোটিফিকেশন", enableNotif: "নোটিফিকেশন চালু করুন",
+about: "সম্পর্কে", version: "সংস্করণ", totalStudents: "মোট ছাত্র",
+present: "উপস্থিত", absent: "অনুপস্থিত", addAttendance: "উপস্থিতি এন্ট্রি",
+absentDetails: "অনুপস্থিতের কারণ", reasonPlaceholder: "কারণ", countPlaceholder: "সংখ্যা",
+addReason: "➕ কারণ যোগ করুন", saveAttendance: "উপস্থিতি সেভ করুন",
+attendanceSuccess: "✅ উপস্থিতি সেভ হয়েছে",
+weekReport: "সাপ্তাহিক নেগরানী", thisWeek: "এই সপ্তাহ", lastWeek: "গত সপ্তাহ",
+trend: "প্রবণতা", stable: "স্থিতিশীল", newLabel: "নতুন",
+recentEntries: "সাম্প্রতিক এন্ট্রি", attendanceHistory: "উপস্থিতির ইতিহাস",
+back: "ফিরে যান", remaining: "বাকি", newEntry: "নতুন এন্ট্রি",
+myTeachers: "আমার শিক্ষকগণ", entries: "এন্ট্রি",
+detailReport: "বিস্তারিত রিপোর্ট", dutyScores: "দায়িত্বভিত্তিক স্কোর",
+teacherRemark: "পরিদর্শকের মন্তব্য", receivedMessage: "প্রাপ্ত বার্তা",
+allEntries: "সকল এন্ট্রি", entryDetail: "এন্ট্রি বিস্তারিত",
+noRemark: "কোনো মন্তব্য নেই", lastEntry: "সর্বশেষ এন্ট্রি",
+viewDetail: "বিস্তারিত দেখুন", summary: "সারসংক্ষেপ",
+tapToView: "বিস্তারিত দেখতে ট্যাপ করুন",
+// নেগরানী
+negraniTitle: "নেগরানী রিপোর্ট",
+addNegrani: "নেগরানী এন্ট্রি দিন",
+dailyNegrani: "দৈনিক নেগরানী",
+weeklyNegrani: "সাপ্তাহিক নেগরানী",
+dailyNegraniHelp: "ছাত্ররা আজ পড়াশোনা করেছে কি না, আচরণ কেমন ছিল",
+weeklyNegraniHelp: "সপ্তাহজুড়ে ছাত্রদের পড়াশোনার অবস্থা",
+negraniSaved: "✅ নেগরানী সেভ হয়েছে",
+negraniRemarks: "মন্তব্য (কী দেখলেন)",
+negraniRemarksPlaceholder: "যেমন: ১ম শ্রেণি সময়মতো পড়তে বসেছে, ৩য় শ্রেণিতে দুষ্টামি করেছে...",
+myNegraniHistory: "আমার নেগরানীর ইতিহাস",
+// কারণ
+reasonFor: "কারণ",
+reasonOptional: "(ঐচ্ছিক — কেন কম পেল?)",
+reasonHint: "যেমন: দেরিতে এসেছেন",
+// ড্যাশবোর্ড উপস্থিতি
+attTotalStudents: "মোট ছাত্র", attTotalPresent: "মোট উপস্থিত", attTotalAbsent: "মোট অনুপস্থিত",
+classDetails: "শ্রেণি-ভিত্তিক হিসাব",
+classGroup: "শ্রেণি", section: "শাখা", ustazName: "উস্তাযের নাম",
+selectClass: "শ্রেণি নির্বাচন", selectSection: "শাখা নির্বাচন",
+// শিক্ষক প্রোফাইল
+myProfile: "আমার প্রোফাইল", myNegrani: "আমার নেগরানী",
+myAttendance: "আমার উপস্থিতি", myEntries: "আমার এন্ট্রি",
+myMessages: "আমার বার্তা"
+},
+ar: {
+appName: APP_NAME_AR, login: "تسجيل الدخول", username: "اسم المستخدم", password: "كلمة المرور",
+loginBtn: "دخول", logout: "خروج", home: "الرئيسية", entry: "الإدخال", teachers: "المعلمون",
+reports: "التقارير", negrani: "المراقبة", attendance: "الحضور",
+todayEntry: "إدخال اليوم", totalTeachers: "إجمالي المعلمين", totalEntries: "إجمالي الإدخالات",
+alerts: "⚠️ يحتاج تحذير", topPerformers: "🏆 الأفضل أداءً", allTeachers: "جميع المعلمين",
+dailyEntry: "الإدخال اليومي", selectTeacher: "اختر المعلم", remark: "ملاحظة", submit: "إرسال",
+appreciation: "تقدير", encouragement: "تشجيع", warning: "تحذير",
+noData: "لا توجد بيانات", loading: "جار التحميل...", avgScore: "متوسط",
+entrySuccess: "✅ تم الحفظ", loginError: "خطأ في البيانات",
+date: "التاريخ", monthlyReport: "التقرير الشهري", selectMonth: "الشهر",
+performanceChart: "مخطط الأداء", editTeacher: "تعديل", nameBn: "الاسم (بنغالي)",
+nameAr: "الاسم (عربي)", phone: "الهاتف", designation: "المنصب", save: "حفظ", cancel: "إلغاء",
+settings: "الإعدادات", theme: "المظهر", language: "اللغة", notification: "الإشعارات",
+enableNotif: "تفعيل", about: "حول", version: "الإصدار",
+totalStudents: "إجمالي الطلاب", present: "الحضور", absent: "الغياب",
+addAttendance: "إدخال الحضور", absentDetails: "أسباب الغياب",
+reasonPlaceholder: "السبب", countPlaceholder: "العدد", addReason: "➕ إضافة",
+saveAttendance: "حفظ", attendanceSuccess: "✅ تم الحفظ",
+weekReport: "التقرير الأسبوعي", thisWeek: "هذا الأسبوع", lastWeek: "الأسبوع الماضي",
+trend: "الاتجاه", stable: "مستقر", newLabel: "جديد",
+recentEntries: "الإدخالات", attendanceHistory: "سجل الحضور",
+back: "رجوع", remaining: "المتبقي", newEntry: "إدخال جديد",
+myTeachers: "معلموني", entries: "إدخال", detailReport: "التقرير التفصيلي",
+dutyScores: "الدرجات", teacherRemark: "ملاحظة", receivedMessage: "الرسائل",
+allEntries: "الإدخالات", entryDetail: "تفاصيل", noRemark: "لا ملاحظة",
+lastEntry: "آخر إدخال", viewDetail: "عرض التفاصيل", summary: "الملخص",
+tapToView: "اضغط للتفاصيل",
+negraniTitle: "تقرير المراقبة", addNegrani: "إدخال المراقبة",
+dailyNegrani: "المراقبة اليومية", weeklyNegrani: "المراقبة الأسبوعية",
+dailyNegraniHelp: "هل درس الطلاب اليوم؟", weeklyNegraniHelp: "حالة الطلاب خلال الأسبوع",
+negraniSaved: "✅ تم الحفظ", negraniRemarks: "ملاحظات", negraniRemarksPlaceholder: "اكتب ملاحظاتك...",
+myNegraniHistory: "سجل المراقبة",
+reasonFor: "السبب", reasonOptional: "(اختياري)", reasonHint: "مثال: وصل متأخراً",
+attTotalStudents: "إجمالي الطلاب", attTotalPresent: "الحضور", attTotalAbsent: "الغياب",
+classDetails: "تفاصيل الصفوف", classGroup: "الصف", section: "الشعبة", ustazName: "الأستاذ",
+selectClass: "اختر الصف", selectSection: "اختر الشعبة",
+myProfile: "ملفي", myNegrani: "مراقبتي", myAttendance: "حضوري",
+myEntries: "إدخالاتي", myMessages: "رسائلي"
+}
 };
 function t(k){ return I18N[LANG][k] || k; }
 
-// ============================================
-// API
-// ============================================
 async function api(action, params = {}) {
-  const qs = new URLSearchParams({ action, ...params }).toString();
-  const res = await fetch(`${API_URL}?${qs}`);
-  return res.json();
+const qs = new URLSearchParams({ action, ...params }).toString();
+const res = await fetch(`${API_URL}?${qs}`);
+return res.json();
 }
 
-// ============================================
-// UI হেল্পার
-// ============================================
-function toast(msg){
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'), 2500);
+function toast(msg, type){
+const el = document.getElementById('toast');
+el.textContent = msg;
+el.className = 'toast show' + (type === 'err' ? ' err' : type === 'ok' ? ' ok' : '');
+setTimeout(()=>el.className = 'toast', 2500);
 }
-
-function loading(){
-  return `<div class="loading"><div class="spinner"></div><p style="margin-top:10px">${t('loading')}</p></div>`;
+function loading(){ return `<div class="loading"><div class="spinner"></div><p style="margin-top:10px">${t('loading')}</p></div>`; }
+function scoreClass(avg){ avg = parseFloat(avg); if (isNaN(avg)) return ''; if (avg >= 7) return 'good'; if (avg <= 4) return 'bad'; return 'mid'; }
+function trendLabel(trend){
+if (trend === 'improving') return '📈 ' + t('improving');
+if (trend === 'declining') return '📉 ' + t('declining');
+if (trend === 'stable') return '➡️ ' + t('stable');
+if (trend === 'new') return '🆕 ' + t('newLabel');
+return '';
 }
-
-function scoreClass(avg){
-  avg = parseFloat(avg);
-  if (avg >= 7) return 'good';
-  if (avg <= 4) return 'bad';
-  return 'mid';
+function trendText(trend){
+if (trend === 'improving') return t('improving');
+if (trend === 'declining') return t('declining');
+if (trend === 'stable') return t('stable');
+if (trend === 'new') return t('newLabel');
+return '';
 }
+function applyTheme(){ document.documentElement.setAttribute('data-theme', THEME); }
+function setTheme(name){ THEME = name; localStorage.setItem('theme', name); applyTheme(); render(); }
+function setLang(lang){ LANG = lang; localStorage.setItem('lang', lang); document.body.classList.toggle('ar', LANG === 'ar'); render(); }
+function openSettings(){ SHOW_SETTINGS = true; SHOW_ENTRY_DETAIL = null; SHOW_TEACHER_PROFILE = null; render(); }
+function closeSettings(){ SHOW_SETTINGS = false; render(); }
 
-// ============================================
-// Settings/Theme
-// ============================================
-function applyTheme(){
-  document.documentElement.setAttribute('data-theme', THEME);
-}
-
-function setTheme(name){
-  THEME = name;
-  localStorage.setItem('theme', name);
-  applyTheme();
-  render();
-}
-
-function setLang(lang){
-  LANG = lang;
-  localStorage.setItem('lang', lang);
-  document.body.classList.toggle('ar', LANG === 'ar');
-  render();
-}
-
-function openSettings(){
-  SHOW_SETTINGS = true;
-  render();
-}
-
-function closeSettings(){
-  SHOW_SETTINGS = false;
-  render();
-}
-
-// ============================================
-// রেন্ডার
-// ============================================
 function render(){
-  applyTheme();
-  document.body.classList.toggle('ar', LANG === 'ar');
-  document.getElementById('appTitleBn').textContent = APP_NAME_BN;
-  document.getElementById('appTitleAr').textContent = APP_NAME_AR;
-
-  if (SHOW_SETTINGS) return renderSettings();
-
-  if (!USER) return renderLogin();
-  document.getElementById('nav').classList.remove('hidden');
-  if (USER.role === 'admin') renderAdmin();
-  else if (USER.role === 'supervisor') renderSupervisor();
-  else renderTeacher();
-  updateNavActive();
+applyTheme();
+document.body.classList.toggle('ar', LANG === 'ar');
+document.getElementById('appTitleBn').textContent = APP_NAME_BN;
+document.getElementById('appTitleAr').textContent = APP_NAME_AR;
+if (SHOW_SETTINGS) return renderSettings();
+if (!USER) return renderLogin();
+document.getElementById('nav').classList.remove('hidden');
+// শিক্ষকদের এন্ট্রি ট্যাব লুকাও
+document.querySelectorAll('.bottom-nav button').forEach(b=>{
+  if (b.dataset.tab === 'entry' && USER.role === 'teacher') b.classList.add('hidden');
+  else b.classList.remove('hidden');
+});
+if (SHOW_ENTRY_DETAIL) return renderEntryDetailPage();
+if (SHOW_TEACHER_PROFILE) return renderTeacherProfile(SHOW_TEACHER_PROFILE);
+if (USER.role === 'admin') renderAdmin();
+else if (USER.role === 'supervisor') renderSupervisor();
+else renderTeacher();
+updateNavActive();
 }
 
 function updateNavActive(){
-  document.querySelectorAll('.bottom-nav button').forEach(b=>{
-    b.classList.toggle('active', b.dataset.tab === CURRENT_TAB);
-    const span = b.querySelector('[data-t]');
-    if (span) span.textContent = t(span.dataset.t);
-  });
+document.querySelectorAll('.bottom-nav button').forEach(b=>{
+b.classList.toggle('active', b.dataset.tab === CURRENT_TAB);
+const span = b.querySelector('[data-t]');
+if (span) span.textContent = t(span.dataset.t);
+});
 }
+function switchTab(tab){ CURRENT_TAB = tab; SHOW_SETTINGS = false; SHOW_ENTRY_DETAIL = null; SHOW_TEACHER_PROFILE = null; render(); }
 
-function switchTab(tab){
-  CURRENT_TAB = tab;
-  SHOW_SETTINGS = false;
-  render();
-}
-
-// ============================================
-// Settings Page
-// ============================================
 function renderSettings(){
-  document.getElementById('nav').classList.add('hidden');
-  const themes = [
-    {id:'green', name:'সবুজ', color:'#0b3d2e'},
-    {id:'blue', name:'নীল', color:'#1a3a6e'},
-    {id:'purple', name:'বেগুনি', color:'#4a1a6e'},
-    {id:'rose', name:'গোলাপি', color:'#6e1a3a'},
-    {id:'sepia', name:'সেপিয়া', color:'#5d4e37'},
-    {id:'dark', name:'ডার্ক', color:'#1a1a1a'}
-  ];
-
-  document.getElementById('app').innerHTML = `
-    <div class="card">
-      <h3>⚙️ ${t('settings')}</h3>
-      <button class="secondary small" onclick="closeSettings()">← ফিরে যান</button>
-    </div>
-
-    <div class="card">
-      <h4>🌐 ${t('language')}</h4>
-      <div class="tabs" style="margin-top:8px">
-        <button class="${LANG==='bn'?'active':''}" onclick="setLang('bn')">বাংলা</button>
-        <button class="${LANG==='ar'?'active':''}" onclick="setLang('ar')">العربية</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <h4>🎨 ${t('theme')}</h4>
-      <div class="theme-grid">
-        ${themes.map(th=>`
-          <div class="theme-item ${THEME===th.id?'active':''}" onclick="setTheme('${th.id}')">
-            <div class="dot" style="background:${th.color}"></div>
-            <div class="name">${th.name}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-
-    <div class="card">
-      <h4>🔔 ${t('notification')}</h4>
-      <button onclick="enableNotifications()">${t('enableNotif')}</button>
-    </div>
-
-    ${USER ? `
-    <div class="card">
-      <h4>👤 ${USER.name || USER.id}</h4>
-      <p style="font-size:13px;color:var(--text-muted)">${USER.role === 'admin' ? 'অ্যাডমিন' : USER.role === 'supervisor' ? 'সুপারভাইজার' : 'শিক্ষক'}</p>
-      <button class="danger" onclick="logout()">${t('logout')}</button>
-    </div>
-    ` : ''}
-
-    <div class="card">
-      <h4>ℹ️ ${t('about')}</h4>
-      <p style="font-size:14px;color:var(--text-muted)">${APP_NAME_BN} / ${APP_NAME_AR}</p>
-      <p style="font-size:13px;color:var(--text-muted);margin-top:4px">${t('version')}: 2.0</p>
-    </div>
-  `;
+document.getElementById('nav').classList.add('hidden');
+const themes = [
+{id:'green', name:'সবুজ', color:'#0b3d2e'}, {id:'blue', name:'নীল', color:'#1a3a6e'},
+{id:'purple', name:'বেগুনি', color:'#4a1a6e'}, {id:'rose', name:'গোলাপি', color:'#6e1a3a'},
+{id:'sepia', name:'সেপিয়া', color:'#5d4e37'}, {id:'dark', name:'ডার্ক', color:'#1a1a1a'}
+];
+document.getElementById('app').innerHTML = `
+<div class="card"><h3>⚙️ ${t('settings')}</h3><button class="secondary small" onclick="closeSettings()">← ${t('back')}</button></div>
+<div class="card"><h4>🌐 ${t('language')}</h4><div class="tabs" style="margin-top:8px">
+<button class="${LANG==='bn'?'active':''}" onclick="setLang('bn')">বাংলা</button>
+<button class="${LANG==='ar'?'active':''}" onclick="setLang('ar')">العربية</button></div></div>
+<div class="card"><h4>🎨 ${t('theme')}</h4><div class="theme-grid">
+${themes.map(th=>`<div class="theme-item ${THEME===th.id?'active':''}" onclick="setTheme('${th.id}')"><div class="dot" style="background:${th.color}"></div><div class="name">${th.name}</div></div>`).join('')}
+</div></div>
+<div class="card"><h4>🔔 ${t('notification')}</h4><button onclick="enableNotifications()">${t('enableNotif')}</button></div>
+${USER ? `<div class="card"><h4>👤 ${LANG==='bn'?(USER.name||USER.id):(USER.nameAr||USER.name||USER.id)}</h4>
+<p style="font-size:13px;color:var(--text-muted)">${USER.role === 'admin' ? 'অ্যাডমিন' : USER.role === 'supervisor' ? 'সুপারভাইজার' : 'শিক্ষক'}</p>
+<button class="danger" onclick="logout()">${t('logout')}</button></div>` : ''}
+<div class="card"><h4>ℹ️ ${t('about')}</h4><p style="font-size:14px">${APP_NAME_BN} / ${APP_NAME_AR}</p>
+<p style="font-size:13px;color:var(--text-muted);margin-top:4px">${t('version')}: 6.0</p></div>
+`;
 }
 
 async function enableNotifications(){
-  if (!('Notification' in window)) return toast('এই ব্রাউজারে নোটিফিকেশন নেই');
-  const perm = await Notification.requestPermission();
-  if (perm === 'granted') {
-    new Notification(APP_NAME_BN, { body: 'নোটিফিকেশন চালু হয়েছে ✅' });
-    toast('✅ নোটিফিকেশন চালু');
-  } else {
-    toast('❌ অনুমতি দেওয়া হয়নি');
-  }
+if (!('Notification' in window)) return toast('এই ব্রাউজারে নোটিফিকেশন নেই', 'err');
+const perm = await Notification.requestPermission();
+if (perm === 'granted') { new Notification(APP_NAME_BN, { body: 'নোটিফিকেশন চালু ✅' }); toast('✅ চালু', 'ok'); }
+else toast('❌ অনুমতি নেই', 'err');
 }
 
-// ============================================
-// লগইন
-// ============================================
 function renderLogin(){
-  document.getElementById('nav').classList.add('hidden');
-  document.getElementById('app').innerHTML = `
-    <div class="card" style="margin-top:40px">
-      <h3>🔐 ${t('login')}</h3>
-      <input id="u" placeholder="${t('username')}" autocomplete="username">
-      <input id="p" type="password" placeholder="${t('password')}" autocomplete="current-password">
-      <button onclick="doLogin()">${t('loginBtn')}</button>
-      <p id="err" style="color:#c0392b;margin-top:10px;font-size:14px"></p>
-    </div>
-  `;
-  document.getElementById('p').addEventListener('keypress', e=>{
-    if (e.key === 'Enter') doLogin();
-  });
+document.getElementById('nav').classList.add('hidden');
+document.getElementById('app').innerHTML = `
+<div class="card" style="margin-top:40px">
+<h3>🔐 ${t('login')}</h3>
+<input id="u" placeholder="${t('username')}" autocomplete="username">
+<input id="p" type="password" placeholder="${t('password')}" autocomplete="current-password">
+<button onclick="doLogin()">${t('loginBtn')}</button>
+<p id="err" style="color:#c0392b;margin-top:10px;font-size:14px"></p>
+</div>
+`;
+document.getElementById('p').addEventListener('keypress', e=>{ if (e.key === 'Enter') doLogin(); });
 }
 
 async function doLogin(){
-  const u = document.getElementById('u').value.trim();
-  const p = document.getElementById('p').value.trim();
-  if (!u || !p) return;
-  document.getElementById('err').textContent = '';
-  document.getElementById('app').innerHTML = loading();
-  try {
-    const r = await api('login', { username: u, password: p });
-    if (r.success) {
-      USER = r;
-      localStorage.setItem('user', JSON.stringify(r));
-      toast('স্বাগতম, ' + (r.name || r.id));
-      CURRENT_TAB = 'home';
-      await loadAllData();
-    } else {
-      document.getElementById('err').textContent = r.error || t('loginError');
-      renderLogin();
-    }
-  } catch(e) {
-    document.getElementById('err').textContent = 'সার্ভারে সমস্যা: ' + e.message;
-    renderLogin();
-  }
+const u = document.getElementById('u').value.trim();
+const p = document.getElementById('p').value.trim();
+if (!u || !p) return;
+document.getElementById('err').textContent = '';
+document.getElementById('app').innerHTML = loading();
+try {
+const r = await api('login', { username: u, password: p });
+if (r.success) {
+USER = r; localStorage.setItem('user', JSON.stringify(r));
+toast('স্বাগতম, ' + (r.name || r.id), 'ok');
+CURRENT_TAB = 'home';
+await loadAllData();
+} else {
+renderLogin();
+setTimeout(()=>{ document.getElementById('err').textContent = r.error || t('loginError'); }, 100);
+}
+} catch(e) {
+renderLogin();
+setTimeout(()=>{ document.getElementById('err').textContent = 'সার্ভার সমস্যা: ' + e.message; }, 100);
+}
 }
 
 function logout(){
-  USER = null;
-  localStorage.removeItem('user');
-  CURRENT_TAB = 'home';
-  SHOW_SETTINGS = false;
-  render();
+USER = null; localStorage.removeItem('user'); localStorage.removeItem('talimat_cache');
+CURRENT_TAB = 'home'; SHOW_SETTINGS = false; SHOW_ENTRY_DETAIL = null; SHOW_TEACHER_PROFILE = null;
+render();
 }
 
-// ============================================
-// ডাটা লোড
-// ============================================
 async function loadAllData(){
-  // ---- আগের ক্যাশ থাকলে সাথে সাথে দেখাও ----
-  const saved = localStorage.getItem('talimat_cache');
-  if (saved) {
-    try {
-      const c = JSON.parse(saved);
-      if (c.teachers) CACHE.teachers = c.teachers;
-      if (c.supervisors) CACHE.supervisorList = c.supervisors;
-      if (c.dashboard) CACHE.dashboard = c.dashboard;
-      if (c.messages) CACHE.messages = c.messages;
-      if (c.entries) CACHE.entries = c.entries;
-      render();
-    } catch(e) {}
-  }
-
-  // ---- সব ডাটা এক কলে আনো ----
-  try {
-    const r = await api('getAllData');
-    if (r.success) {
-      CACHE.teachers = r.teachers || [];
-      CACHE.supervisorList = r.supervisors || [];
-      CACHE.dashboard = r.dashboard || null;
-      CACHE.messages = r.messages || [];
-      CACHE.entries = r.entries || [];
-
-      // শিক্ষকের জন্য শুধু নিজের এন্ট্রি ও বার্তা
-      if (USER.role === 'teacher') {
-        CACHE.entries = CACHE.entries.filter(function(e){ return e.Teacher_ID === USER.id; });
-        CACHE.messages = CACHE.messages.filter(function(m){ return m.Teacher_ID === USER.id; });
-      }
-
-      // পরেরবারের জন্য সেভ করো
-      try {
-        localStorage.setItem('talimat_cache', JSON.stringify({
-          teachers: CACHE.teachers,
-          supervisors: CACHE.supervisorList,
-          dashboard: CACHE.dashboard,
-          messages: CACHE.messages,
-          entries: CACHE.entries,
-          time: Date.now()
-        }));
-      } catch(e) {}
-    }
-  } catch(e) {
-    console.warn('ডাটা লোড ব্যর্থ', e);
-  }
-  render();
+const saved = localStorage.getItem('talimat_cache');
+if (saved) {
+try {
+const c = JSON.parse(saved);
+if (c.teachers) CACHE.teachers = c.teachers;
+if (c.supervisors) CACHE.supervisorList = c.supervisors;
+if (c.dashboard) CACHE.dashboard = c.dashboard;
+if (c.messages) CACHE.messages = c.messages;
+if (c.entries) CACHE.entries = c.entries;
+if (c.attendance) CACHE.attendance = c.attendance;
+if (c.attendanceSummary) CACHE.attendanceSummary = c.attendanceSummary;
+render();
+} catch(e) {}
+}
+try {
+const r = await api('getAllData');
+if (r.success) {
+CACHE.teachers = r.teachers || [];
+CACHE.supervisorList = r.supervisors || [];
+CACHE.dashboard = r.dashboard || null;
+CACHE.messages = r.messages || [];
+CACHE.entries = r.entries || [];
+CACHE.attendance = r.attendance || [];
+CACHE.attendanceSummary = r.attendanceSummary || null;
+if (USER.role === 'teacher') {
+CACHE.entries = CACHE.entries.filter(e => e.Teacher_ID === USER.id);
+CACHE.messages = CACHE.messages.filter(m => m.Teacher_ID === USER.id);
+CACHE.attendance = CACHE.attendance.filter(a => a.Teacher_ID === USER.id);
+}
+try {
+localStorage.setItem('talimat_cache', JSON.stringify({
+teachers: CACHE.teachers, supervisors: CACHE.supervisorList,
+dashboard: CACHE.dashboard, messages: CACHE.messages,
+entries: CACHE.entries, attendance: CACHE.attendance,
+attendanceSummary: CACHE.attendanceSummary, time: Date.now()
+}));
+} catch(e) {}
+}
+} catch(e) { console.warn('ডাটা লোড ব্যর্থ', e); }
+render();
 }
 
 // ============================================
-// অ্যাডমিন
+// DUTIES
+// ============================================
+const DUTIES = [
+{ id:'d1', key:'D1_Attendance', bn:'নির্ধারিত সময়ে ক্লাসে উপস্থিতি', ar:'الحضور في الوقت المحدد', short:'উপস্থিতি' },
+{ id:'d2', key:'D2_Teaching', bn:'পাঠদানের মান', ar:'جودة التدريس', short:'পাঠদান' },
+{ id:'d3', key:'D3_Tarbiyah', bn:'ছাত্রদের তালিম ও তারবিয়াত', ar:'تعليم الطلاب وتربيتهم', short:'তারবিয়াত' },
+{ id:'d4', key:'D4_Exam', bn:'পরীক্ষার খাতা মূল্যায়ন', ar:'تقييم أوراق الامتحان', short:'খাতা' },
+{ id:'d5', key:'D5_Discipline', bn:'মাদরাসার নিয়ম-শৃঙ্খলা পালন', ar:'الالتزام بنظام المدرسة', short:'শৃঙ্খলা' },
+{ id:'d6', key:'D6_Parents', bn:'অভিভাবকদের সাথে যোগাযোগ', ar:'التواصل مع أولياء الأمور', short:'অভিভাবক' },
+{ id:'d7', key:'D7_Colleagues', bn:'সহকর্মীদের সাথে আচরণ', ar:'التعامل مع الزملاء', short:'সহকর্মী' },
+{ id:'d8', key:'D8_SelfStudy', bn:'নিজের ইলম চর্চা', ar:'المطالعة الذاتية', short:'ইলম চর্চা' }
+];
+
+// ============================================
+// সব বার্তা (automatic message generator)
+// ============================================
+function getMessageFor(avg){
+const numAvg = parseFloat(avg);
+if (numAvg >= 8) return {
+type: 'appreciation', label: t('appreciation'),
+bn: "মাশাআল্লাহ! আপনার পাঠদানের মান প্রশংসনীয়। আল্লাহ আপনার ইলমে বারাকাহ দান করুন।",
+ar: "ما شاء الله! جودة تدريسك ممتازة. بارك الله في علمك."
+};
+if (numAvg >= 5) return {
+type: 'encouragement', label: t('encouragement'),
+bn: "আপনার পাঠদান ভালো হচ্ছে, তবে আরও উন্নতির সুযোগ আছে। চেষ্টা চালিয়ে যান।",
+ar: "تدريسك جيد، لكن هناك مجال للتحسين. واصل الجهد."
+};
+return {
+type: 'warning', label: t('warning'),
+bn: "আপনার সাম্প্রতিক পারফরম্যান্সে অবনতি লক্ষ্য করা যাচ্ছে। অনুগ্রহ করে দায়িত্ব পুনর্বিবেচনা করুন।",
+ar: "لوحظ تراجع في أدائك الأخير. يرجى مراجعة مسؤولياتك."
+};
+}
+
+// ============================================
+// এন্ট্রি ডিটেইল কার্ড
+// ============================================
+function renderEntryDetailCard(entry, showBack){
+const avg = parseFloat(entry.Average);
+const cls = scoreClass(avg);
+let reasons = {};
+try { reasons = JSON.parse(entry.Reasons || '{}'); } catch(e) {}
+const msg = getMessageFor(avg);
+return `
+${showBack ? `<button class="secondary small" onclick="closeEntryDetail()" style="margin-bottom:12px">← ${t('back')}</button>` : ''}
+<div class="entry-detail">
+<div class="entry-head">
+<div class="entry-date">📅 ${String(entry.Date).slice(0,10)}</div>
+<div class="entry-avg ${cls}">${entry.Average} / ১০</div>
+</div>
+<div class="duty-grid">
+${DUTIES.map(d=>{
+const val = parseFloat(entry[d.key]) || 0;
+const pct = (val/10)*100;
+const reason = reasons[d.id] || '';
+return `<div class="duty-item">
+<div class="duty-info">
+<div class="duty-name">${LANG==='bn'?d.bn:d.ar}</div>
+<div class="duty-bar"><div class="duty-bar-fill" style="width:${pct}%"></div></div>
+</div>
+<div class="duty-score-row">
+<div></div>
+<div class="duty-score ${scoreClass(val)}">${val}</div>
+</div>
+${reason ? `<div class="duty-reason">📌 ${t('reasonFor')}: ${reason}</div>` : ''}
+</div>`;
+}).join('')}
+</div>
+${entry.Remark ? `<div class="entry-remark"><div class="label">📝 ${t('teacherRemark')}</div><div>${entry.Remark}</div></div>`
+: `<div class="entry-remark"><div class="label">📝 ${t('teacherRemark')}</div><div style="color:var(--text-muted);font-style:italic">${t('noRemark')}</div></div>`}
+<div class="entry-msg ${msg.type}">
+<div class="label">${msg.type === 'appreciation' ? '🎉' : msg.type === 'encouragement' ? '🌟' : '⚠️'} ${msg.label}</div>
+<div>${LANG==='bn'?msg.bn:msg.ar}</div>
+<div class="ar">${msg.ar}</div>
+</div>
+</div>
+`;
+}
+
+function showEntryDetail(teacherId, entryIndex){
+SHOW_ENTRY_DETAIL = { teacherId, entryIndex };
+SHOW_TEACHER_PROFILE = null;
+render();
+}
+function closeEntryDetail(){ SHOW_ENTRY_DETAIL = null; render(); }
+function openTeacherProfile(id){ SHOW_TEACHER_PROFILE = id; SHOW_ENTRY_DETAIL = null; render(); }
+function closeTeacherProfile(){ SHOW_TEACHER_PROFILE = null; render(); }
+
+function renderEntryDetailPage(){
+if (!SHOW_ENTRY_DETAIL) return render();
+const { teacherId, entryIndex } = SHOW_ENTRY_DETAIL;
+const entries = CACHE.entries.filter(e => e.Teacher_ID === teacherId).sort((a,b)=>new Date(b.Date)-new Date(a.Date));
+const entry = entries[entryIndex];
+if (!entry) { SHOW_ENTRY_DETAIL = null; return render(); }
+const tch = CACHE.teachers.find(x => x.ID === teacherId);
+const tName = tch ? (LANG==='bn'?tch.Name_Bangla:tch.Name_Arabic) : teacherId;
+document.getElementById('app').innerHTML = `
+<div class="card">
+<button class="secondary small" onclick="closeEntryDetail()" style="margin-bottom:12px">← ${t('back')}</button>
+<h3>📋 ${t('entryDetail')}</h3>
+<p style="font-size:14px;color:var(--text-muted);margin-bottom:12px">${tName} • ${teacherId}</p>
+${renderEntryDetailCard(entry, false)}
+</div>
+`;
+}
+
+// ============================================
+// ADMIN
 // ============================================
 function renderAdmin(){
-  if (CURRENT_TAB === 'home') {
-    const d = CACHE.dashboard;
-    document.getElementById('app').innerHTML = `
-      <div class="stats">
-        <div class="stat"><div class="num">${d?.todayCount || 0}</div><div class="lbl">${t('todayEntry')}</div></div>
-        <div class="stat"><div class="num">${d?.totalTeachers || 0}</div><div class="lbl">${t('totalTeachers')}</div></div>
-      </div>
-      <div class="stats">
-        <div class="stat"><div class="num">${d?.totalEntries || 0}</div><div class="lbl">${t('totalEntries')}</div></div>
-        <div class="stat"><div class="num">${CACHE.messages.length}</div><div class="lbl">${t('messages')}</div></div>
-      </div>
-      <div class="card">
-        <h4>${t('alerts')}</h4>
-        ${(d?.low && d.low.length)
-          ? d.low.slice(0,10).map(x=>`
-            <div class="alert warn">
-              <span>${LANG==='bn'?x.name:x.nameAr||x.name}</span>
-              <span class="bad">${x.avg}</span>
-            </div>`).join('')
-          : '<p style="color:var(--text-muted);font-size:14px">✅ কোনো সতর্কতা নেই</p>'}
-      </div>
-      <div class="card">
-        <h4>${t('topPerformers')}</h4>
-        ${(d?.top && d.top.length)
-          ? d.top.map((x,i)=>`
-            <div class="t-row">
-              <div><div class="t-name">${i+1}. ${LANG==='bn'?x.name:x.nameAr||x.name}</div><div class="t-dept">${x.count} ${t('entries')||'এন্ট্রি'}</div></div>
-              <span class="t-score good">${x.avg}</span>
-            </div>`).join('')
-          : '<p style="color:var(--text-muted);font-size:14px">কোনো ডাটা নেই</p>'}
-      </div>
-    `;
-  }
-  else if (CURRENT_TAB === 'teachers') renderTeachersList();
-  else if (CURRENT_TAB === 'entry') renderEntryForm();
-  else if (CURRENT_TAB === 'messages') renderMessagesList();
-  else if (CURRENT_TAB === 'reports') renderReports();
+if (CURRENT_TAB === 'home') {
+const d = CACHE.dashboard;
+const all = d?.allTeachers || [];
+const as = CACHE.attendanceSummary;
+document.getElementById('app').innerHTML = `
+<div class="stats">
+<div class="stat"><div class="num">${d?.todayCount || 0}</div><div class="lbl">${t('todayEntry')}</div></div>
+<div class="stat"><div class="num">${d?.totalTeachers || 0}</div><div class="lbl">${t('totalTeachers')}</div></div>
+</div>
+<div class="stats">
+<div class="stat"><div class="num">${d?.totalEntries || 0}</div><div class="lbl">${t('totalEntries')}</div></div>
+<div class="stat"><div class="num">${CACHE.messages.length}</div><div class="lbl">${t('receivedMessage')}</div></div>
+</div>
+${as ? `
+<div class="summary-card">
+<div class="grid3">
+<div class="item"><div class="num">${as.totalStudents}</div><div class="lbl">${t('attTotalStudents')}</div></div>
+<div class="item"><div class="num">${as.totalPresent}</div><div class="lbl">✅ ${t('attTotalPresent')}</div></div>
+<div class="item"><div class="num">${as.totalAbsent}</div><div class="lbl">❌ ${t('attTotalAbsent')}</div></div>
+</div>
+</div>` : ''}
+${(d?.low && d.low.length) ? `<div class="card"><h4>${t('alerts')}</h4>
+${d.low.slice(0,10).map(x=>`<div class="alert warn"><span>${LANG==='bn'?x.name:x.nameAr||x.name}</span><span class="t-score bad">${x.avg}</span></div>`).join('')}</div>` : ''}
+<div class="card"><h4>${t('topPerformers')}</h4>
+${(d?.top && d.top.length) ? d.top.map((x,i)=>`<div class="t-row" onclick="openTeacherProfile('${x.id}')"><div><div class="t-name">${i+1}. ${LANG==='bn'?x.name:x.nameAr||x.name}</div><div class="t-dept">${x.count} ${t('entries')}</div></div><span class="t-score good">${x.avg}</span></div>`).join('') : `<p style="color:var(--text-muted)">${t('noData')}</p>`}
+</div>
+<div class="card"><h4>👥 ${t('allTeachers')} (${all.length})</h4>
+${all.length ? all.map((x,i)=>`<div class="t-row" onclick="openTeacherProfile('${x.id}')"><div><div class="t-name">${i+1}. ${LANG==='bn'?x.name:x.nameAr||x.name}</div><div class="t-dept">${x.id} • ${x.count} ${t('entries')}</div></div><span class="t-score ${scoreClass(x.avg)}">${x.avg}</span></div>`).join('') : `<p style="color:var(--text-muted)">${t('noData')}</p>`}
+</div>
+`;
+}
+else if (CURRENT_TAB === 'teachers') renderTeachersList();
+else if (CURRENT_TAB === 'entry') renderEntryForm();
+else if (CURRENT_TAB === 'reports') renderReports();
+else if (CURRENT_TAB === 'negrani') renderNegraniView();
+else if (CURRENT_TAB === 'attendance') renderAttendanceView();
 }
 
 // ============================================
-// সুপারভাইজার
+// SUPERVISOR
 // ============================================
 function renderSupervisor(){
-  if (CURRENT_TAB === 'home') {
-    const assigned = USER.assigned || [];
-    const today = new Date().toISOString().slice(0,10);
-    const myEntries = CACHE.entries.filter(e => String(e.Date).startsWith(today));
-    const doneCount = new Set(myEntries.map(e => e.Teacher_ID)).size;
-
-    document.getElementById('app').innerHTML = `
-      <div class="card" style="background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff">
-        <h3 style="color:#fff">👋 ${LANG==='bn'?USER.name:USER.nameAr}</h3>
-        <p style="opacity:.9;font-size:14px;margin-top:4px">${assigned.length} জন শিক্ষকের দায়িত্বে</p>
-      </div>
-      <div class="stats">
-        <div class="stat"><div class="num">${doneCount}</div><div class="lbl">${t('todayEntry')}</div></div>
-        <div class="stat"><div class="num">${assigned.length - doneCount}</div><div class="lbl">বাকি</div></div>
-      </div>
-      <button onclick="switchTab('entry')">➕ নতুন এন্ট্রি দিন</button>
-    `;
-  }
-  else if (CURRENT_TAB === 'entry') renderEntryForm();
-  else if (CURRENT_TAB === 'teachers') renderTeachersList();
-  else if (CURRENT_TAB === 'messages') renderMessagesList();
-  else if (CURRENT_TAB === 'reports') renderReports();
+if (CURRENT_TAB === 'home') {
+const assigned = USER.assigned || [];
+const today = new Date().toISOString().slice(0,10);
+const myEntries = CACHE.entries.filter(e => String(e.Date).startsWith(today));
+const doneCount = new Set(myEntries.map(e => e.Teacher_ID)).size;
+document.getElementById('app').innerHTML = `
+<div class="card" style="background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff">
+<h3 style="color:#fff">👋 ${LANG==='bn'?USER.name:USER.nameAr}</h3>
+<p style="opacity:.9;font-size:14px;margin-top:4px">${assigned.length} ${t('teachersCount')}</p>
+</div>
+<div class="stats">
+<div class="stat"><div class="num">${doneCount}</div><div class="lbl">${t('todayEntry')}</div></div>
+<div class="stat"><div class="num">${assigned.length - doneCount}</div><div class="lbl">${t('remaining')}</div></div>
+</div>
+<button onclick="switchTab('entry')">➕ ${t('newEntry')}</button>
+<div class="card" style="margin-top:14px"><h4>👥 ${t('myTeachers')} (${assigned.length})</h4>
+${assigned.map((id,i)=>{
+const tch = CACHE.teachers.find(x=>x.ID===id);
+if (!tch) return '';
+const tEntries = CACHE.entries.filter(e=>e.Teacher_ID===id);
+const avg = tEntries.length ? (tEntries.reduce((a,e)=>a+parseFloat(e.Average),0)/tEntries.length).toFixed(2) : '—';
+return `<div class="t-row" onclick="openTeacherProfile('${id}')"><div><div class="t-name">${i+1}. ${LANG==='bn'?tch.Name_Bangla:tch.Name_Arabic}</div><div class="t-dept">${id}</div></div><span class="t-score ${scoreClass(avg)}">${avg}</span></div>`;
+}).join('')}
+</div>
+`;
+}
+else if (CURRENT_TAB === 'entry') renderEntryForm();
+else if (CURRENT_TAB === 'teachers') renderTeachersList();
+else if (CURRENT_TAB === 'reports') renderReports();
+else if (CURRENT_TAB === 'negrani') renderNegraniView();
+else if (CURRENT_TAB === 'attendance') renderAttendanceView();
 }
 
 // ============================================
-// শিক্ষক
+// TEACHER
 // ============================================
 function renderTeacher(){
-  if (CURRENT_TAB === 'home') {
-    const entries = CACHE.entries.filter(e => e.Teacher_ID === USER.id);
-    const avg = entries.length
-      ? (entries.reduce((a,e)=>a+parseFloat(e.Average),0)/entries.length).toFixed(2)
-      : '—';
-    const status = parseFloat(avg) >= 7 ? t('improving') : (entries.length?t('declining'):'—');
+if (CURRENT_TAB === 'home') {
+const entries = CACHE.entries.filter(e => e.Teacher_ID === USER.id).sort((a,b)=>new Date(b.Date)-new Date(a.Date));
+const avg = entries.length ? (entries.reduce((a,e)=>a+parseFloat(e.Average),0)/entries.length).toFixed(2) : '—';
+const myWeekly = CACHE.dashboard?.weekly?.find(w => w.id === USER.id);
+const latest = entries[0];
+const myMsgs = CACHE.messages.filter(m => m.Teacher_ID === USER.id).slice(0,3);
+const as = CACHE.attendanceSummary;
 
-    document.getElementById('app').innerHTML = `
-      <div class="card" style="background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff">
-        <h3 style="color:#fff">${LANG==='bn'?USER.name:USER.nameAr}</h3>
-        <p style="opacity:.9;font-size:13px;margin-top:4px">${USER.designation || ''}</p>
-      </div>
-      <div class="stats">
-        <div class="stat"><div class="num ${scoreClass(avg)}">${avg}</div><div class="lbl">${t('avgScore')}</div></div>
-        <div class="stat"><div class="num" style="font-size:16px">${status}</div><div class="lbl">${t('lastStatus')}</div></div>
-      </div>
-      <div class="card">
-        <h4>📊 ${t('performanceChart')}</h4>
-        <div class="chart-box"><canvas id="tChart" width="500" height="180"></canvas></div>
-      </div>
-      <div class="card">
-        <h4>সাম্প্রতিক স্কোর</h4>
-        ${entries.slice(0,5).map(e=>`
-          <div class="t-row">
-            <div><div class="t-name">${String(e.Date).slice(0,10)}</div><div class="t-dept">${e.Remark || ''}</div></div>
-            <span class="t-score ${scoreClass(e.Average)}">${e.Average}</span>
-          </div>
-        `).join('') || `<p style="color:var(--text-muted)">${t('noData')}</p>`}
-      </div>
-    `;
-    // চার্ট আঁকা
-    setTimeout(()=>drawLineChart('tChart', entries.slice(0,15).reverse().map(e=>({
-      label: String(e.Date).slice(5,10),
-      value: parseFloat(e.Average)
-    }))), 100);
-  }
-  else if (CURRENT_TAB === 'messages') renderMessagesList();
-  else if (CURRENT_TAB === 'reports') renderReports();
-  else renderTeacher();
+document.getElementById('app').innerHTML = `
+<div class="card" style="background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff">
+<h3 style="color:#fff">${LANG==='bn'?USER.name:USER.nameAr}</h3>
+<p style="opacity:.9;font-size:13px;margin-top:4px">${USER.designation || ''} • ${USER.id}</p>
+</div>
+<div class="stats">
+<div class="stat"><div class="num ${scoreClass(avg)}">${avg}</div><div class="lbl">${t('avgScore')}</div></div>
+<div class="stat"><div class="num">${entries.length}</div><div class="lbl">${t('entries')}</div></div>
+</div>
+
+${latest ? `
+<div class="card">
+<h4>📋 ${t('lastEntry')}</h4>
+<div class="entry-list-item" onclick="showEntryDetail('${USER.id}', 0)">
+<div><div class="date">${String(latest.Date).slice(0,10)}</div><div class="meta">${t('tapToView')}</div></div>
+<div class="score ${scoreClass(latest.Average)}">${latest.Average}</div>
+</div>
+</div>` : ''}
+
+${myWeekly ? `
+<div class="card">
+<h4>📅 ${t('weekReport')}</h4>
+<div class="week-scores">
+<div class="week-score"><div class="lbl">${t('thisWeek')}</div><div class="val ${scoreClass(myWeekly.thisWeekAvg)}">${myWeekly.thisWeekAvg || '—'}</div></div>
+<div class="week-score"><div class="lbl">${t('lastWeek')}</div><div class="val">${myWeekly.prevWeekAvg || '—'}</div></div>
+</div>
+<div style="text-align:center;margin-top:10px"><span class="trend-badge trend-${myWeekly.trend}">${trendLabel(myWeekly.trend)}</span></div>
+</div>` : ''}
+
+${myMsgs.length ? `
+<div class="card">
+<h4>💬 ${t('myMessages')}</h4>
+${myMsgs.map(m=>{
+const typeCls = m.Type === 'appreciation' ? 'appreciation' : m.Type === 'encouragement' ? 'encouragement' : 'warning';
+return `<div class="msg ${typeCls}"><small>${String(m.Timestamp).slice(0,10)}</small>
+<div>${LANG==='bn'?m.Message_Bangla:m.Message_Arabic}</div>
+<div class="ar">${m.Message_Arabic}</div></div>`;
+}).join('')}
+</div>` : ''}
+
+<div class="card">
+<h4>📊 ${t('performanceChart')}</h4>
+<div class="chart-box"><canvas id="tChart" width="500" height="180"></canvas></div>
+</div>
+`;
+setTimeout(()=>drawLineChart('tChart', entries.slice(0,15).reverse().map(e=>({label:String(e.Date).slice(5,10), value:parseFloat(e.Average)}))), 100);
+}
+else if (CURRENT_TAB === 'reports') renderReports();
+else if (CURRENT_TAB === 'negrani') renderNegraniView();
+else if (CURRENT_TAB === 'attendance') renderAttendanceView();
+else if (CURRENT_TAB === 'teachers') openTeacherProfile(USER.id);
+else renderTeacher();
+}
+
+// ============================================
+// নেগরানী ভিউ
+// ============================================
+function renderNegraniView(){
+if (USER.role === 'teacher') return renderTeacherNegrani();
+
+// অ্যাডমিন/সুপারভাইজার — সব নেগরানী দেখবে
+let list = CACHE.negrani || [];
+if (USER.role === 'supervisor') list = list.filter(n => (USER.assigned||[]).includes(n.Teacher_ID));
+
+// না থাকলে — Entries থেকে নেগরানীর স্কোর দেখাব
+const entriesWithNegrani = CACHE.entries.filter(e => e.D1_Attendance || e.D2_Teaching);
+
+document.getElementById('app').innerHTML = `
+<div class="card">
+<h3>👁️ ${t('negraniTitle')}</h3>
+<p style="font-size:13px;color:var(--text-muted);margin-bottom:12px">ছাত্রদের পড়াশোনা ও আচরণের পরিদর্শন</p>
+${list.length ? list.slice(0,50).map(n=>{
+const tch = CACHE.teachers.find(x=>x.ID===n.Teacher_ID);
+return `<div class="attendance-row">
+<div style="display:flex;justify-content:space-between;font-weight:700">
+<span>${tch ? (LANG==='bn'?tch.Name_Bangla:tch.Name_Arabic) : n.Teacher_ID}</span>
+<span>${String(n.Date).slice(0,10)}</span>
+</div>
+<div style="margin-top:8px;display:flex;gap:16px">
+<div>📖 ${t('dailyNegrani')}: <b>${n.Daily_Negrani||0}</b>/১০</div>
+<div>📅 ${t('weeklyNegrani')}: <b>${n.Weekly_Negrani||0}</b>/১০</div>
+</div>
+${n.Remarks ? `<div style="margin-top:6px;font-size:13px;color:var(--text-muted)">💬 ${n.Remarks}</div>` : ''}
+</div>`;
+}).join('') : `<p style="color:var(--text-muted);text-align:center;padding:20px">${t('noData')}</p>`}
+</div>
+`;
+}
+
+// ============================================
+// শিক্ষকের নেগরানী ফর্ম
+// ============================================
+function renderTeacherNegrani(){
+const myNegrani = (CACHE.negrani || []).filter(n => n.Teacher_ID === USER.id).slice(0, 10);
+document.getElementById('app').innerHTML = `
+<div class="card">
+<h3>👁️ ${t('addNegrani')}</h3>
+<label>${t('date')}</label>
+<input type="date" id="ng_dt" value="${new Date().toISOString().slice(0,10)}">
+<div class="slider-box">
+<label><span>📖 ${t('dailyNegrani')}</span><span class="slider-val" id="v-ngd">7</span></label>
+<input type="range" min="1" max="10" value="7" id="ng_daily" oninput="document.getElementById('v-ngd').textContent=this.value">
+<div style="font-size:12px;color:var(--text-muted);margin-top:6px">${t('dailyNegraniHelp')}</div>
+</div>
+<div class="slider-box">
+<label><span>📅 ${t('weeklyNegrani')}</span><span class="slider-val" id="v-ngw">7</span></label>
+<input type="range" min="1" max="10" value="7" id="ng_weekly" oninput="document.getElementById('v-ngw').textContent=this.value">
+<div style="font-size:12px;color:var(--text-muted);margin-top:6px">${t('weeklyNegraniHelp')}</div>
+</div>
+<label>${t('negraniRemarks')}</label>
+<textarea id="ng_rem" rows="3" placeholder="${t('negraniRemarksPlaceholder')}"></textarea>
+<button onclick="submitNegrani()">${t('submit')}</button>
+</div>
+${myNegrani.length ? `
+<div class="card">
+<h4>📋 ${t('myNegraniHistory')}</h4>
+${myNegrani.map(n=>`<div class="attendance-row">
+<div style="display:flex;justify-content:space-between;font-weight:700">
+<span>${String(n.Date).slice(0,10)}</span>
+<span>📖 ${n.Daily_Negrani} | 📅 ${n.Weekly_Negrani}</span>
+</div>
+${n.Remarks ? `<div style="margin-top:6px;font-size:13px;color:var(--text-muted)">💬 ${n.Remarks}</div>` : ''}
+</div>`).join('')}
+</div>` : ''}
+`;
+}
+
+async function submitNegrani(){
+const params = {
+teacher_id: USER.id,
+date: document.getElementById('ng_dt').value,
+daily_negrani: document.getElementById('ng_daily').value,
+weekly_negrani: document.getElementById('ng_weekly').value,
+remarks: document.getElementById('ng_rem').value
+};
+document.getElementById('app').innerHTML = loading();
+try {
+const r = await api('addNegrani', params);
+if (r.success) { toast(t('negraniSaved'), 'ok'); await loadAllData(); CURRENT_TAB='home'; render(); }
+else { toast('ব্যর্থ: ' + (r.error||''), 'err'); render(); }
+} catch(e) { toast('ত্রুটি: ' + e.message, 'err'); render(); }
+}
+
+// ============================================
+// শিক্ষক প্রোফাইল
+// ============================================
+function renderTeacherProfile(id){
+const tch = CACHE.teachers.find(x => x.ID === id);
+if (!tch) return render();
+const entries = CACHE.entries.filter(e => e.Teacher_ID === id).sort((a,b)=>new Date(b.Date)-new Date(a.Date));
+const avg = entries.length ? (entries.reduce((a,e)=>a+parseFloat(e.Average),0)/entries.length).toFixed(2) : '—';
+const attendance = CACHE.attendance.filter(a => a.Teacher_ID === id).slice(0, 10);
+const weekly = CACHE.dashboard?.weekly?.find(w => w.id === id);
+const monthly = CACHE.dashboard?.monthly?.find(m => m.id === id);
+const msgs = CACHE.messages.filter(m => m.Teacher_ID === id).slice(0, 10);
+const negrani = (CACHE.negrani || []).filter(n => n.Teacher_ID === id).slice(0, 10);
+
+// দায়িত্বভিত্তিক গড়
+const dutySum = {}; DUTIES.forEach(d => dutySum[d.key] = { sum: 0, n: 0 });
+entries.forEach(e => { DUTIES.forEach(d => { const v = parseFloat(e[d.key]) || 0; if (v > 0) { dutySum[d.key].sum += v; dutySum[d.key].n++; } }); });
+
+document.getElementById('app').innerHTML = `
+<div class="card">
+<button class="secondary small" onclick="closeTeacherProfile()" style="margin-bottom:12px">← ${t('back')}</button>
+<h3>${LANG==='bn'?tch.Name_Bangla:tch.Name_Arabic}</h3>
+<p style="font-size:14px;color:var(--text-muted);margin-top:6px">${tch.Designation_Bangla || ''} • ${tch.Department || ''}</p>
+<p style="font-size:13px;color:var(--text-muted);margin-top:4px">ID: ${tch.ID}</p>
+<p style="font-size:13px;color:var(--text-muted)">📞 ${tch.Phone || '—'}</p>
+<div class="big-score">
+<div class="val ${scoreClass(avg)}">${avg}</div>
+<div class="lbl">${t('avgScore')} / ১০</div>
+<div class="progress"><div class="progress-bar" style="width:${(parseFloat(avg)||0)*10}%"></div></div>
+</div>
+${weekly ? `<div class="week-scores">
+<div class="week-score"><div class="lbl">${t('thisWeek')}</div><div class="val ${scoreClass(weekly.thisWeekAvg)}">${weekly.thisWeekAvg||'—'}</div></div>
+<div class="week-score"><div class="lbl">${t('lastWeek')}</div><div class="val">${weekly.prevWeekAvg||'—'}</div></div>
+</div>
+<div style="text-align:center;margin-top:10px"><span class="trend-badge trend-${weekly.trend}">${trendLabel(weekly.trend)}</span></div>` : ''}
+${monthly ? `<div class="week-scores" style="margin-top:10px">
+<div class="week-score"><div class="lbl">এই মাস</div><div class="val ${scoreClass(monthly.thisMonthAvg)}">${monthly.thisMonthAvg||'—'}</div></div>
+<div class="week-score"><div class="lbl">গত মাস</div><div class="val">${monthly.lastMonthAvg||'—'}</div></div>
+</div>
+<div style="text-align:center;margin-top:10px"><span class="trend-badge trend-${monthly.trend}">${trendLabel(monthly.trend)}</span></div>` : ''}
+${USER.role === 'admin' ? `<button class="secondary" onclick="toggleEdit('${tch.ID}')" style="margin-top:12px">✏️ ${t('editTeacher')}</button><div id="editBox"></div>` : ''}
+</div>
+
+<div class="card">
+<h4>📈 ${t('performanceChart')}</h4>
+<div class="chart-box"><canvas id="tChart" width="500" height="200"></canvas></div>
+</div>
+
+<div class="card">
+<h4>📊 ${t('dutyScores')}</h4>
+<div class="duty-grid">
+${DUTIES.map(d => {
+const s = dutySum[d.key];
+const avgD = s.n ? (s.sum/s.n).toFixed(1) : '0.0';
+const pct = (parseFloat(avgD)/10)*100;
+return `<div class="duty-item">
+<div class="duty-info"><div class="duty-name">${LANG==='bn'?d.bn:d.ar}</div>
+<div class="duty-bar"><div class="duty-bar-fill" style="width:${pct}%"></div></div></div>
+<div class="duty-score-row"><div></div><div class="duty-score ${scoreClass(avgD)}">${avgD}</div></div>
+</div>`;
+}).join('')}
+</div>
+</div>
+
+${negrani.length ? `<div class="card"><h4>👁️ ${t('myNegrani')}</h4>
+${negrani.map(n=>`<div class="attendance-row">
+<div style="display:flex;justify-content:space-between;font-weight:700"><span>${String(n.Date).slice(0,10)}</span><span>📖 ${n.Daily_Negrani} | 📅 ${n.Weekly_Negrani}</span></div>
+${n.Remarks ? `<div style="margin-top:6px;font-size:13px;color:var(--text-muted)">💬 ${n.Remarks}</div>` : ''}
+</div>`).join('')}</div>` : ''}
+
+${msgs.length ? `<div class="card"><h4>💬 ${t('receivedMessage')}</h4>
+${msgs.map(m=>{
+const typeCls = m.Type === 'appreciation' ? 'appreciation' : m.Type === 'encouragement' ? 'encouragement' : 'warning';
+return `<div class="msg ${typeCls}"><small>${String(m.Timestamp).slice(0,10)}</small><div>${LANG==='bn'?m.Message_Bangla:m.Message_Arabic}</div><div class="ar">${m.Message_Arabic}</div></div>`;
+}).join('')}</div>` : ''}
+
+${attendance.length ? `<div class="card"><h4>🎓 ${t('attendanceHistory')}</h4>
+${attendance.map(a=>{
+let reasons = []; try { reasons = JSON.parse(a.Absent_Details || '[]'); } catch(e) {}
+return `<div class="attendance-row">
+<div style="display:flex;justify-content:space-between;font-weight:700"><span>${String(a.Date).slice(0,10)}</span><span>${a.Present}/${a.Total_Students}</span></div>
+${reasons.length ? `<div class="attendance-reasons">${reasons.map(r=>`<span class="reason">${r.reason}: ${r.count}</span>`).join('')}</div>` : ''}
+</div>`;}).join('')}</div>` : ''}
+
+<div class="card"><h4>📝 ${t('allEntries')} (${entries.length})</h4>
+${entries.slice(0,20).map((e,i)=>`<div class="entry-list-item" onclick="showEntryDetail('${id}', ${i})">
+<div><div class="date">${String(e.Date).slice(0,10)}</div><div class="meta">${t('tapToView')}</div></div>
+<div class="score ${scoreClass(e.Average)}">${e.Average}</div></div>`).join('') || `<p style="color:var(--text-muted)">${t('noData')}</p>`}
+</div>
+`;
+setTimeout(()=>drawLineChart('tChart', entries.slice(0,20).reverse().map(e=>({label:String(e.Date).slice(5,10), value:parseFloat(e.Average)}))), 100);
+}
+
+function toggleEdit(id){
+const tch = CACHE.teachers.find(x => x.ID === id);
+const box = document.getElementById('editBox');
+if (box.innerHTML) { box.innerHTML = ''; return; }
+box.innerHTML = `<div style="background:var(--bg);padding:12px;border-radius:10px;margin-top:10px">
+<label>${t('nameBn')}</label><input id="e_bn" value="${tch.Name_Bangla || ''}">
+<label>${t('nameAr')}</label><input id="e_ar" value="${tch.Name_Arabic || ''}" dir="rtl">
+<label>${t('designation')}</label><input id="e_dg" value="${tch.Designation_Bangla || ''}">
+<label>${t('phone')}</label><input id="e_ph" value="${tch.Phone || ''}">
+<div style="display:flex;gap:8px;margin-top:10px">
+<button onclick="saveEdit('${id}')" style="margin:0">${t('save')}</button>
+<button class="secondary" onclick="toggleEdit('${id}')" style="margin:0">${t('cancel')}</button>
+</div></div>`;
+}
+
+async function saveEdit(id){
+const params = { id, name_bn: document.getElementById('e_bn').value.trim(), name_ar: document.getElementById('e_ar').value.trim(), designation: document.getElementById('e_dg').value.trim(), phone: document.getElementById('e_ph').value.trim() };
+const r = await api('editTeacher', params);
+if (r.success) { toast(t('editSuccess'), 'ok'); await loadAllData(); renderTeacherProfile(id); }
+else toast('❌ ব্যর্থ: ' + (r.error || ''), 'err');
 }
 
 // ============================================
 // শিক্ষক তালিকা
 // ============================================
 function renderTeachersList(){
-  let list = CACHE.teachers;
-  if (USER.role === 'supervisor') list = list.filter(t => (USER.assigned || []).includes(t.ID));
-  const avgMap = {};
-  CACHE.entries.forEach(e => {
-    if (!avgMap[e.Teacher_ID]) avgMap[e.Teacher_ID] = { sum: 0, n: 0 };
-    avgMap[e.Teacher_ID].sum += parseFloat(e.Average);
-    avgMap[e.Teacher_ID].n++;
-  });
-
-  document.getElementById('app').innerHTML = `
-    <div class="card">
-      <h3>👥 ${t('teachers')} (${list.length})</h3>
-      <input id="search" placeholder="🔍 খুঁজুন..." oninput="filterTeachers(this.value)">
-      <div id="tlist">
-        ${list.map(t => {
-          const a = avgMap[t.ID];
-          const avg = a ? (a.sum/a.n).toFixed(2) : '—';
-          return `
-            <div class="t-row" data-name="${t.Name_Bangla} ${t.Name_Arabic} ${t.ID}" onclick="showTeacher('${t.ID}')">
-              <div>
-                <div class="t-name">${LANG === 'bn' ? t.Name_Bangla : t.Name_Arabic}</div>
-                <div class="t-dept">${t.ID} • ${t.Department || ''}</div>
-              </div>
-              <span class="t-score ${scoreClass(avg)}">${avg}</span>
-            </div>`;
-        }).join('')}
-      </div>
-    </div>
-  `;
+let list = CACHE.teachers;
+if (USER.role === 'supervisor') list = list.filter(t => (USER.assigned || []).includes(t.ID));
+const avgMap = {};
+CACHE.entries.forEach(e => { if (!avgMap[e.Teacher_ID]) avgMap[e.Teacher_ID] = { sum: 0, n: 0 }; avgMap[e.Teacher_ID].sum += parseFloat(e.Average); avgMap[e.Teacher_ID].n++; });
+document.getElementById('app').innerHTML = `
+<div class="card">
+<h3>👥 ${t('teachers')} (${list.length})</h3>
+<input id="search" placeholder="🔍" oninput="filterTeachers(this.value)">
+<div id="tlist">
+${list.map(tch => {
+const a = avgMap[tch.ID];
+const avg = a ? (a.sum/a.n).toFixed(2) : '—';
+return `<div class="t-row" data-name="${tch.Name_Bangla} ${tch.Name_Arabic} ${tch.ID}" onclick="openTeacherProfile('${tch.ID}')">
+<div><div class="t-name">${LANG==='bn'?tch.Name_Bangla:tch.Name_Arabic}</div><div class="t-dept">${tch.ID} • ${tch.Department||''}</div></div>
+<span class="t-score ${scoreClass(avg)}">${avg}</span></div>`;
+}).join('')}
+</div></div>
+`;
 }
-
 function filterTeachers(q){
-  q = q.toLowerCase();
-  document.querySelectorAll('#tlist .t-row').forEach(r=>{
-    r.style.display = r.dataset.name.toLowerCase().includes(q) ? 'flex' : 'none';
-  });
-}
-
-function showTeacher(id){
-  const tch = CACHE.teachers.find(x => x.ID === id);
-  if (!tch) return;
-  const entries = CACHE.entries.filter(e => e.Teacher_ID === id).sort((a,b)=>new Date(b.Date)-new Date(a.Date));
-  const avg = entries.length
-    ? (entries.reduce((a,e)=>a+parseFloat(e.Average),0)/entries.length).toFixed(2)
-    : '—';
-
-  document.getElementById('app').innerHTML = `
-    <div class="card">
-      <button class="secondary small" onclick="switchTab('teachers')" style="margin-bottom:12px">← ফিরে যান</button>
-      <h3>${LANG === 'bn' ? tch.Name_Bangla : tch.Name_Arabic}</h3>
-      <p style="font-size:14px;color:var(--text-muted)">${tch.Designation_Bangla || ''} • ${tch.Department || ''}</p>
-      <p style="font-size:13px;color:var(--text-muted);margin-top:4px">ID: ${tch.ID}</p>
-      <p style="font-size:13px;color:var(--text-muted)">📞 ${tch.Phone || '—'}</p>
-      <div class="progress" style="margin-top:14px"><div class="progress-bar" style="width:${(parseFloat(avg)||0)*10}%"></div></div>
-      <p style="text-align:center;margin-top:8px;font-size:14px">গড়: <b class="${scoreClass(avg)}">${avg}</b> / ১০</p>
-      ${(USER.role === 'admin' || USER.id === tch.Supervisor_ID) ? `
-        <button class="secondary" onclick="toggleEdit('${tch.ID}')" style="margin-top:12px">✏️ ${t('editTeacher')}</button>
-        <div id="editBox"></div>
-      ` : ''}
-    </div>
-
-    <div class="card">
-      <h4>📈 ${t('performanceChart')}</h4>
-      <div class="chart-box"><canvas id="tChart" width="500" height="200"></canvas></div>
-    </div>
-
-    <div class="card">
-      <h4>📊 সাম্প্রতিক এন্ট্রি (${entries.length})</h4>
-      ${entries.slice(0,15).map(e=>`
-        <div class="t-row">
-          <div><div class="t-name">${String(e.Date).slice(0,10)}</div><div class="t-dept">${e.Remark || ''}</div></div>
-          <span class="t-score ${scoreClass(e.Average)}">${e.Average}</span>
-        </div>
-      `).join('') || `<p style="color:var(--text-muted);font-size:14px">${t('noData')}</p>`}
-    </div>
-  `;
-  setTimeout(()=>drawLineChart('tChart', entries.slice(0,20).reverse().map(e=>({
-    label: String(e.Date).slice(5,10),
-    value: parseFloat(e.Average)
-  }))), 100);
-}
-
-function toggleEdit(id){
-  const tch = CACHE.teachers.find(x => x.ID === id);
-  const box = document.getElementById('editBox');
-  if (box.innerHTML) { box.innerHTML = ''; return; }
-  box.innerHTML = `
-    <div class="edit-form">
-      <label>${t('nameBn')}</label>
-      <input id="e_bn" value="${tch.Name_Bangla || ''}">
-      <label>${t('nameAr')}</label>
-      <input id="e_ar" value="${tch.Name_Arabic || ''}" dir="rtl">
-      <label>${t('designation')}</label>
-      <input id="e_dg" value="${tch.Designation_Bangla || ''}">
-      <label>${t('phone')}</label>
-      <input id="e_ph" value="${tch.Phone || ''}">
-      <div style="display:flex;gap:8px;margin-top:10px">
-        <button onclick="saveEdit('${id}')" style="margin:0">${t('save')}</button>
-        <button class="secondary" onclick="toggleEdit('${id}')" style="margin:0">${t('cancel')}</button>
-      </div>
-    </div>
-  `;
-}
-
-async function saveEdit(id){
-  const params = {
-    id,
-    name_bn: document.getElementById('e_bn').value.trim(),
-    name_ar: document.getElementById('e_ar').value.trim(),
-    designation: document.getElementById('e_dg').value.trim(),
-    phone: document.getElementById('e_ph').value.trim()
-  };
-  const r = await api('editTeacher', params);
-  if (r.success) {
-    toast(t('editSuccess'));
-    await loadAllData();
-    showTeacher(id);
-  } else {
-    toast('❌ ব্যর্থ: ' + (r.error || ''));
-  }
+q = q.toLowerCase();
+document.querySelectorAll('#tlist .t-row').forEach(r=>{ r.style.display = r.dataset.name.toLowerCase().includes(q) ? 'flex' : 'none'; });
 }
 
 // ============================================
-// এন্ট্রি ফর্ম
+// এন্ট্রি ফর্ম (কারণসহ)
 // ============================================
-const DUTIES = [
-  { id:'d1', bn:'নির্ধারিত সময়ে ক্লাসে উপস্থিতি', ar:'الحضور في الوقت المحدد' },
-  { id:'d2', bn:'পাঠদানের মান', ar:'جودة التدريس' },
-  { id:'d3', bn:'ছাত্রদের তালিম ও তারবিয়াত', ar:'تعليم الطلاب وتربيتهم' },
-  { id:'d4', bn:'পরীক্ষার খাতা মূল্যায়ন', ar:'تقييم أوراق الامتحان' },
-  { id:'d5', bn:'মাদরাসার নিয়ম-শৃঙ্খলা পালন', ar:'الالتزام بنظام المدرسة' },
-  { id:'d6', bn:'অভিভাবকদের সাথে যোগাযোগ', ar:'التواصل مع أولياء الأمور' },
-  { id:'d7', bn:'সহকর্মীদের সাথে আচরণ', ar:'التعامل مع الزملاء' },
-  { id:'d8', bn:'নিজের ইলম চর্চা', ar:'المطالعة الذاتية' }
-];
-
 function renderEntryForm(){
-  let list = CACHE.teachers;
-  if (USER.role === 'supervisor') list = list.filter(t => (USER.assigned || []).includes(t.ID));
-  if (!list.length) {
-    document.getElementById('app').innerHTML = `<div class="card"><p>${t('noData')}</p></div>`;
-    return;
-  }
+let list = CACHE.teachers;
+if (USER.role === 'supervisor') list = list.filter(t => (USER.assigned || []).includes(t.ID));
+if (!list.length) { document.getElementById('app').innerHTML = `<div class="card"><p>${t('noData')}</p></div>`; return; }
 
-  document.getElementById('app').innerHTML = `
-    <div class="card">
-      <h3>✍️ ${t('dailyEntry')}</h3>
-      <label>${t('selectTeacher')}</label>
-      <select id="tid">
-        ${list.map(tch=>`<option value="${tch.ID}">${LANG==='bn'?tch.Name_Bangla:tch.Name_Arabic} (${tch.ID})</option>`).join('')}
-      </select>
-      <label>${t('date')}</label>
-      <input type="date" id="dt" value="${new Date().toISOString().slice(0,10)}">
-      ${DUTIES.map(d=>`
-        <div class="slider-box">
-          <label>
-            <span>${LANG==='bn'?d.bn:d.ar}</span>
-            <span class="slider-val" id="v-${d.id}">7</span>
-          </label>
-          <input type="range" min="1" max="10" value="7" id="${d.id}"
-                 oninput="document.getElementById('v-${d.id}').textContent=this.value">
-        </div>
-      `).join('')}
-      <label>${t('remark')}</label>
-      <textarea id="rmk" rows="2"></textarea>
-      <button onclick="submitEntry()">${t('submit')}</button>
-    </div>
-  `;
+document.getElementById('app').innerHTML = `
+<div class="card">
+<h3>✍️ ${t('dailyEntry')}</h3>
+<label>${t('selectTeacher')}</label>
+<select id="tid">${list.map(tch=>`<option value="${tch.ID}">${LANG==='bn'?tch.Name_Bangla:tch.Name_Arabic} (${tch.ID})</option>`).join('')}</select>
+<label>${t('date')}</label>
+<input type="date" id="dt" value="${new Date().toISOString().slice(0,10)}">
+${DUTIES.map(d=>`
+<div class="slider-box">
+<label><span>${LANG==='bn'?d.bn:d.ar}</span><span class="slider-val" id="v-${d.id}">7</span></label>
+<input type="range" min="1" max="10" value="7" id="${d.id}" oninput="document.getElementById('v-${d.id}').textContent=this.value">
+<input type="text" id="reason-${d.id}" placeholder="📌 ${t('reasonHint')} ${t('reasonOptional')}" style="margin-top:8px;font-size:13px;padding:8px">
+</div>`).join('')}
+<label>${t('remark')}</label>
+<textarea id="rmk" rows="2"></textarea>
+<button onclick="submitEntry()">${t('submit')}</button>
+</div>
+`;
 }
 
 async function submitEntry(){
-  const params = {
-    teacher_id: document.getElementById('tid').value,
-    supervisor_id: USER.role === 'supervisor' ? USER.id : 'ADMIN',
-    date: document.getElementById('dt').value,
-    remark: document.getElementById('rmk').value
-  };
-  DUTIES.forEach(d => params[d.id] = document.getElementById(d.id).value);
-
-  document.getElementById('app').innerHTML = loading();
-  try {
-    const r = await api('addEntry', params);
-    if (r.success) {
-      toast(t('entrySuccess') + ' গড়: ' + r.average);
-      await loadAllData();
-      CURRENT_TAB = 'home';
-      render();
-    } else {
-      toast('ব্যর্থ: ' + (r.error || ''));
-      render();
-    }
-  } catch(e) {
-    toast('ত্রুটি: ' + e.message);
-    render();
-  }
+const reasons = {};
+DUTIES.forEach(d => {
+const r = document.getElementById('reason-'+d.id).value.trim();
+if (r) reasons[d.id] = r;
+});
+const params = {
+teacher_id: document.getElementById('tid').value,
+supervisor_id: USER.role === 'supervisor' ? USER.id : 'ADMIN',
+date: document.getElementById('dt').value,
+remark: document.getElementById('rmk').value,
+reasons: JSON.stringify(reasons)
+};
+DUTIES.forEach(d => params[d.id] = document.getElementById(d.id).value);
+document.getElementById('app').innerHTML = loading();
+try {
+const r = await api('addEntry', params);
+if (r.success) { toast(t('entrySuccess') + ' ' + r.average, 'ok'); await loadAllData(); CURRENT_TAB='home'; render(); }
+else { toast('ব্যর্থ: ' + (r.error || ''), 'err'); render(); }
+} catch(e) { toast('ত্রুটি: ' + e.message, 'err'); render(); }
 }
 
 // ============================================
-// বার্তা
+// উপস্থিতি (শ্রেণি-শাখা সহ)
 // ============================================
-function renderMessagesList(){
-  let list = CACHE.messages;
-  if (USER.role === 'teacher') list = list.filter(m => m.Teacher_ID === USER.id);
-  if (MSG_FILTER === 'appreciation') list = list.filter(m => m.Type === 'appreciation');
-  if (MSG_FILTER === 'warning') list = list.filter(m => m.Type === 'warning');
-
-  document.getElementById('app').innerHTML = `
-    <div class="card">
-      <h3>💬 ${t('messages')} (${list.length})</h3>
-      <div class="tabs">
-        <button class="${MSG_FILTER==='all'?'active':''}" onclick="setMsgFilter('all')">${t('all')}</button>
-        <button class="${MSG_FILTER==='appreciation'?'active':''}" onclick="setMsgFilter('appreciation')">${t('appreciationOnly')}</button>
-        <button class="${MSG_FILTER==='warning'?'active':''}" onclick="setMsgFilter('warning')">${t('warningOnly')}</button>
-      </div>
-      ${list.length ? list.map(m=>`
-        <div class="msg ${m.Type === 'appreciation' ? 'appreciation' : 'warning'}">
-          <small>${String(m.Timestamp).slice(0,10)} • ${m.Teacher_ID}</small>
-          <div>${LANG === 'bn' ? m.Message_Bangla : m.Message_Arabic}</div>
-          <div class="ar">${m.Message_Arabic}</div>
-        </div>
-      `).join('') : `<p style="color:var(--text-muted)">${t('noData')}</p>`}
-    </div>
-  `;
+function renderAttendanceView(){
+if (USER.role === 'teacher') return renderTeacherAttendanceForm();
+let list = CACHE.attendance || [];
+if (USER.role === 'supervisor') list = list.filter(a => (USER.assigned || []).includes(a.Teacher_ID));
+const as = CACHE.attendanceSummary;
+document.getElementById('app').innerHTML = `
+<div class="card">
+<h3>🎓 ${t('attendance')}</h3>
+${as ? `<div class="summary-card">
+<div class="grid3">
+<div class="item"><div class="num">${as.totalStudents}</div><div class="lbl">${t('attTotalStudents')}</div></div>
+<div class="item"><div class="num">${as.totalPresent}</div><div class="lbl">✅ ${t('attTotalPresent')}</div></div>
+<div class="item"><div class="num">${as.totalAbsent}</div><div class="lbl">❌ ${t('attTotalAbsent')}</div></div>
+</div></div>
+${as.byClass && as.byClass.length ? `<h4 style="margin-top:14px">${t('classDetails')}</h4>
+${as.byClass.map(c=>`<div class="attendance-row">
+<div style="font-weight:700">${c.class}</div>
+<div style="margin-top:6px;font-size:14px">👥 ${c.total} • ✅ <span class="good">${c.present}</span> • ❌ <span class="bad">${c.absent}</span></div>
+</div>`).join('')}` : ''}` : ''}
+${list.length ? `<h4 style="margin-top:14px">${t('attendanceHistory')}</h4>
+${list.slice(0,30).map(a=>{
+const tch = CACHE.teachers.find(x=>x.ID===a.Teacher_ID);
+let reasons = []; try { reasons = JSON.parse(a.Absent_Details || '[]'); } catch(e) {}
+return `<div class="attendance-row">
+<div style="display:flex;justify-content:space-between;font-weight:700;font-size:14px">
+<span>${tch ? (LANG==='bn'?tch.Name_Bangla:tch.Name_Arabic) : a.Teacher_ID}</span>
+<span>${String(a.Date).slice(0,10)}</span></div>
+${a.Class_Group ? `<div style="margin-top:4px;font-size:13px;color:var(--text-muted)">📚 ${a.Class_Group} ${a.Section||''} ${a.Ustaz_Name?'• '+a.Ustaz_Name:''}</div>` : ''}
+<div style="margin-top:6px;font-size:14px">👥 ${a.Total_Students||0} • ✅ <span class="good">${a.Present||0}</span> • ❌ <span class="bad">${(a.Total_Students||0)-(a.Present||0)}</span></div>
+${reasons.length ? `<div class="attendance-reasons">${reasons.map(r=>`<span class="reason">${r.reason}: ${r.count}</span>`).join('')}</div>` : ''}
+</div>`;}).join('')}` : `<p style="color:var(--text-muted);text-align:center;padding:20px">${t('noData')}</p>`}
+</div>
+`;
 }
 
-function setMsgFilter(f){ MSG_FILTER = f; render(); }
+function renderTeacherAttendanceForm(){
+document.getElementById('app').innerHTML = `
+<div class="card">
+<h3>🎓 ${t('addAttendance')}</h3>
+<label>${t('date')}</label>
+<input type="date" id="at_dt" value="${new Date().toISOString().slice(0,10)}">
+<label>${t('classGroup')}</label>
+<select id="at_class" onchange="updateSections()">
+<option value="">-- ${t('selectClass')} --</option>
+${CLASS_GROUPS.map(c=>`<option value="${c.name}">${c.name}</option>`).join('')}
+</select>
+<label>${t('section')}</label>
+<select id="at_section"><option value="">-- ${t('selectSection')} --</option></select>
+<label>${t('ustazName')}</label>
+<input type="text" id="at_ustaz" placeholder="উস্তাযের নাম">
+<label>${t('totalStudents')}</label>
+<input type="number" id="at_total" placeholder="0" min="0">
+<label>${t('present')}</label>
+<input type="number" id="at_present" placeholder="0" min="0">
+<div class="divider"></div>
+<h4>${t('absentDetails')}</h4>
+<div id="reasons"></div>
+<button class="secondary" onclick="addReasonRow()">${t('addReason')}</button>
+<button onclick="submitAttendance()">${t('saveAttendance')}</button>
+</div>
+`;
+addReasonRow();
+}
+
+function updateSections(){
+const cls = document.getElementById('at_class').value;
+const grp = CLASS_GROUPS.find(c => c.name === cls);
+const sec = document.getElementById('at_section');
+sec.innerHTML = '<option value="">-- '+t('selectSection')+' --</option>' + (grp ? grp.sections.map(s=>`<option value="${s}">${s}</option>`).join('') : '');
+}
+
+function addReasonRow(){
+const box = document.getElementById('reasons');
+if (!box) return;
+const div = document.createElement('div');
+div.className = 'reason-input-row';
+div.innerHTML = `<input placeholder="${t('reasonPlaceholder')}" class="reason-input" style="flex:2;margin:0"><input type="number" min="0" placeholder="${t('countPlaceholder')}" class="count-input" style="flex:1;margin:0"><button class="danger small" onclick="this.parentElement.remove()" style="margin:0;padding:12px">✕</button>`;
+box.appendChild(div);
+}
+
+async function submitAttendance(){
+const total = Number(document.getElementById('at_total').value) || 0;
+const present = Number(document.getElementById('at_present').value) || 0;
+const reasons = [];
+document.querySelectorAll('.reason-input').forEach((r, i)=>{
+const c = document.querySelectorAll('.count-input')[i];
+if (r.value.trim() && c.value) reasons.push({ reason: r.value.trim(), count: Number(c.value) });
+});
+const params = {
+teacher_id: USER.id,
+date: document.getElementById('at_dt').value,
+class_group: document.getElementById('at_class').value,
+section: document.getElementById('at_section').value,
+ustaz_name: document.getElementById('at_ustaz').value,
+total_students: total,
+present: present,
+absent_details: JSON.stringify(reasons)
+};
+document.getElementById('app').innerHTML = loading();
+try {
+const r = await api('addAttendance', params);
+if (r.success) { toast(t('attendanceSuccess'), 'ok'); await loadAllData(); CURRENT_TAB='home'; render(); }
+else { toast('ব্যর্থ: ' + (r.error||''), 'err'); render(); }
+} catch(e) { toast('ত্রুটি: ' + e.message, 'err'); render(); }
+}
 
 // ============================================
-// রিপোর্ট
+// রিপোর্ট — একই ট্যাবে সব
 // ============================================
-let REPORT_VIEW = 'overview';
+let REPORT_VIEW = 'daily';
 let REPORT_MONTH = new Date().toISOString().slice(0,7);
 
 function renderReports(){
-  if (USER.role === 'teacher') {
-    document.getElementById('app').innerHTML = `
-      <div class="card"><h3>📊 ${t('reports')}</h3>
-      <div class="tabs">
-        <button class="${REPORT_VIEW==='overview'?'active':''}" onclick="setReportView('overview')">সারসংক্ষেপ</button>
-        <button class="${REPORT_VIEW==='monthly'?'active':''}" onclick="setReportView('monthly')">মাসিক</button>
-      </div>
-      <div id="reportContent"></div></div>
-    `;
-    renderTeacherReport();
-    return;
-  }
+if (USER.role === 'teacher') {
+document.getElementById('app').innerHTML = `
+<div class="card"><h3>📊 ${t('reports')}</h3>
+<div class="tabs">
+<button class="${REPORT_VIEW==='daily'?'active':''}" onclick="setReportView('daily')">দৈনিক</button>
+<button class="${REPORT_VIEW==='weekly'?'active':''}" onclick="setReportView('weekly')">সাপ্তাহিক</button>
+<button class="${REPORT_VIEW==='monthly'?'active':''}" onclick="setReportView('monthly')">মাসিক</button>
+<button class="${REPORT_VIEW==='detail'?'active':''}" onclick="setReportView('detail')">বিস্তারিত</button>
+</div>
+<div id="reportContent"></div></div>
+`;
+if (REPORT_VIEW === 'weekly') renderTeacherWeekly();
+else if (REPORT_VIEW === 'monthly') renderReportMonthly();
+else if (REPORT_VIEW === 'detail') renderTeacherDetailReport();
+else renderTeacherReport();
+return;
+}
 
-  document.getElementById('app').innerHTML = `
-    <div class="card">
-      <h3>📊 ${t('reports')}</h3>
-      <div class="tabs">
-        <button class="${REPORT_VIEW==='overview'?'active':''}" onclick="setReportView('overview')">ড্যাশবোর্ড</button>
-        <button class="${REPORT_VIEW==='monthly'?'active':''}" onclick="setReportView('monthly')">${t('monthlyReport')}</button>
-        <button class="${REPORT_VIEW==='dept'?'active':''}" onclick="setReportView('dept')">বিভাগভিত্তিক</button>
-      </div>
-      <div id="reportContent"></div>
-    </div>
-  `;
-  if (REPORT_VIEW === 'overview') renderReportOverview();
-  else if (REPORT_VIEW === 'monthly') renderReportMonthly();
-  else if (REPORT_VIEW === 'dept') renderReportDept();
+document.getElementById('app').innerHTML = `
+<div class="card">
+<h3>📊 ${t('reports')}</h3>
+<div class="tabs">
+<button class="${REPORT_VIEW==='daily'?'active':''}" onclick="setReportView('daily')">দৈনিক</button>
+<button class="${REPORT_VIEW==='weekly'?'active':''}" onclick="setReportView('weekly')">সাপ্তাহিক</button>
+<button class="${REPORT_VIEW==='monthly'?'active':''}" onclick="setReportView('monthly')">মাসিক</button>
+<button class="${REPORT_VIEW==='dept'?'active':''}" onclick="setReportView('dept')">বিভাগ</button>
+</div>
+<div id="reportContent"></div>
+</div>
+`;
+if (REPORT_VIEW === 'weekly') renderAdminWeekly();
+else if (REPORT_VIEW === 'monthly') renderReportMonthly();
+else if (REPORT_VIEW === 'dept') renderReportDept();
+else renderReportOverview();
 }
 
 function setReportView(v){ REPORT_VIEW = v; renderReports(); }
 
 function renderReportOverview(){
-  const d = CACHE.dashboard;
-  const box = document.getElementById('reportContent');
-  box.innerHTML = `
-    <h4>🏆 Top 10</h4>
-    <div class="chart-box"><canvas id="topChart" width="500" height="260"></canvas></div>
-    <h4 style="margin-top:16px">📅 সাম্প্রতিক এন্ট্রি ট্রেন্ড</h4>
-    <div class="chart-box"><canvas id="trendChart" width="500" height="200"></canvas></div>
-  `;
-  setTimeout(()=>{
-    if (d?.teacherAvgs) {
-      const top10 = [...d.teacherAvgs].sort((a,b)=>b.avg-a.avg).slice(0,10);
-      drawBarChart('topChart', top10.map(x=>({
-        label: (LANG==='bn'?x.name:x.nameAr||x.name).substring(0,10),
-        value: parseFloat(x.avg)
-      })));
-    }
-    const recent = CACHE.entries.slice(0,30).reverse();
-    const dailyAvg = {};
-    recent.forEach(e=>{
-      const day = String(e.Date).slice(5,10);
-      if (!dailyAvg[day]) dailyAvg[day] = { s:0, n:0 };
-      dailyAvg[day].s += parseFloat(e.Average);
-      dailyAvg[day].n++;
-    });
-    const trendData = Object.keys(dailyAvg).map(k=>({
-      label: k, value: dailyAvg[k].s / dailyAvg[k].n
-    }));
-    drawLineChart('trendChart', trendData);
-  }, 100);
+const d = CACHE.dashboard;
+document.getElementById('reportContent').innerHTML = `
+<h4>🏆 Top 10</h4>
+<div class="chart-box"><canvas id="topChart" width="500" height="260"></canvas></div>
+<h4 style="margin-top:16px">📅 সাম্প্রতিক ট্রেন্ড</h4>
+<div class="chart-box"><canvas id="trendChart" width="500" height="200"></canvas></div>
+`;
+setTimeout(()=>{
+if (d?.teacherAvgs) {
+const top10 = [...d.teacherAvgs].sort((a,b)=>b.avg-a.avg).slice(0,10);
+drawBarChart('topChart', top10.map(x=>({label:(LANG==='bn'?x.name:x.nameAr||x.name).substring(0,10), value:parseFloat(x.avg)})));
+}
+const recent = CACHE.entries.slice(0,30).reverse();
+const dailyAvg = {};
+recent.forEach(e=>{ const day = String(e.Date).slice(5,10); if (!dailyAvg[day]) dailyAvg[day]={s:0,n:0}; dailyAvg[day].s += parseFloat(e.Average); dailyAvg[day].n++; });
+const trendData = Object.keys(dailyAvg).map(k=>({label:k, value:dailyAvg[k].s/dailyAvg[k].n}));
+drawLineChart('trendChart', trendData);
+}, 100);
+}
+
+// ✅ অ্যাডমিনের সাপ্তাহিক (একই ট্যাবে)
+function renderAdminWeekly(){
+const w = CACHE.dashboard?.weekly || [];
+let shown = w;
+if (USER.role === 'supervisor') shown = w.filter(x => (USER.assigned||[]).includes(x.id));
+document.getElementById('reportContent').innerHTML = `
+<h4>📅 ${t('weekReport')}</h4>
+${shown.length ? shown.map(x=>`
+<div class="week-row">
+<div class="head">
+<div><div class="name">${LANG==='bn'?x.name:x.nameAr||x.name}</div><div class="t-dept">${x.id} • ${x.department||''}</div></div>
+<span class="trend-badge trend-${x.trend}">${trendLabel(x.trend)}</span>
+</div>
+<div class="week-scores">
+<div class="week-score"><div class="lbl">${t('thisWeek')}</div><div class="val ${scoreClass(x.thisWeekAvg)}">${x.thisWeekAvg||'—'}</div><div style="font-size:11px;color:var(--text-muted)">${x.thisWeekCount} ${t('entries')}</div></div>
+<div class="week-score"><div class="lbl">${t('lastWeek')}</div><div class="val">${x.prevWeekAvg||'—'}</div><div style="font-size:11px;color:var(--text-muted)">${x.prevWeekCount} ${t('entries')}</div></div>
+</div>
+${x.diff ? `<div style="text-align:center;margin-top:8px;font-size:14px;font-weight:700" class="${parseFloat(x.diff)>=0?'good':'bad'}">${parseFloat(x.diff)>=0?'+':''}${x.diff}</div>` : ''}
+</div>`).join('') : `<p style="color:var(--text-muted);text-align:center;padding:20px">${t('noData')}</p>`}
+`;
+}
+
+// ✅ শিক্ষকের সাপ্তাহিক
+function renderTeacherWeekly(){
+const w = CACHE.dashboard?.weekly?.find(x => x.id === USER.id);
+document.getElementById('reportContent').innerHTML = w ? `
+<h4>📅 ${t('weekReport')}</h4>
+<div class="week-row">
+<div class="head">
+<div><div class="name">${t('thisWeek')} vs ${t('lastWeek')}</div></div>
+<span class="trend-badge trend-${w.trend}">${trendLabel(w.trend)}</span>
+</div>
+<div class="week-scores">
+<div class="week-score"><div class="lbl">${t('thisWeek')}</div><div class="val ${scoreClass(w.thisWeekAvg)}">${w.thisWeekAvg||'—'}</div><div style="font-size:11px;color:var(--text-muted)">${w.thisWeekCount} ${t('entries')}</div></div>
+<div class="week-score"><div class="lbl">${t('lastWeek')}</div><div class="val">${w.prevWeekAvg||'—'}</div><div style="font-size:11px;color:var(--text-muted)">${w.prevWeekCount} ${t('entries')}</div></div>
+</div>
+${w.diff ? `<div style="text-align:center;margin-top:8px;font-size:14px;font-weight:700" class="${parseFloat(w.diff)>=0?'good':'bad'}">${parseFloat(w.diff)>=0?'+':''}${w.diff}</div>` : ''}
+</div>
+<div class="chart-box" style="margin-top:16px"><canvas id="wChart" width="500" height="200"></canvas></div>
+` : `<p style="color:var(--text-muted);text-align:center;padding:20px">${t('noData')}</p>`;
+setTimeout(()=>{
+if (w) drawBarChart('wChart', [
+{label:t('lastWeek'), value:parseFloat(w.prevWeekAvg)||0},
+{label:t('thisWeek'), value:parseFloat(w.thisWeekAvg)||0}
+]);
+}, 100);
 }
 
 function renderReportMonthly(){
-  const box = document.getElementById('reportContent');
-  box.innerHTML = `
-    <label>${t('selectMonth')}</label>
-    <input type="month" id="rm" value="${REPORT_MONTH}" onchange="REPORT_MONTH=this.value; renderReportMonthly()">
-    <div id="monthlyContent" style="margin-top:14px">${loading()}</div>
-  `;
-  loadMonthlyReport();
+document.getElementById('reportContent').innerHTML = `
+<label>${t('selectMonth')}</label>
+<input type="month" id="rm" value="${REPORT_MONTH}" onchange="REPORT_MONTH=this.value; renderReportMonthly()">
+<div id="monthlyContent" style="margin-top:14px">${loading()}</div>
+`;
+loadMonthlyReport();
 }
 
 async function loadMonthlyReport(){
-  const r = await api('getMonthlyReport', { month: REPORT_MONTH });
-  const box = document.getElementById('monthlyContent');
-  if (!r.success || !r.report.length) {
-    box.innerHTML = `<p style="color:var(--text-muted)">${t('noData')}</p>`;
-    return;
-  }
-  box.innerHTML = `
-    <p style="font-size:14px;margin-bottom:10px"><b>${REPORT_MONTH}</b> — ${r.report.length} জন শিক্ষক</p>
-    <div class="chart-box"><canvas id="monthChart" width="500" height="${Math.max(200, r.report.length*22)}"></canvas></div>
-    <h4 style="margin-top:16px">বিস্তারিত তালিকা</h4>
-    ${r.report.map((x,i)=>`
-      <div class="t-row">
-        <div><div class="t-name">${i+1}. ${LANG==='bn'?x.name:x.nameAr||x.name}</div><div class="t-dept">${x.department||''} • ${x.entryCount} এন্ট্রি</div></div>
-        <span class="t-score ${scoreClass(x.avg)}">${x.avg}</span>
-      </div>
-    `).join('')}
-  `;
-  setTimeout(()=>{
-    drawBarChart('monthChart', r.report.map(x=>({
-      label: (LANG==='bn'?x.name:x.nameAr||x.name).substring(0,10),
-      value: parseFloat(x.avg)
-    })), true);
-  }, 100);
+const r = await api('getMonthlyReport', { month: REPORT_MONTH });
+const box = document.getElementById('monthlyContent');
+if (!r.success || !r.report.length) { box.innerHTML = `<p style="color:var(--text-muted);text-align:center;padding:20px">${t('noData')}</p>`; return; }
+box.innerHTML = `
+<p style="font-size:14px;margin-bottom:10px"><b>${REPORT_MONTH}</b> — ${r.report.length} জন</p>
+<div class="chart-box"><canvas id="monthChart" width="500" height="${Math.max(200, r.report.length*22)}"></canvas></div>
+${r.report.map((x,i)=>`<div class="t-row"><div><div class="t-name">${i+1}. ${LANG==='bn'?x.name:x.nameAr||x.name}</div><div class="t-dept">${x.department||''} • ${x.entryCount} ${t('entries')}</div></div><span class="t-score ${scoreClass(x.avg)}">${x.avg}</span></div>`).join('')}
+`;
+setTimeout(()=>drawBarChart('monthChart', r.report.map(x=>({label:(LANG==='bn'?x.name:x.nameAr||x.name).substring(0,10), value:parseFloat(x.avg)})), true), 100);
 }
 
 function renderReportDept(){
-  const deptMap = {};
-  CACHE.dashboard?.teacherAvgs?.forEach(x=>{
-    const d = x.department || 'অন্যান্য';
-    if (!deptMap[d]) deptMap[d] = { sum:0, n:0 };
-    deptMap[d].sum += parseFloat(x.avg);
-    deptMap[d].n++;
-  });
-  const depts = Object.keys(deptMap).map(k=>({
-    dept: k, avg: (deptMap[k].sum/deptMap[k].n).toFixed(2), count: deptMap[k].n
-  })).sort((a,b)=>b.avg-a.avg);
-
-  const box = document.getElementById('reportContent');
-  if (!depts.length) { box.innerHTML = `<p>${t('noData')}</p>`; return; }
-  box.innerHTML = `
-    <div class="chart-box"><canvas id="deptChart" width="500" height="${Math.max(180, depts.length*40)}"></canvas></div>
-    <h4 style="margin-top:16px">বিভাগসমূহ</h4>
-    ${depts.map(d=>`
-      <div class="t-row">
-        <div><div class="t-name">${d.dept}</div><div class="t-dept">${d.count} জন শিক্ষক</div></div>
-        <span class="t-score ${scoreClass(d.avg)}">${d.avg}</span>
-      </div>
-    `).join('')}
-  `;
-  setTimeout(()=>{
-    drawBarChart('deptChart', depts.map(d=>({
-      label: d.dept.substring(0,12), value: parseFloat(d.avg)
-    })), true);
-  }, 100);
+const deptMap = {};
+CACHE.dashboard?.teacherAvgs?.forEach(x=>{
+const d = x.department || 'অন্যান্য';
+if (!deptMap[d]) deptMap[d] = { sum:0, n:0 };
+deptMap[d].sum += parseFloat(x.avg);
+deptMap[d].n++;
+});
+const depts = Object.keys(deptMap).map(k=>({ dept:k, avg:(deptMap[k].sum/deptMap[k].n).toFixed(2), count:deptMap[k].n })).sort((a,b)=>b.avg-a.avg);
+if (!depts.length) { document.getElementById('reportContent').innerHTML = `<p>${t('noData')}</p>`; return; }
+document.getElementById('reportContent').innerHTML = `
+<div class="chart-box"><canvas id="deptChart" width="500" height="${Math.max(180, depts.length*40)}"></canvas></div>
+${depts.map(d=>`<div class="t-row"><div><div class="t-name">${d.dept}</div><div class="t-dept">${d.count} জন</div></div><span class="t-score ${scoreClass(d.avg)}">${d.avg}</span></div>`).join('')}
+`;
+setTimeout(()=>drawBarChart('deptChart', depts.map(d=>({label:d.dept.substring(0,12), value:parseFloat(d.avg)})), true), 100);
 }
 
 function renderTeacherReport(){
-  const entries = CACHE.entries.filter(e => e.Teacher_ID === USER.id).sort((a,b)=>new Date(a.Date)-new Date(b.Date));
-  const box = document.getElementById('reportContent');
-  if (!entries.length) { box.innerHTML = `<p>${t('noData')}</p>`; return; }
-
-  const avg = (entries.reduce((a,e)=>a+parseFloat(e.Average),0)/entries.length).toFixed(2);
-  const last7 = entries.slice(-7);
-  const weekAvg = last7.length ? (last7.reduce((a,e)=>a+parseFloat(e.Average),0)/last7.length).toFixed(2) : '—';
-
-  // Trend: comparing first half vs second half
-  const half = Math.floor(entries.length/2);
-  const firstAvg = entries.slice(0,half).reduce((a,e)=>a+parseFloat(e.Average),0)/(half||1);
-  const secondAvg = entries.slice(half).reduce((a,e)=>a+parseFloat(e.Average),0)/(entries.length-half||1);
-  const trend = secondAvg > firstAvg + 0.3 ? '📈 উন্নতি' : (secondAvg < firstAvg - 0.3 ? '📉 অবনতি' : '➡️ স্থিতিশীল');
-
-  box.innerHTML = `
-    <div class="stats">
-      <div class="stat"><div class="num ${scoreClass(avg)}">${avg}</div><div class="lbl">সর্বমোট গড়</div></div>
-      <div class="stat"><div class="num ${scoreClass(weekAvg)}">${weekAvg}</div><div class="lbl">শেষ ৭ দিন</div></div>
-    </div>
-    <div class="card" style="background:var(--bg)">
-      <h4>ট্রেন্ড: ${trend}</h4>
-    </div>
-    <h4>📈 ${t('days30')}</h4>
-    <div class="chart-box"><canvas id="t30" width="500" height="200"></canvas></div>
-    <h4 style="margin-top:16px">📊 ${t('dutyBreakdown')}</h4>
-    <div class="chart-box"><canvas id="dutyC" width="500" height="220"></canvas></div>
-  `;
-  setTimeout(()=>{
-    const last30 = entries.slice(-30);
-    drawLineChart('t30', last30.map(e=>({
-      label: String(e.Date).slice(5,10),
-      value: parseFloat(e.Average)
-    })));
-    const duties = {
-      d1:'উপস্থিতি', d2:'পাঠদান', d3:'তারবিয়াত', d4:'খাতা',
-      d5:'শৃঙ্খলা', d6:'অভিভাবক', d7:'সহকর্মী', d8:'ইলম চর্চা'
-    };
-    const dutyAvg = {};
-    Object.keys(duties).forEach(k=>dutyAvg[k]=0);
-    last30.forEach(e=>{
-      Object.keys(duties).forEach(k=>{
-        dutyAvg[k] += parseFloat(e[k.toUpperCase().replace('D','D')+'_'+mapDutyName(k)] || e[`D${k[1]}_${mapDutyName(k)}`] || 0);
-      });
-    });
-    // সহজ পদ্ধতি
-    const dutyNames = {
-      d1:'D1_Attendance', d2:'D2_Teaching', d3:'D3_Tarbiyah', d4:'D4_Exam',
-      d5:'D5_Discipline', d6:'D6_Parents', d7:'D7_Colleagues', d8:'D8_SelfStudy'
-    };
-    const sums = {};
-    Object.keys(dutyNames).forEach(k=>sums[k]=0);
-    last30.forEach(e=>{
-      Object.keys(dutyNames).forEach(k=>{
-        sums[k] += parseFloat(e[dutyNames[k]] || 0);
-      });
-    });
-    const labels = ['উপস্থিতি','পাঠদান','তারবিয়াত','খাতা','শৃঙ্খলা','অভিভাবক','সহকর্মী','ইলম'];
-    drawBarChart('dutyC', labels.map((l,i)=>({
-      label: l, value: last30.length ? sums['d'+(i+1)]/last30.length : 0
-    })));
-  }, 100);
+const entries = CACHE.entries.filter(e => e.Teacher_ID === USER.id).sort((a,b)=>new Date(a.Date)-new Date(b.Date));
+const box = document.getElementById('reportContent');
+if (!entries.length) { box.innerHTML = `<p>${t('noData')}</p>`; return; }
+const avg = (entries.reduce((a,e)=>a+parseFloat(e.Average),0)/entries.length).toFixed(2);
+const last7 = entries.slice(-7);
+const weekAvg = last7.length ? (last7.reduce((a,e)=>a+parseFloat(e.Average),0)/last7.length).toFixed(2) : '—';
+const half = Math.floor(entries.length/2);
+const firstAvg = entries.slice(0,half).reduce((a,e)=>a+parseFloat(e.Average),0)/(half||1);
+const secondAvg = entries.slice(half).reduce((a,e)=>a+parseFloat(e.Average),0)/(entries.length-half||1);
+const trend = secondAvg > firstAvg + 0.3 ? '📈 ' + t('improving') : (secondAvg < firstAvg - 0.3 ? '📉 ' + t('declining') : '➡️ ' + t('stable'));
+box.innerHTML = `
+<div class="stats">
+<div class="stat"><div class="num ${scoreClass(avg)}">${avg}</div><div class="lbl">সর্বমোট গড়</div></div>
+<div class="stat"><div class="num ${scoreClass(weekAvg)}">${weekAvg}</div><div class="lbl">শেষ ৭ দিন</div></div>
+</div>
+<div class="card" style="background:var(--bg)"><h4>${t('trend')}: ${trend}</h4></div>
+<h4>📈 শেষ ৩০ দিন</h4>
+<div class="chart-box"><canvas id="t30" width="500" height="200"></canvas></div>
+<h4 style="margin-top:16px">📊 ${t('dutyScores')}</h4>
+<div class="chart-box"><canvas id="dutyC" width="500" height="220"></canvas></div>
+`;
+setTimeout(()=>{
+const last30 = entries.slice(-30);
+drawLineChart('t30', last30.map(e=>({label:String(e.Date).slice(5,10), value:parseFloat(e.Average)})));
+const sums = {}; DUTIES.forEach(d => sums[d.id] = 0);
+last30.forEach(e=>{ DUTIES.forEach(d=>{ sums[d.id] += parseFloat(e[d.key] || 0); }); });
+drawBarChart('dutyC', DUTIES.map(d=>({label:d.short, value:last30.length ? sums[d.id]/last30.length : 0})));
+}, 100);
 }
 
-function mapDutyName(k){
-  return {d1:'Attendance',d2:'Teaching',d3:'Tarbiyah',d4:'Exam',d5:'Discipline',d6:'Parents',d7:'Colleagues',d8:'SelfStudy'}[k];
+function renderTeacherDetailReport(){
+const entries = CACHE.entries.filter(e => e.Teacher_ID === USER.id).sort((a,b)=>new Date(b.Date)-new Date(a.Date));
+const box = document.getElementById('reportContent');
+if (!entries.length) { box.innerHTML = `<p>${t('noData')}</p>`; return; }
+const dutySum = {}; DUTIES.forEach(d => dutySum[d.key] = { sum: 0, n: 0 });
+entries.forEach(e => { DUTIES.forEach(d => { const v = parseFloat(e[d.key])||0; if (v>0) { dutySum[d.key].sum += v; dutySum[d.key].n++; } }); });
+box.innerHTML = `
+<h4>📊 ${t('dutyScores')}</h4>
+<div class="duty-grid" style="margin-bottom:18px">
+${DUTIES.map(d=>{
+const s = dutySum[d.key];
+const avgD = s.n ? (s.sum/s.n).toFixed(1) : '0.0';
+const pct = (parseFloat(avgD)/10)*100;
+return `<div class="duty-item">
+<div class="duty-info"><div class="duty-name">${LANG==='bn'?d.bn:d.ar}</div>
+<div class="duty-bar"><div class="duty-bar-fill" style="width:${pct}%"></div></div></div>
+<div class="duty-score-row"><div></div><div class="duty-score ${scoreClass(avgD)}">${avgD}</div></div>
+</div>`;
+}).join('')}
+</div>
+<h4>📝 ${t('allEntries')} (${entries.length})</h4>
+${entries.map((e,i)=>`<div class="entry-list-item" onclick="showEntryDetail('${USER.id}', ${i})">
+<div><div class="date">${String(e.Date).slice(0,10)}</div><div class="meta">${e.Remark ? e.Remark.substring(0,40) : t('tapToView')}</div></div>
+<div class="score ${scoreClass(e.Average)}">${e.Average}</div></div>`).join('')}
+`;
 }
 
 // ============================================
 // Canvas চার্ট
 // ============================================
 function drawLineChart(canvasId, data){
-  const c = document.getElementById(canvasId);
-  if (!c || !data.length) return;
-  const ctx = c.getContext('2d');
-  const W = c.width, H = c.height;
-  const pad = {l:32, r:12, t:16, b:28};
-  const innerW = W - pad.l - pad.r;
-  const innerH = H - pad.t - pad.b;
-
-  ctx.clearRect(0,0,W,H);
-
-  // Grid
-  ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--border') || '#e0e0e0';
-  ctx.lineWidth = 1;
-  for (let i=0; i<=5; i++){
-    const y = pad.t + (innerH/5)*i;
-    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W-pad.r, y); ctx.stroke();
-    ctx.fillStyle = '#888'; ctx.font = '10px sans-serif'; ctx.textAlign='right';
-    ctx.fillText((10 - i*2).toString(), pad.l-4, y+3);
-  }
-
-  // Data points
-  const stepX = innerW / Math.max(1, data.length-1);
-  const pts = data.map((d,i)=>({
-    x: pad.l + stepX*i,
-    y: pad.t + innerH - (d.value/10)*innerH
-  }));
-
-  // Line
-  const primary = getComputedStyle(document.body).getPropertyValue('--primary').trim() || '#0b3d2e';
-  ctx.strokeStyle = primary; ctx.lineWidth = 2.5; ctx.beginPath();
-  pts.forEach((p,i)=> i ? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y));
-  ctx.stroke();
-
-  // Area fill
-  ctx.fillStyle = primary + '22';
-  ctx.beginPath();
-  ctx.moveTo(pts[0].x, pad.t+innerH);
-  pts.forEach(p=>ctx.lineTo(p.x, p.y));
-  ctx.lineTo(pts[pts.length-1].x, pad.t+innerH);
-  ctx.closePath(); ctx.fill();
-
-  // Dots
-  ctx.fillStyle = primary;
-  pts.forEach(p=>{
-    ctx.beginPath(); ctx.arc(p.x, p.y, 3.5, 0, Math.PI*2); ctx.fill();
-  });
-
-  // X labels (every nth)
-  ctx.fillStyle = '#888'; ctx.font = '9px sans-serif'; ctx.textAlign='center';
-  const skip = Math.ceil(data.length/8);
-  data.forEach((d,i)=>{
-    if (i % skip === 0 || i === data.length-1)
-      ctx.fillText(d.label, pts[i].x, H-8);
-  });
+const c = document.getElementById(canvasId);
+if (!c || !data.length) return;
+const ctx = c.getContext('2d');
+const W = c.width, H = c.height;
+const pad = {l:32, r:12, t:16, b:28};
+const innerW = W - pad.l - pad.r;
+const innerH = H - pad.t - pad.b;
+ctx.clearRect(0,0,W,H);
+ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--border') || '#e0e0e0';
+ctx.lineWidth = 1;
+for (let i=0; i<=5; i++){
+const y = pad.t + (innerH/5)*i;
+ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W-pad.r, y); ctx.stroke();
+ctx.fillStyle = '#888'; ctx.font = '10px sans-serif'; ctx.textAlign='right';
+ctx.fillText((10 - i*2).toString(), pad.l-4, y+3);
+}
+const stepX = innerW / Math.max(1, data.length-1);
+const pts = data.map((d,i)=>({ x: pad.l + stepX*i, y: pad.t + innerH - (d.value/10)*innerH }));
+const primary = getComputedStyle(document.body).getPropertyValue('--primary').trim() || '#0b3d2e';
+ctx.strokeStyle = primary; ctx.lineWidth = 2.5; ctx.beginPath();
+pts.forEach((p,i)=> i ? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y));
+ctx.stroke();
+ctx.fillStyle = primary + '22';
+ctx.beginPath();
+ctx.moveTo(pts[0].x, pad.t+innerH);
+pts.forEach(p=>ctx.lineTo(p.x, p.y));
+ctx.lineTo(pts[pts.length-1].x, pad.t+innerH);
+ctx.closePath(); ctx.fill();
+ctx.fillStyle = primary;
+pts.forEach(p=>{ ctx.beginPath(); ctx.arc(p.x, p.y, 3.5, 0, Math.PI*2); ctx.fill(); });
+ctx.fillStyle = '#888'; ctx.font = '9px sans-serif'; ctx.textAlign='center';
+const skip = Math.ceil(data.length/8);
+data.forEach((d,i)=>{ if (i % skip === 0 || i === data.length-1) ctx.fillText(d.label, pts[i].x, H-8); });
 }
 
 function drawBarChart(canvasId, data, horizontal){
-  const c = document.getElementById(canvasId);
-  if (!c || !data.length) return;
-  const ctx = c.getContext('2d');
-  const W = c.width, H = c.height;
-  ctx.clearRect(0,0,W,H);
-  const primary = getComputedStyle(document.body).getPropertyValue('--primary').trim() || '#0b3d2e';
-  const accent = getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#2ecc71';
-
-  if (horizontal) {
-    const pad = {l:100, r:40, t:10, b:10};
-    const rowH = (H - pad.t - pad.b) / data.length;
-    data.forEach((d,i)=>{
-      const y = pad.t + rowH*i + rowH*0.15;
-      const bh = rowH*0.7;
-      const bw = ((d.value||0)/10) * (W - pad.l - pad.r);
-      ctx.fillStyle = 'rgba(0,0,0,.06)';
-      ctx.fillRect(pad.l, y, W-pad.l-pad.r, bh);
-      const grad = ctx.createLinearGradient(pad.l, 0, pad.l+bw, 0);
-      grad.addColorStop(0, primary); grad.addColorStop(1, accent);
-      ctx.fillStyle = grad;
-      ctx.fillRect(pad.l, y, bw, bh);
-      ctx.fillStyle = '#333'; ctx.font = '11px sans-serif'; ctx.textAlign='right';
-      ctx.fillText((d.label||'').substring(0,14), pad.l-6, y+bh/2+4);
-      ctx.fillStyle = primary; ctx.textAlign='left'; ctx.font='bold 11px sans-serif';
-      ctx.fillText((d.value||0).toFixed ? d.value.toFixed(2) : d.value, pad.l+bw+6, y+bh/2+4);
-    });
-  } else {
-    const pad = {l:30, r:10, t:10, b:60};
-    const innerW = W - pad.l - pad.r;
-    const innerH = H - pad.t - pad.b;
-    const bw = innerW / data.length * 0.7;
-    const gap = innerW / data.length * 0.3;
-    data.forEach((d,i)=>{
-      const bh = ((d.value||0)/10) * innerH;
-      const x = pad.l + i*(bw+gap) + gap/2;
-      const y = pad.t + innerH - bh;
-      const grad = ctx.createLinearGradient(0, y, 0, y+bh);
-      grad.addColorStop(0, accent); grad.addColorStop(1, primary);
-      ctx.fillStyle = grad;
-      ctx.fillRect(x, y, bw, bh);
-      ctx.fillStyle = primary; ctx.font='bold 10px sans-serif'; ctx.textAlign='center';
-      ctx.fillText((d.value||0).toFixed(1), x+bw/2, y-3);
-      ctx.save();
-      ctx.translate(x+bw/2, H-pad.b+8);
-      ctx.rotate(-Math.PI/4);
-      ctx.fillStyle = '#666'; ctx.font='9px sans-serif'; ctx.textAlign='right';
-      ctx.fillText((d.label||'').substring(0,12), 0, 0);
-      ctx.restore();
-    });
-  }
+const c = document.getElementById(canvasId);
+if (!c || !data.length) return;
+const ctx = c.getContext('2d');
+const W = c.width, H = c.height;
+ctx.clearRect(0,0,W,H);
+const primary = getComputedStyle(document.body).getPropertyValue('--primary').trim() || '#0b3d2e';
+const accent = getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#2ecc71';
+if (horizontal) {
+const pad = {l:100, r:40, t:10, b:10};
+const rowH = (H - pad.t - pad.b) / data.length;
+data.forEach((d,i)=>{
+const y = pad.t + rowH*i + rowH*0.15;
+const bh = rowH*0.7;
+const bw = ((d.value||0)/10) * (W - pad.l - pad.r);
+ctx.fillStyle = 'rgba(0,0,0,.06)';
+ctx.fillRect(pad.l, y, W-pad.l-pad.r, bh);
+const grad = ctx.createLinearGradient(pad.l, 0, pad.l+bw, 0);
+grad.addColorStop(0, primary); grad.addColorStop(1, accent);
+ctx.fillStyle = grad;
+ctx.fillRect(pad.l, y, bw, bh);
+ctx.fillStyle = '#333'; ctx.font = '11px sans-serif'; ctx.textAlign='right';
+ctx.fillText((d.label||'').substring(0,14), pad.l-6, y+bh/2+4);
+ctx.fillStyle = primary; ctx.textAlign='left'; ctx.font='bold 11px sans-serif';
+ctx.fillText((d.value||0).toFixed(2), pad.l+bw+6, y+bh/2+4);
+});
+} else {
+const pad = {l:30, r:10, t:10, b:60};
+const innerW = W - pad.l - pad.r;
+const innerH = H - pad.t - pad.b;
+const bw = innerW / data.length * 0.7;
+const gap = innerW / data.length * 0.3;
+data.forEach((d,i)=>{
+const bh = ((d.value||0)/10) * innerH;
+const x = pad.l + i*(bw+gap) + gap/2;
+const y = pad.t + innerH - bh;
+const grad = ctx.createLinearGradient(0, y, 0, y+bh);
+grad.addColorStop(0, accent); grad.addColorStop(1, primary);
+ctx.fillStyle = grad;
+ctx.fillRect(x, y, bw, bh);
+ctx.fillStyle = primary; ctx.font='bold 10px sans-serif'; ctx.textAlign='center';
+ctx.fillText((d.value||0).toFixed(1), x+bw/2, y-3);
+ctx.save();
+ctx.translate(x+bw/2, H-pad.b+8);
+ctx.rotate(-Math.PI/4);
+ctx.fillStyle = '#666'; ctx.font='9px sans-serif'; ctx.textAlign='right';
+ctx.fillText((d.label||'').substring(0,12), 0, 0);
+ctx.restore();
+});
+}
 }
 
 // ============================================
 // ইনিশিয়ালাইজ
 // ============================================
 (async function init(){
-  applyTheme();
-  document.body.classList.toggle('ar', LANG === 'ar');
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(()=>{});
-  }
-  if (USER) await loadAllData();
-  else render();
+applyTheme();
+document.body.classList.toggle('ar', LANG === 'ar');
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+if (USER) await loadAllData();
+else render();
 })();
 </script>
 </body>
