@@ -318,6 +318,7 @@ function render(){
 applyTheme();
 document.body.classList.toggle('ar', LANG === 'ar');
 if (SHOW_SETTINGS) return renderSettings();
+if (typeof SHOW_ADMIN !== 'undefined' && SHOW_ADMIN) return renderAdminPanel();
 if (!USER) return renderLogin();
 document.getElementById('nav').classList.remove('hidden');
 document.querySelectorAll('.bottom-nav button').forEach(b=>{
@@ -351,6 +352,7 @@ document.getElementById('app').innerHTML = `
 <div class="card"><h4>🎨 থিম</h4><div class="theme-grid">
 ${themes.map(th=>`<div class="theme-item ${THEME===th.id?'active':''}" onclick="setTheme('${th.id}')"><div class="dot" style="background:${th.color}"></div><div class="name">${th.name}</div></div>`).join('')}
 </div></div>
+${USER.role === 'admin' ? `<div class="card"><h4>🎛️ অ্যাডমিন প্যানেল</h4><button onclick="openAdminPanel()" style="background:linear-gradient(135deg,#c0392b,#e74c3c)">🎛️ প্যানেল খুলুন</button></div>` : ''}
 <div class="card"><h4>🔔 নোটিফিকেশন</h4><button onclick="enableNotifications()">নোটিফিকেশন চালু করুন</button></div>
 ${USER ? `<div class="card"><h4>👤 ${USER.name||USER.id}</h4>
 <p style="font-size:13px;color:var(--text-muted)">${USER.role === 'admin' ? 'অ্যাডমিন' : USER.role === 'supervisor' ? 'সুপারভাইজার' : 'শিক্ষক'}</p>
@@ -426,6 +428,8 @@ CACHE.negrani = r.negrani || [];
 CACHE.attendanceSummary = r.attendanceSummary || null;
 CACHE.routine = r.routine || [];
 CACHE.awards = r.awards || [];
+const deptResp = await api('getDepartments');
+if (deptResp.success) CACHE.departments = deptResp.data;
 if (USER.role === 'teacher') {
 CACHE.entries = CACHE.entries.filter(e => e.Teacher_ID === USER.id);
 CACHE.attendance = CACHE.attendance.filter(a => a.Teacher_ID === USER.id);
@@ -1671,7 +1675,367 @@ ctx.restore();
 });
 }
 }
+// ============================================
+// ADMIN PANEL
+// ============================================
+let SHOW_ADMIN = false;
+let ADMIN_VIEW = 'main';
 
+function openAdminPanel(){
+  SHOW_ADMIN = true;
+  ADMIN_VIEW = 'main';
+  SHOW_SETTINGS = false;
+  render();
+}
+
+function closeAdminPanel(){
+  SHOW_ADMIN = false;
+  render();
+}
+
+function renderAdminPanel(){
+  document.getElementById('nav').classList.add('hidden');
+  document.getElementById('app').innerHTML = `
+    <div class="card" style="background:linear-gradient(135deg,#c0392b,#e74c3c);color:#fff">
+      <h3 style="color:#fff">🎛️ অ্যাডমিন প্যানেল</h3>
+      <button class="secondary small" onclick="closeAdminPanel()" style="margin-top:10px">← ফিরে যান</button>
+    </div>
+    <div class="card">
+      <h4>🔧 কাজ নির্বাচন</h4>
+      <button onclick="adminView('add')" style="background:linear-gradient(135deg,#0a7d3e,#2ecc71)">➕ নতুন শিক্ষক যোগ</button>
+      <button onclick="adminView('list')" style="background:linear-gradient(135deg,#1a3a6e,#2c5aa0)">📋 সকল শিক্ষক</button>
+      <button onclick="adminView('sups')" style="background:linear-gradient(135deg,#4a1a6e,#6c2aa0)">👥 সুপারভাইজার</button>
+      <button onclick="adminView('dept')" style="background:linear-gradient(135deg,#5d4e37,#7d6e57)">🏢 বিভাগ</button>
+      <button onclick="adminView('log')" style="background:linear-gradient(135deg,#666,#888)">📋 লগ দেখুন</button>
+    </div>
+    <div id="adminContent"></div>
+  `;
+  renderAdminContent();
+}
+
+function adminView(v){
+  ADMIN_VIEW = v;
+  renderAdminPanel();
+}
+
+function renderAdminContent(){
+  const box = document.getElementById('adminContent');
+  if (!box) return;
+  if (ADMIN_VIEW === 'add') box.innerHTML = adminAddTeacherForm();
+  else if (ADMIN_VIEW === 'list') box.innerHTML = adminTeacherList();
+  else if (ADMIN_VIEW === 'sups') box.innerHTML = adminSupervisorsView();
+  else if (ADMIN_VIEW === 'dept') { box.innerHTML = ''; loadDeptView(); }
+  else if (ADMIN_VIEW === 'log') { box.innerHTML = loading(); loadAdminLog(); }
+}
+
+// ---------- ADD TEACHER ----------
+function adminAddTeacherForm(){
+  const sups = CACHE.supervisorList || [];
+  const depts = CACHE.departments || [];
+  return `
+    <div class="card">
+      <h4>➕ নতুন শিক্ষক যোগ</h4>
+      <label>নাম (বাংলা) *</label>
+      <input id="at_bn" placeholder="মুহাম্মদ আব্দুল্লাহ">
+      <label>নাম (আরবী)</label>
+      <input id="at_ar" placeholder="محمد عبد الله" dir="rtl">
+      <label>পদবী</label>
+      <input id="at_dg" placeholder="সহ. শিক্ষক">
+      <label>পদবী (আরবী)</label>
+      <input id="at_dgar" placeholder="مدرس مساعد" dir="rtl">
+      <label>বিভাগ</label>
+      <select id="at_dept">
+        <option value="">-- নির্বাচন --</option>
+        ${depts.map(d=>`<option value="${d.Name}">${d.Name}</option>`).join('')}
+      </select>
+      <label>ফোন</label>
+      <input id="at_ph" placeholder="01xxxxxxxxx">
+      <label>সুপারভাইজার</label>
+      <select id="at_sup">
+        <option value="">-- নির্বাচন --</option>
+        ${sups.map(s=>`<option value="${s.ID}">${s.Name_Bangla} (${s.ID})</option>`).join('')}
+      </select>
+      <label>ছবির লিংক (URL)</label>
+      <input id="at_photo" placeholder="https://...">
+      <button onclick="saveNewTeacher()">✅ সেভ করুন</button>
+    </div>
+  `;
+}
+
+async function saveNewTeacher(){
+  const bn = document.getElementById('at_bn').value.trim();
+  if (!bn) { toast('নাম দিন', 'err'); return; }
+  const params = {
+    name_bn: bn,
+    name_ar: document.getElementById('at_ar').value.trim(),
+    designation: document.getElementById('at_dg').value.trim(),
+    designation_ar: document.getElementById('at_dgar').value.trim(),
+    department: document.getElementById('at_dept').value,
+    phone: document.getElementById('at_ph').value.trim(),
+    supervisor_id: document.getElementById('at_sup').value,
+    photo: document.getElementById('at_photo').value.trim()
+  };
+  document.getElementById('adminContent').innerHTML = loading();
+  const r = await api('adminAddTeacher', params);
+  if (r.success) {
+    toast('✅ যোগ হয়েছে: ' + r.id, 'ok');
+    await loadAllData();
+    ADMIN_VIEW = 'list';
+    renderAdminPanel();
+  } else {
+    toast('❌ ' + (r.error||''), 'err');
+    renderAdminContent();
+  }
+}
+
+// ---------- TEACHER LIST ----------
+function adminTeacherList(){
+  const teachers = CACHE.teachers || [];
+  return `
+    <div class="card">
+      <h4>📋 সকল শিক্ষক (${teachers.length})</h4>
+      <input id="admin_search" placeholder="🔍 নাম / ID..." oninput="filterAdminList(this.value)">
+      <div id="admin_tlist">
+        ${teachers.map(t=>`
+          <div class="t-row" data-name="${t.Name_Bangla} ${t.Name_Arabic} ${t.ID}">
+            <div style="display:flex;align-items:center;gap:10px">
+              ${avatarHtml(t.Photo_URL, t.Name_Bangla)}
+              <div>
+                <div class="t-name">${t.Name_Bangla}</div>
+                <div class="t-dept">${t.ID} • ${t.Department||''} • ${t.Supervisor_ID||'—'}</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px">
+              <button class="tiny secondary" onclick="adminEditTeacher('${t.ID}')">✏️</button>
+              <button class="tiny danger" onclick="adminConfirmDelete('${t.ID}')">🗑️</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function filterAdminList(q){
+  q = q.toLowerCase();
+  document.querySelectorAll('#admin_tlist .t-row').forEach(r=>{
+    r.style.display = r.dataset.name.toLowerCase().includes(q) ? 'flex' : 'none';
+  });
+}
+
+// ---------- EDIT TEACHER ----------
+function adminEditTeacher(id){
+  const tch = CACHE.teachers.find(x => x.ID === id);
+  if (!tch) return;
+  const sups = CACHE.supervisorList || [];
+  const depts = CACHE.departments || [];
+  document.getElementById('adminContent').innerHTML = `
+    <div class="card">
+      <button class="secondary small" onclick="adminView('list')" style="margin-bottom:12px">← ফিরে যান</button>
+      <h4>✏️ সম্পাদনা: ${tch.Name_Bangla}</h4>
+      <label>নাম (বাংলা)</label>
+      <input id="ae_bn" value="${tch.Name_Bangla||''}">
+      <label>নাম (আরবী)</label>
+      <input id="ae_ar" value="${tch.Name_Arabic||''}" dir="rtl">
+      <label>পদবী</label>
+      <input id="ae_dg" value="${tch.Designation_Bangla||''}">
+      <label>বিভাগ</label>
+      <select id="ae_dept">
+        <option value="">-- নির্বাচন --</option>
+        ${depts.map(d=>`<option value="${d.Name}" ${tch.Department===d.Name?'selected':''}>${d.Name}</option>`).join('')}
+      </select>
+      <label>ফোন</label>
+      <input id="ae_ph" value="${tch.Phone||''}">
+      <label>সুপারভাইজার</label>
+      <select id="ae_sup">
+        <option value="">-- নির্বাচন --</option>
+        ${sups.map(s=>`<option value="${s.ID}" ${tch.Supervisor_ID===s.ID?'selected':''}>${s.Name_Bangla} (${s.ID})</option>`).join('')}
+      </select>
+      <label>ছবির লিংক</label>
+      <input id="ae_photo" value="${tch.Photo_URL||''}" placeholder="https://...">
+      <button onclick="adminSaveTeacher('${id}')">✅ সেভ করুন</button>
+      <button class="danger" onclick="adminConfirmDelete('${id}')">🗑️ ডিলিট করুন</button>
+    </div>
+  `;
+}
+
+async function adminSaveTeacher(id){
+  const oldSup = CACHE.teachers.find(x=>x.ID===id)?.Supervisor_ID || '';
+  const newSup = document.getElementById('ae_sup').value;
+  const params = {
+    id,
+    name_bn: document.getElementById('ae_bn').value.trim(),
+    name_ar: document.getElementById('ae_ar').value.trim(),
+    designation: document.getElementById('ae_dg').value.trim(),
+    department: document.getElementById('ae_dept').value,
+    phone: document.getElementById('ae_ph').value.trim(),
+    photo: document.getElementById('ae_photo').value.trim()
+  };
+  document.getElementById('adminContent').innerHTML = loading();
+  const r1 = await api('adminUpdateTeacher', params);
+  if (r1.success) {
+    if (newSup !== oldSup) {
+      await api('adminChangeSupervisor', { teacher_id: id, new_supervisor_id: newSup });
+    }
+    toast('✅ আপডেট সফল', 'ok');
+    await loadAllData();
+    ADMIN_VIEW = 'list';
+    renderAdminPanel();
+  } else {
+    toast('❌ ' + (r1.error||''), 'err');
+    renderAdminContent();
+  }
+}
+
+// ---------- DELETE TEACHER ----------
+function adminConfirmDelete(id){
+  const tch = CACHE.teachers.find(x => x.ID === id);
+  if (!tch) return;
+  document.getElementById('adminContent').innerHTML = `
+    <div class="card" style="border:3px solid #c0392b">
+      <h4 style="color:#c0392b">⚠️ নিশ্চিত করুন</h4>
+      <p style="margin:12px 0;font-size:15px">আপনি কি <b>${tch.Name_Bangla}</b> (${id})-কে <b style="color:#c0392b">সম্পূর্ণ ডিলিট</b> করতে চান?</p>
+      <p style="font-size:13px;color:var(--text-muted)">এই কাজটি ফিরিয়ে আনা যাবে না।</p>
+      <button class="danger" onclick="adminDoDelete('${id}')">🗑️ হ্যাঁ, ডিলিট করুন</button>
+      <button class="secondary" onclick="adminView('list')">❌ বাতিল</button>
+    </div>
+  `;
+}
+
+async function adminDoDelete(id){
+  document.getElementById('adminContent').innerHTML = loading();
+  const r = await api('adminDeleteTeacher', { id });
+  if (r.success) {
+    toast('🗑️ ডিলিট হয়েছে', 'ok');
+    await loadAllData();
+    ADMIN_VIEW = 'list';
+    renderAdminPanel();
+  } else {
+    toast('❌ ' + (r.error||''), 'err');
+    renderAdminContent();
+  }
+}
+
+// ---------- SUPERVISORS ----------
+function adminSupervisorsView(){
+  const sups = CACHE.supervisorList || [];
+  return `
+    <div class="card">
+      <h4>👥 সুপারভাইজার (${sups.length})</h4>
+      <button onclick="adminAddSupForm()" class="secondary">➕ নতুন সুপারভাইজার</button>
+      <div id="supForm"></div>
+      <div style="margin-top:14px">
+        ${sups.map(s=>`
+          <div class="attendance-row">
+            <div style="font-weight:700;font-size:15px">${s.Name_Bangla} (${s.ID})</div>
+            <div style="font-size:13px;color:var(--text-muted);margin-top:4px">📞 ${s.Phone||'—'}</div>
+            <div style="font-size:13px;margin-top:4px">👥 ${String(s.Assigned_Teachers||'').split(',').filter(x=>x).length} জন শিক্ষক</div>
+            <button class="secondary tiny" onclick="adminEditSup('${s.ID}')" style="margin-top:8px">✏️ পাসওয়ার্ড পরিবর্তন</button>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function adminAddSupForm(){
+  const box = document.getElementById('supForm');
+  if (box.innerHTML) { box.innerHTML=''; return; }
+  box.innerHTML = `<div style="background:var(--bg);padding:12px;border-radius:10px;margin-top:10px">
+    <label>নাম (বাংলা)</label><input id="ns_bn">
+    <label>নাম (আরবী)</label><input id="ns_ar" dir="rtl">
+    <label>ফোন</label><input id="ns_ph">
+    <label>পাসওয়ার্ড</label><input id="ns_pw" placeholder="যেমন: sup1006">
+    <button onclick="adminSaveSup()">✅ সেভ</button>
+  </div>`;
+}
+
+async function adminSaveSup(){
+  const bn = document.getElementById('ns_bn').value.trim();
+  if (!bn) { toast('নাম দিন', 'err'); return; }
+  const r = await api('adminAddSupervisor', {
+    name_bn: bn,
+    name_ar: document.getElementById('ns_ar').value.trim(),
+    phone: document.getElementById('ns_ph').value.trim(),
+    password: document.getElementById('ns_pw').value.trim()
+  });
+  if (r.success) { toast('✅ যোগ: ' + r.id, 'ok'); await loadAllData(); renderAdminPanel(); }
+  else toast('❌ ' + (r.error||''), 'err');
+}
+
+function adminEditSup(id){
+  const s = CACHE.supervisorList.find(x=>x.ID===id);
+  if (!s) return;
+  document.getElementById('adminContent').innerHTML = `
+    <div class="card">
+      <button class="secondary small" onclick="adminView('sups')" style="margin-bottom:12px">← ফিরে যান</button>
+      <h4>✏️ ${s.Name_Bangla}</h4>
+      <label>নাম (বাংলা)</label><input id="es_bn" value="${s.Name_Bangla||''}">
+      <label>নাম (আরবী)</label><input id="es_ar" value="${s.Name_Arabic||''}" dir="rtl">
+      <label>ফোন</label><input id="es_ph" value="${s.Phone||''}">
+      <label>পাসওয়ার্ড</label><input id="es_pw" value="${s.Password||''}">
+      <button onclick="adminSaveSupEdit('${id}')">✅ সেভ</button>
+    </div>
+  `;
+}
+
+async function adminSaveSupEdit(id){
+  const r = await api('adminUpdateSupervisor', {
+    id,
+    name_bn: document.getElementById('es_bn').value.trim(),
+    name_ar: document.getElementById('es_ar').value.trim(),
+    phone: document.getElementById('es_ph').value.trim(),
+    password: document.getElementById('es_pw').value.trim()
+  });
+  if (r.success) { toast('✅ আপডেট', 'ok'); await loadAllData(); ADMIN_VIEW='sups'; renderAdminPanel(); }
+  else toast('❌ ' + (r.error||''), 'err');
+}
+
+// ---------- DEPARTMENTS ----------
+async function loadDeptView(){
+  const box = document.getElementById('adminContent');
+  box.innerHTML = loading();
+  const r = await api('getDepartments');
+  if (!r.success) { box.innerHTML = '<div class="card"><p>ডাটা নেই</p></div>'; return; }
+  CACHE.departments = r.data;
+  box.innerHTML = `
+    <div class="card">
+      <h4>🏢 বিভাগসমূহ (${r.data.length})</h4>
+      ${r.data.map(d=>`<div class="attendance-row">
+        <div style="font-weight:700">${d.Name}</div>
+        <div style="font-size:12px;color:var(--text-muted)">ID: ${d.ID}</div>
+      </div>`).join('')}
+      <label style="margin-top:14px">নতুন বিভাগ</label>
+      <input id="nd_name" placeholder="বিভাগের নাম">
+      <button onclick="adminSaveDept()">➕ যোগ করুন</button>
+    </div>
+  `;
+}
+
+async function adminSaveDept(){
+  const name = document.getElementById('nd_name').value.trim();
+  if (!name) return;
+  const r = await api('adminAddDepartment', { name });
+  if (r.success) { toast('✅ যোগ হয়েছে', 'ok'); loadDeptView(); }
+  else toast('❌ ' + (r.error||''), 'err');
+}
+
+// ---------- LOG ----------
+async function loadAdminLog(){
+  const box = document.getElementById('adminContent');
+  const r = await api('adminGetLog');
+  if (!r.success || !r.data.length) { box.innerHTML = '<div class="card"><p>কোনো লগ নেই</p></div>'; return; }
+  box.innerHTML = `
+    <div class="card">
+      <h4>📋 লগ হিস্টোরি (শেষ ১০০)</h4>
+      ${r.data.map(l=>`<div class="attendance-row">
+        <div style="font-size:12px;color:var(--text-muted)">${String(l.Timestamp).slice(0,16).replace('T',' ')}</div>
+        <div style="font-weight:700;font-size:14px;margin-top:4px">${l.Action}</div>
+        <div style="font-size:13px;color:var(--text-muted);margin-top:2px">${l.Details}</div>
+      </div>`).join('')}
+    </div>
+  `;
+}
 (async function init(){
 applyTheme();
 document.body.classList.toggle('ar', LANG === 'ar');
