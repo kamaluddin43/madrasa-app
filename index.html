@@ -1922,17 +1922,21 @@ function adminSupervisorsView(){
   return `
     <div class="card">
       <h4>👥 সুপারভাইজার (${sups.length})</h4>
-      <button onclick="adminAddSupForm()" class="secondary">➕ নতুন সুপারভাইজার</button>
+      <button onclick="adminAddSupForm()" class="secondary">➕ নতুন সুপারভাইজার যোগ করুন</button>
       <div id="supForm"></div>
       <div style="margin-top:14px">
-        ${sups.map(s=>`
-          <div class="attendance-row">
+        ${sups.map(s=>{
+          const assigned = String(s.Assigned_Teachers||'').split(',').filter(x=>x.trim());
+          return `<div class="attendance-row">
             <div style="font-weight:700;font-size:15px">${s.Name_Bangla} (${s.ID})</div>
-            <div style="font-size:13px;color:var(--text-muted);margin-top:4px">📞 ${s.Phone||'—'}</div>
-            <div style="font-size:13px;margin-top:4px">👥 ${String(s.Assigned_Teachers||'').split(',').filter(x=>x).length} জন শিক্ষক</div>
-            <button class="secondary tiny" onclick="adminEditSup('${s.ID}')" style="margin-top:8px">✏️ পাসওয়ার্ড পরিবর্তন</button>
-          </div>
-        `).join('')}
+            <div style="font-size:13px;color:var(--text-muted);margin-top:4px">📞 ${s.Phone||'—'} • 🔑 ${s.Password||'—'}</div>
+            <div style="font-size:13px;margin-top:6px">👥 <b>${assigned.length}</b> জন শিক্ষক</div>
+            <div style="display:flex;gap:6px;margin-top:10px">
+              <button class="secondary tiny" onclick="adminEditSup('${s.ID}')">✏️ এডিট</button>
+              <button class="secondary tiny" onclick="adminAssignTeachers('${s.ID}')">👥 শিক্ষক নির্ধারণ</button>
+            </div>
+          </div>`;
+        }).join('')}
       </div>
     </div>
   `;
@@ -1941,12 +1945,13 @@ function adminSupervisorsView(){
 function adminAddSupForm(){
   const box = document.getElementById('supForm');
   if (box.innerHTML) { box.innerHTML=''; return; }
-  box.innerHTML = `<div style="background:var(--bg);padding:12px;border-radius:10px;margin-top:10px">
-    <label>নাম (বাংলা)</label><input id="ns_bn">
-    <label>নাম (আরবী)</label><input id="ns_ar" dir="rtl">
-    <label>ফোন</label><input id="ns_ph">
-    <label>পাসওয়ার্ড</label><input id="ns_pw" placeholder="যেমন: sup1006">
-    <button onclick="adminSaveSup()">✅ সেভ</button>
+  box.innerHTML = `<div style="background:var(--bg);padding:14px;border-radius:10px;margin-top:10px">
+    <h4 style="margin-bottom:8px">➕ নতুন সুপারভাইজার</h4>
+    <label>নাম (বাংলা) *</label><input id="ns_bn" placeholder="মাও. নাম লিখুন">
+    <label>নাম (আরবী)</label><input id="ns_ar" dir="rtl" placeholder="مولانا ...">
+    <label>ফোন</label><input id="ns_ph" placeholder="01xxxxxxxxx">
+    <label>পাসওয়ার্ড</label><input id="ns_pw" placeholder="খালি রাখলে অটো হবে">
+    <button onclick="adminSaveSup()">✅ সেভ করুন</button>
   </div>`;
 }
 
@@ -1969,14 +1974,112 @@ function adminEditSup(id){
   document.getElementById('adminContent').innerHTML = `
     <div class="card">
       <button class="secondary small" onclick="adminView('sups')" style="margin-bottom:12px">← ফিরে যান</button>
-      <h4>✏️ ${s.Name_Bangla}</h4>
+      <h4>✏️ ${s.Name_Bangla} (${s.ID})</h4>
       <label>নাম (বাংলা)</label><input id="es_bn" value="${s.Name_Bangla||''}">
       <label>নাম (আরবী)</label><input id="es_ar" value="${s.Name_Arabic||''}" dir="rtl">
       <label>ফোন</label><input id="es_ph" value="${s.Phone||''}">
       <label>পাসওয়ার্ড</label><input id="es_pw" value="${s.Password||''}">
-      <button onclick="adminSaveSupEdit('${id}')">✅ সেভ</button>
+      <button onclick="adminSaveSupEdit('${id}')">✅ সেভ করুন</button>
+      <button class="secondary" onclick="adminAssignTeachers('${id}')">👥 শিক্ষক নির্ধারণ</button>
     </div>
   `;
+}
+
+// ---------- ASSIGN TEACHERS ----------
+async function adminAssignTeachers(supId){
+  const s = CACHE.supervisorList.find(x=>x.ID===supId);
+  if (!s) return;
+  document.getElementById('adminContent').innerHTML = loading();
+
+  const r = await api('adminAssignTeachers', { supervisor_id: supId });
+  if (!r.success) {
+    document.getElementById('adminContent').innerHTML = '<div class="card"><p>ডাটা লোড ব্যর্থ</p></div>';
+    return;
+  }
+
+  const teachers = r.teachers || [];
+  const currentAssigned = teachers.filter(t => t.Is_Assigned).map(t => t.ID);
+
+  document.getElementById('adminContent').innerHTML = `
+    <div class="card">
+      <button class="secondary small" onclick="adminView('sups')" style="margin-bottom:12px">← ফিরে যান</button>
+      <h4>👥 শিক্ষক নির্ধারণ</h4>
+      <p style="font-size:14px;color:var(--text-muted);margin-top:6px">
+        <b>${s.Name_Bangla}</b> (${s.ID}) — ${currentAssigned.length} জন নির্বাচিত
+      </p>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:8px">
+        যাদের এই সুপারভাইজারের অধীনে রাখতে চান, তাদের টিক দিন। অন্য সুপারভাইজারের শিক্ষক সিলেক্ট করলে সতর্কতা আসবে।
+      </p>
+      <input id="assign_search" placeholder="🔍 নাম / ID খুঁজুন..." oninput="filterAssignList(this.value)" style="margin-top:10px">
+      <div style="max-height:500px;overflow-y:auto;background:var(--bg);padding:10px;border-radius:10px;margin-top:8px" id="assign_list">
+        ${teachers.map(t=>{
+          const isIn = t.Is_Assigned;
+          const otherSup = t.Current_Supervisor && t.Current_Supervisor !== supId ? t.Current_Supervisor : '';
+          const otherSupObj = otherSup ? CACHE.supervisorList.find(x=>x.ID===otherSup) : null;
+          return `<label class="assign-row" data-name="${t.Name_Bangla} ${t.Name_Arabic} ${t.ID}" style="display:flex;align-items:flex-start;gap:10px;padding:10px;background:var(--card);border-radius:8px;margin-bottom:6px;font-size:14px;cursor:pointer${otherSup?'border-left:4px solid #d68910':''}">
+            <input type="checkbox" class="assign-check" value="${t.ID}" data-old-sup="${otherSup||''}" ${isIn?'checked':''} style="width:auto;margin:4px 0 0 0">
+            <div style="flex:1">
+              <div style="font-weight:600">${t.Name_Bangla}</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px">${t.ID} • ${t.Department||''}</div>
+              ${otherSupObj?`<div style="font-size:12px;color:#d68910;font-weight:600;margin-top:4px">⚠️ বর্তমানে ${otherSupObj.Name_Bangla}-এর অধীনে</div>`:''}
+            </div>
+          </label>`;
+        }).join('')}
+      </div>
+      <button onclick="adminSaveAssign('${supId}')" style="margin-top:14px">✅ সংরক্ষণ করুন</button>
+    </div>
+  `;
+}
+
+function filterAssignList(q){
+  q = q.toLowerCase();
+  document.querySelectorAll('#assign_list .assign-row').forEach(r=>{
+    r.style.display = r.dataset.name.toLowerCase().includes(q) ? 'flex' : 'none';
+  });
+}
+
+async function adminSaveAssign(supId){
+  const checked = [];
+  const conflicts = [];
+  document.querySelectorAll('.assign-check').forEach(c=>{
+    if (c.checked) {
+      checked.push(c.value);
+      const oldSup = c.dataset.oldSup;
+      if (oldSup && oldSup !== supId) {
+        const t = CACHE.teachers.find(x=>x.ID===c.value);
+        const oldObj = CACHE.supervisorList.find(x=>x.ID===oldSup);
+        conflicts.push({ id: c.value, name: t ? t.Name_Bangla : c.value, oldSup: oldObj ? oldObj.Name_Bangla : oldSup });
+      }
+    }
+  });
+
+  // কনফ্লিক্ট হলে সতর্কতা
+  if (conflicts.length) {
+    const listText = conflicts.map(c=>'• ' + c.name + ' (' + c.id + ') — বর্তমানে ' + c.oldSup + '-এর অধীনে').join('\n');
+    const ok = confirm(
+      '⚠️ নিম্নলিখিত শিক্ষকরা ইতোমধ্যে অন্য সুপারভাইজারের অধীনে আছেন:\n\n' +
+      listText + '\n\n' +
+      'আপনি কি তাদের এই নতুন সুপারভাইজারের অধীনে নিতে চান?\n' +
+      '(পুরোনো সুপারভাইজারের তালিকা থেকেও তারা বাদ পড়বেন)'
+    );
+    if (!ok) return;
+  }
+
+  document.getElementById('adminContent').innerHTML = loading();
+  const r = await api('adminAssignTeachersSave', {
+    supervisor_id: supId,
+    teacher_ids: checked.join(',')
+  });
+
+  if (r.success) {
+    toast('✅ সংরক্ষণ হয়েছে: ' + r.count + ' জন', 'ok');
+    await loadAllData();
+    ADMIN_VIEW = 'sups';
+    renderAdminPanel();
+  } else {
+    toast('❌ ' + (r.error||''), 'err');
+    renderAdminPanel();
+  }
 }
 
 async function adminSaveSupEdit(id){
