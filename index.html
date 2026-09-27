@@ -421,6 +421,7 @@ try {
 const r = await api('getAllData');
 if (r.success) {
 CACHE.teachers = r.teachers || [];
+CACHE.supervisorList = r.supervisors || [];
 CACHE.dashboard = r.dashboard || null;
 CACHE.entries = r.entries || [];
 CACHE.attendance = r.attendance || [];
