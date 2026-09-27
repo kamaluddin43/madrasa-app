@@ -224,6 +224,7 @@ canvas{display:block;max-width:100%}
 <button data-tab="teachers" onclick="switchTab('teachers')"><span class="ico">👥</span><span>শিক্ষক</span></button>
 <button data-tab="routine" onclick="switchTab('routine')"><span class="ico">📅</span><span>রুটিন</span></button>
 <button data-tab="awards" onclick="switchTab('awards')"><span class="ico">🏆</span><span>পুরস্কার</span></button>
+<button data-tab="leaves" onclick="switchTab('leaves')"><span class="ico">📝</span><span>ছুটি</span></button>
 <button data-tab="search" onclick="switchTab('search')"><span class="ico">🔍</span><span>সার্চ</span></button>
 <button data-tab="reports" onclick="switchTab('reports')"><span class="ico">📊</span><span>রিপোর্ট</span></button>
 </nav>
@@ -238,7 +239,7 @@ const APP_NAME_AR = "تعليمات";
 let LANG = localStorage.getItem('lang') || 'bn';
 let THEME = localStorage.getItem('theme') || 'green';
 let USER = JSON.parse(localStorage.getItem('user') || 'null');
-let CACHE = { teachers: [], entries: [], messages: [], dashboard: null, attendance: [], negrani: [], attendanceSummary: null, routine: [], awards: [] };
+let CACHE = { teachers: [], entries: [], messages: [], dashboard: null, attendance: [], negrani: [], attendanceSummary: null, routine: [], awards: [], leaves: [], supervisorList: [], departments: [] };
 let CURRENT_TAB = 'home';
 let SHOW_SETTINGS = false;
 let SHOW_ENTRY_DETAIL = null;
@@ -323,7 +324,7 @@ if (!USER) return renderLogin();
 document.getElementById('nav').classList.remove('hidden');
 document.querySelectorAll('.bottom-nav button').forEach(b=>{
 const tab = b.dataset.tab;
-if (USER.role === 'teacher' && (tab === 'entry' || tab === 'routine' || tab === 'search')) b.classList.add('hidden');
+if (USER.role === 'teacher' && (tab === 'entry' || tab === 'routine' || tab === 'search' || tab === 'leaves')) b.classList.add('hidden');
 else if (USER.role === 'supervisor' && tab === 'awards') b.classList.add('hidden');
 else b.classList.remove('hidden');
 });
@@ -429,6 +430,7 @@ CACHE.negrani = r.negrani || [];
 CACHE.attendanceSummary = r.attendanceSummary || null;
 CACHE.routine = r.routine || [];
 CACHE.awards = r.awards || [];
+CACHE.leaves = r.leaves || [];  
 const deptResp = await api('getDepartments');
 if (deptResp.success) CACHE.departments = deptResp.data;
 if (USER.role === 'teacher') {
@@ -641,6 +643,7 @@ else if (CURRENT_TAB === 'attendance') renderAttendanceView();
 else if (CURRENT_TAB === 'routine') renderRoutineView();
 else if (CURRENT_TAB === 'awards') renderAwardsView();
 else if (CURRENT_TAB === 'search') renderSearchView();
+else if (CURRENT_TAB === 'leaves') renderLeavesTab();
 }
 
 // --------- SUPERVISOR ---------
@@ -682,6 +685,7 @@ else if (CURRENT_TAB === 'reports') renderReports();
 else if (CURRENT_TAB === 'negrani') renderNegraniView();
 else if (CURRENT_TAB === 'attendance') renderAttendanceView();
 else if (CURRENT_TAB === 'search') renderSearchView();
+else if (CURRENT_TAB === 'leaves') renderLeavesTab();
 else if (CURRENT_TAB === 'routine') renderRoutineView();
 }
 
@@ -714,9 +718,39 @@ ${myWeekly ? `<div class="card"><h4>📅 সাপ্তাহিক নেগ�
 <div class="week-score"><div class="lbl">গত সপ্তাহ</div><div class="val">${myWeekly.prevWeekAvg||'—'}</div></div>
 </div>
 <div style="text-align:center;margin-top:10px"><span class="trend-badge trend-${myWeekly.trend}">${trendLabel(myWeekly.trend)}</span></div></div>` : ''}
+<!-- 🎓 আমার উপস্থিতির হিস্টোরি -->
+${(() => {
+  const myAtt = CACHE.attendance.filter(a => a.Teacher_ID === USER.id).slice(0, 10);
+  if (!myAtt.length) return '';
+  return `<div class="card">
+    <h4>🎓 আমার উপস্থিতির হিস্টোরি (${myAtt.length})</h4>
+    ${myAtt.map(a => {
+      let reasons = [];
+      try { reasons = JSON.parse(a.Absent_Details || '[]'); } catch(e) {}
+      return `<div class="attendance-row">
+        <div style="display:flex;justify-content:space-between;font-weight:700">
+          <span>${String(a.Date).slice(0,10)}</span>
+          <span>${a.Present}/${a.Total_Students}</span>
+        </div>
+        ${a.Class_Group ? `<div style="font-size:13px;color:var(--text-muted);margin-top:4px">📚 ${a.Class_Group} ${a.Section||''}</div>` : ''}
+        ${reasons.length ? `<div class="attendance-reasons">${reasons.map(r=>`<span class="reason">${r.reason}: ${r.count}</span>`).join('')}</div>` : ''}
+      </div>`;
+    }).join('')}
+  </div>`;
+})()}
+
+<!-- 📝 সাময়িক ছুটির আবেদন -->
+<div class="card">
+  <h4>📝 সাময়িক ছুটির আবেদন</h4>
+  <button class="secondary" onclick="toggleLeaveForm()" style="margin-top:0">➕ নতুন আবেদন করুন</button>
+  <div id="leaveForm"></div>
+  <div id="leaveList"></div>
+</div>
+
 <button onclick="switchTab('reports')" style="margin-top:14px">📊 আমার বিস্তারিত রিপোর্ট</button>
 <button class="secondary" onclick="openProfile('${USER.id}')">👤 আমার প্রোফাইল</button>
 `;
+setTimeout(() => { if (CURRENT_TAB === 'home') renderLeaveList(); }, 100);
 }
 else if (CURRENT_TAB === 'reports') renderReports();
 else if (CURRENT_TAB === 'negrani') renderNegraniView();
@@ -2140,6 +2174,154 @@ async function loadAdminLog(){
     </div>
   `;
 }
+
+// ---------- LEAVE REQUESTS UI ----------
+function toggleLeaveForm(){
+  const box = document.getElementById('leaveForm');
+  if (!box) return;
+  if (box.innerHTML) { box.innerHTML = ''; return; }
+  const today = new Date().toISOString().slice(0,10);
+  box.innerHTML = `
+    <div style="background:var(--bg);padding:14px;border-radius:10px;margin-top:12px">
+      <label>কোথায় যাবেন (গন্তব্য) *</label>
+      <input id="lv_dest" placeholder="যেমন: গ্রামের বাড়ি">
+      <label>কখন যাবেন (শুরুর তারিখ) *</label>
+      <input type="date" id="lv_from" value="${today}">
+      <label>কখন আসবেন (ফিরতি তারিখ) *</label>
+      <input type="date" id="lv_to" value="${today}">
+      <label>যাওয়ার কারণ (ঐচ্ছিক)</label>
+      <textarea id="lv_reason" rows="2" placeholder="যেমন: বাবার অসুস্থতা"></textarea>
+      <button onclick="submitLeave()" style="margin-top:10px">📤 আবেদন পাঠান</button>
+      <button class="secondary" onclick="toggleLeaveForm()">বাতিল</button>
+    </div>
+  `;
+}
+
+async function submitLeave(){
+  const dest = document.getElementById('lv_dest').value.trim();
+  const from = document.getElementById('lv_from').value;
+  const to = document.getElementById('lv_to').value;
+  const reason = document.getElementById('lv_reason').value.trim();
+
+  if (!dest) { toast('গন্তব্য লিখুন', 'err'); return; }
+  if (!from || !to) { toast('তারিখ দিন', 'err'); return; }
+  if (to < from) { toast('ফিরতি তারিখ শুরুর তারিখের পরে হতে হবে', 'err'); return; }
+
+  const params = {
+    teacher_id: USER.id,
+    from_date: from,
+    to_date: to,
+    destination: dest,
+    reason: reason,
+    user: USER.name || USER.id
+  };
+
+  const r = await api('addLeave', params);
+  if (r.success) {
+    toast('✅ আবেদন পাঠানো হয়েছে', 'ok');
+    document.getElementById('leaveForm').innerHTML = '';
+    await loadAllData();
+  } else {
+    toast('❌ ' + (r.error||''), 'err');
+  }
+}
+
+function renderLeaveList(){
+  const box = document.getElementById('leaveList');
+  if (!box) return;
+  const myLeaves = (CACHE.leaves || []).filter(l => l.Teacher_ID === USER.id);
+  if (!myLeaves.length) {
+    box.innerHTML = '<p style="font-size:13px;color:var(--text-muted);margin-top:10px">এখনো কোনো আবেদন করা হয়নি</p>';
+    return;
+  }
+  box.innerHTML = `
+    <h4 style="margin-top:16px">📋 আমার আবেদনের হিস্টোরি (${myLeaves.length})</h4>
+    ${myLeaves.slice(0, 10).map(l => {
+      const statusColor = l.Status === 'approved' ? '#0a7d3e' : l.Status === 'rejected' ? '#c0392b' : '#d68910';
+      const statusText = l.Status === 'approved' ? '✅ অনুমোদিত' : l.Status === 'rejected' ? '❌ বাতিল' : '⏳ অপেক্ষমাণ';
+      return `<div class="attendance-row" style="border-left:4px solid ${statusColor}">
+        <div style="display:flex;justify-content:space-between;font-weight:700;font-size:14px">
+          <span>📍 ${l.Destination || '—'}</span>
+          <span style="color:${statusColor};font-size:13px">${statusText}</span>
+        </div>
+        <div style="font-size:13px;color:var(--text-muted);margin-top:6px">
+          📅 ${String(l.From_Date).slice(0,10)} → ${String(l.To_Date).slice(0,10)}
+        </div>
+        ${l.Reason ? `<div style="font-size:13px;margin-top:4px">💬 ${l.Reason}</div>` : ''}
+        ${l.Approved_By ? `<div style="font-size:12px;color:var(--text-muted);margin-top:4px">অনুমোদন: ${l.Approved_By}</div>` : ''}
+      </div>`;
+    }).join('')}
+  `;
+}
+
+// ---------- APPROVE LEAVE (Admin/Supervisor) ----------
+function renderLeavesForAdmin(){
+  const list = CACHE.leaves || [];
+  if (!list.length) return '<p style="font-size:14px;color:var(--text-muted);text-align:center;padding:20px">কোনো ছুটির আবেদন নেই</p>';
+
+  const pending = list.filter(l => l.Status === 'pending');
+  const approved = list.filter(l => l.Status === 'approved');
+  const rejected = list.filter(l => l.Status === 'rejected');
+
+  let html = '';
+  if (pending.length) {
+    html += `<h4 style="color:#d68910">⏳ অপেক্ষমাণ (${pending.length})</h4>`;
+    html += pending.map(l => renderLeaveCard(l, true)).join('');
+  }
+  if (approved.length) {
+    html += `<h4 style="margin-top:16px;color:#0a7d3e">✅ অনুমোদিত (${approved.length})</h4>`;
+    html += approved.slice(0,10).map(l => renderLeaveCard(l, false)).join('');
+  }
+  if (rejected.length) {
+    html += `<h4 style="margin-top:16px;color:#c0392b">❌ বাতিল (${rejected.length})</h4>`;
+    html += rejected.slice(0,10).map(l => renderLeaveCard(l, false)).join('');
+  }
+  return html;
+}
+
+function renderLeaveCard(l, showButtons){
+  const tch = CACHE.teachers.find(x => x.ID === l.Teacher_ID);
+  const name = tch ? tch.Name_Bangla : l.Teacher_ID;
+  return `<div class="attendance-row">
+    <div style="font-weight:700;font-size:15px">${name}</div>
+    <div style="font-size:13px;color:var(--text-muted);margin-top:4px">📍 ${l.Destination || '—'}</div>
+    <div style="font-size:13px;margin-top:6px">📅 ${String(l.From_Date).slice(0,10)} → ${String(l.To_Date).slice(0,10)}</div>
+    ${l.Reason ? `<div style="font-size:13px;margin-top:4px">💬 ${l.Reason}</div>` : ''}
+    ${showButtons ? `<div style="display:flex;gap:8px;margin-top:10px">
+      <button class="tiny" style="background:linear-gradient(135deg,#0a7d3e,#2ecc71);flex:1" onclick="approveLeave('${l.Timestamp}', '${l.Teacher_ID}', 'approved')">✅ অনুমোদন</button>
+      <button class="tiny danger" style="flex:1" onclick="approveLeave('${l.Timestamp}', '${l.Teacher_ID}', 'rejected')">❌ বাতিল</button>
+    </div>` : ''}
+  </div>`;
+}
+
+async function approveLeave(timestamp, teacherId, status){
+  if (!confirm(status === 'approved' ? 'আবেদন অনুমোদন করবেন?' : 'আবেদন বাতিল করবেন?')) return;
+  const r = await api('approveLeave', {
+    timestamp: timestamp,
+    teacher_id: teacherId,
+    status: status,
+    user: USER.name || USER.id
+  });
+  if (r.success) {
+    toast('✅ ' + (status === 'approved' ? 'অনুমোদিত' : 'বাতিল'), 'ok');
+    await loadAllData();
+    render();
+  } else {
+    toast('❌ ' + (r.error||''), 'err');
+  }
+}
+
+// ---------- LEAVES TAB (Admin/Supervisor) ----------
+function renderLeavesTab(){
+  document.getElementById('app').innerHTML = `
+    <div class="card">
+      <h3>📝 ছুটির আবেদন</h3>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px">শিক্ষকদের সাময়িক ছুটির আবেদন</p>
+      ${renderLeavesForAdmin()}
+    </div>
+  `;
+}
+
 (async function init(){
 applyTheme();
 document.body.classList.toggle('ar', LANG === 'ar');
