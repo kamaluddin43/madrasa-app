@@ -248,7 +248,6 @@ canvas{display:block;max-width:100%}
 <nav class="bottom-nav hidden" id="nav">
 <button data-tab="home" onclick="switchTab('home')"><span class="ico">🏠</span><span>হোম</span></button>
 <button data-tab="entry" onclick="switchTab('entry')"><span class="ico">✍️</span><span>এন্ট্রি</span></button>
-<button data-tab="negrani" onclick="switchTab('negrani')"><span class="ico">👁️</span><span>নেগরানী</span></button>
 <button data-tab="attendance" onclick="switchTab('attendance')"><span class="ico">🎓</span><span>উপস্থিতি</span></button>
 <button data-tab="teachers" onclick="switchTab('teachers')"><span class="ico">👥</span><span>শিক্ষক</span></button>
 <button data-tab="routine" onclick="switchTab('routine')"><span class="ico">📅</span><span>রুটিন</span></button>
@@ -268,7 +267,7 @@ const APP_NAME_AR = "تعليمات";
 let LANG = localStorage.getItem('lang') || 'bn';
 let THEME = localStorage.getItem('theme') || 'green';
 let USER = JSON.parse(localStorage.getItem('user') || 'null');
-let CACHE = { teachers: [], entries: [], messages: [], dashboard: null, attendance: [], negrani: [], attendanceSummary: null, routine: [], awards: [], leaves: [], supervisorList: [], departments: [], classReport: null };
+let CACHE = { teachers: [], entries: [], messages: [], dashboard: null, attendance: [], negrani: [], attendanceSummary: null, routine: [], awards: [], leaves: [], supervisorList: [], departments: [], classReport: null, teacherRatings: {} };
 let CURRENT_TAB = 'home';
 let SHOW_SETTINGS = false;
 let SHOW_ENTRY_DETAIL = null;
@@ -460,6 +459,7 @@ CACHE.attendanceSummary = r.attendanceSummary || null;
 CACHE.routine = r.routine || [];
 CACHE.awards = r.awards || [];
 if (r.classReport) CACHE.classReport = r.classReport;
+if (r.teacherRatings) CACHE.teacherRatings = r.teacherRatings;
 CACHE.leaves = r.leaves || [];  
 const deptResp = await api('getDepartments');
 if (deptResp.success) CACHE.departments = deptResp.data;
@@ -474,16 +474,52 @@ try { localStorage.setItem('talimat_cache', JSON.stringify(CACHE)); } catch(e) {
 render();
 }
 
-const DUTIES = [
-{ id:'d1', key:'D1_Attendance', bn:'নির্ধারিত সময়ে ক্লাসে উপস্থিতি', short:'উপস্থিতি' },
-{ id:'d2', key:'D2_Teaching', bn:'পাঠদানের মান', short:'পাঠদান' },
-{ id:'d3', key:'D3_Tarbiyah', bn:'ছাত্রদের তালিম ও তারবিয়াত', short:'তারবিয়াত' },
-{ id:'d4', key:'D4_Exam', bn:'পরীক্ষার খাতা মূল্যায়ন', short:'খাতা' },
-{ id:'d5', key:'D5_Discipline', bn:'মাদরাসার নিয়ম-শৃঙ্খলা পালন', short:'শৃঙ্খলা' },
-{ id:'d6', key:'D6_Parents', bn:'অভিভাবকদের সাথে যোগাযোগ', short:'অভিভাবক' },
-{ id:'d7', key:'D7_Colleagues', bn:'সহকর্মীদের সাথে আচরণ', short:'সহকর্মী' },
-{ id:'d8', key:'D8_SelfStudy', bn:'নিজের ইলম চর্চা', short:'ইলম চর্চা' }
-];
+// ---------- DEPARTMENT-BASED DUTIES ----------
+function getDeptGroup(dept) {
+  const d = String(dept || "").trim();
+  if (d.indexOf("শরীয়াহ") >= 0 || d.indexOf("শরীয়াহ") >= 0 || d === "জেনারেল (আবাসিক)") return "shariah";
+  if (d === "হিফজ") return "hifz";
+  if (d === "নাজেরা" || d === "নূরানী আবাসিক") return "nurani";
+  if (d === "নূরানী অনাবাসিক") return "nonres";
+  return "shariah";
+}
+
+function getDeptDuties(dept) {
+  const g = getDeptGroup(dept);
+  const base = [
+    { id:'d1', key:'D1_Attendance', bn:'নির্ধারিত সময়ে ক্লাসে উপস্থিতি', short:'উপস্থিতি' },
+    { id:'d2', key:'D2_Teaching', bn:'পাঠদানের মান', short:'পাঠদান' },
+    { id:'d3', key:'D3_Tarbiyah', bn:'ছাত্রদের তালিম ও তারবিয়াত', short:'তারবিয়াত' },
+    { id:'d4', key:'D4_Exam', bn:'পরীক্ষার খাতা মূল্যায়ন', short:'খাতা' },
+    { id:'d5', key:'D5_Discipline', bn:'মাদরাসার নিয়ম-শৃঙ্খলা পালন', short:'শৃঙ্খলা' },
+    { id:'d6', key:'D6_Parents', bn:'অভিভাবকদের সাথে যোগাযোগ', short:'অভিভাবক' },
+    { id:'d7', key:'D7_Colleagues', bn:'সহকর্মীদের সাথে আচরণ', short:'সহকর্মী' },
+    { id:'d8', key:'D8_SelfStudy', bn:'নিজের ইলম চর্চা', short:'ইলম চর্চা' }
+  ];
+  if (g === "shariah") {
+    return base.concat([
+      { id:'d9',  key:'D9_Negrani',         bn:'দৈনিক নেগরানী',                 short:'দৈনিক নেগরানী' },
+      { id:'d10', key:'D10_WeeklyNegrani',  bn:'শুক্রবারের নেগরানী',            short:'শুক্রবার' }
+    ]);
+  }
+  return base.concat([
+    { id:'d9',  key:'D9_Negrani',         bn:'সবকের সময় ঘুমান না',              short:'ঘুম' },
+    { id:'d10', key:'D10_WeeklyNegrani',  bn:'ক্লাস চলাকালীন মোবাইল ব্যবহার করেন না', short:'মোবাইল' }
+  ]);
+}
+
+function getTeacherGroup(tid) {
+  const tch = CACHE.teachers.find(x => x.ID === tid);
+  return tch ? getDeptGroup(tch.Department) : "shariah";
+}
+
+function getTeacherDuties(tid) {
+  const tch = CACHE.teachers.find(x => x.ID === tid);
+  return tch ? getDeptDuties(tch.Department) : getDeptDuties("");
+}
+
+// পুরোনো কোডের জন্য ডিফল্ট DUTIES (শরীয়াহ)
+const DUTIES = getDeptDuties("শরীয়াহ");
 
 function getMessageFor(avg){
 const numAvg = parseFloat(avg);
@@ -508,42 +544,43 @@ function openProfile(id){ SHOW_PROFILE = id; SHOW_ENTRY_DETAIL = null; render();
 function closeProfile(){ SHOW_PROFILE = null; render(); }
 
 function renderEntryDetailCard(entry, showBack){
-const avg = parseFloat(entry.Average);
-const cls = scoreClass(avg);
-let reasons = {};
-try { reasons = JSON.parse(entry.Reasons || '{}'); } catch(e) {}
-const msg = getMessageFor(avg);
-return `
-${showBack ? `<button class="secondary small" onclick="closeEntryDetail()" style="margin-bottom:12px">← ফিরে যান</button>` : ''}
-<div class="entry-detail">
-<div class="entry-head">
-<div class="entry-date">📅 ${String(entry.Date).slice(0,10)}</div>
-<div class="entry-avg ${cls}">${entry.Average} / ১০</div>
-</div>
-<div class="duty-grid">
-${DUTIES.map(d=>{
-const val = parseFloat(entry[d.key]) || 0;
-const pct = (val/10)*100;
-const reason = reasons[d.id] || '';
-return `<div class="duty-item">
-<div class="duty-info">
-<div class="duty-name">${d.bn}</div>
-<div class="duty-bar"><div class="duty-bar-fill" style="width:${pct}%"></div></div>
-</div>
-<div class="duty-score-row"><div></div><div class="duty-score ${scoreClass(val)}">${val}</div></div>
-${reason ? `<div class="duty-reason">📌 কারণ: ${reason}</div>` : ''}
-</div>`;
-}).join('')}
-</div>
-${entry.Remark ? `<div class="entry-remark"><div class="label">📝 মন্তব্য</div><div>${entry.Remark}</div></div>`
-: `<div class="entry-remark"><div class="label">📝 মন্তব্য</div><div style="color:var(--text-muted);font-style:italic">কোনো মন্তব্য নেই</div></div>`}
-<div class="entry-msg ${msg.type}">
-<div class="label">${msg.label}</div>
-<div>${msg.bn}</div>
-<div class="ar">${msg.ar}</div>
-</div>
-</div>
-`;
+  const avg = parseFloat(entry.Average);
+  const cls = scoreClass(avg);
+  const duties = getTeacherDuties(entry.Teacher_ID);
+  let reasons = {};
+  try { reasons = JSON.parse(entry.Reasons || '{}'); } catch(e) {}
+  const msg = getMessageFor(avg);
+  return `
+    ${showBack ? `<button class="secondary small" onclick="closeEntryDetail()" style="margin-bottom:12px">← ফিরে যান</button>` : ''}
+    <div class="entry-detail">
+      <div class="entry-head">
+        <div class="entry-date">📅 ${String(entry.Date).slice(0,10)}</div>
+        <div class="entry-avg ${cls}">${entry.Average} / ১০</div>
+      </div>
+      <div class="duty-grid">
+        ${duties.map(d=>{
+          const val = parseFloat(entry[d.key]) || 0;
+          const pct = (val/10)*100;
+          const reason = reasons[d.id] || '';
+          return `<div class="duty-item">
+            <div class="duty-info">
+              <div class="duty-name">${d.bn}</div>
+              <div class="duty-bar"><div class="duty-bar-fill" style="width:${pct}%"></div></div>
+            </div>
+            <div class="duty-score-row"><div></div><div class="duty-score ${scoreClass(val)}">${val}</div></div>
+            ${reason ? `<div class="duty-reason">📌 কারণ: ${reason}</div>` : ''}
+          </div>`;
+        }).join('')}
+      </div>
+      ${entry.Remark ? `<div class="entry-remark"><div class="label">📝 মন্তব্য</div><div>${entry.Remark}</div></div>`
+        : `<div class="entry-remark"><div class="label">📝 মন্তব্য</div><div style="color:var(--text-muted);font-style:italic">কোনো মন্তব্য নেই</div></div>`}
+      <div class="entry-msg ${msg.type}">
+        <div class="label">${msg.label}</div>
+        <div>${msg.bn}</div>
+        <div class="ar">${msg.ar}</div>
+      </div>
+    </div>
+  `;
 }
 
 function renderEntryDetailPage(){
@@ -578,41 +615,43 @@ render();
 }
 
 function renderEditEntryForm(){
-const e = EDIT_ENTRY.entry;
-let reasons = {};
-try { reasons = JSON.parse(e.Reasons || '{}'); } catch(err) {}
-document.getElementById('app').innerHTML = `
-<div class="card">
-<button class="secondary small" onclick="EDIT_ENTRY=null; render()" style="margin-bottom:12px">← বাতিল</button>
-<h3>✏️ এন্ট্রি সম্পাদনা</h3>
-<p style="font-size:14px;color:var(--text-muted);margin-bottom:8px">${String(e.Date).slice(0,10)} • ${e.Teacher_ID}</p>
-${DUTIES.map(d=>{
-const val = parseFloat(e[d.key]) || 7;
-return `<div class="slider-box">
-<label><span>${d.bn}</span><span class="slider-val" id="ev-${d.id}">${val}</span></label>
-<input type="range" min="1" max="10" value="${val}" id="e-${d.id}" oninput="document.getElementById('ev-${d.id}').textContent=this.value">
-<input type="text" id="er-${d.id}" value="${reasons[d.id]||''}" placeholder="📌 কারণ (ঐচ্ছিক)" style="margin-top:8px;font-size:13px;padding:8px">
-</div>`;
-}).join('')}
-<label>মন্তব্য</label>
-<textarea id="e_rmk" rows="2">${e.Remark||''}</textarea>
-<button onclick="saveEditedEntry()">সেভ করুন</button>
-<button class="danger" onclick="confirmDeleteEntry('${e._row}')">🗑️ ডিলিট করুন</button>
-</div>
-`;
+  const e = EDIT_ENTRY.entry;
+  const duties = getTeacherDuties(e.Teacher_ID);
+  let reasons = {};
+  try { reasons = JSON.parse(e.Reasons || '{}'); } catch(err) {}
+  document.getElementById('app').innerHTML = `
+    <div class="card">
+      <button class="secondary small" onclick="EDIT_ENTRY=null; render()" style="margin-bottom:12px">← বাতিল</button>
+      <h3>✏️ এন্ট্রি সম্পাদনা</h3>
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:8px">${String(e.Date).slice(0,10)} • ${e.Teacher_ID}</p>
+      ${duties.map(d=>{
+        const val = parseFloat(e[d.key]) || 7;
+        return `<div class="slider-box">
+          <label><span>${d.bn}</span><span class="slider-val" id="ev-${d.id}">${val}</span></label>
+          <input type="range" min="1" max="10" value="${val}" id="e-${d.id}" oninput="document.getElementById('ev-${d.id}').textContent=this.value">
+          <input type="text" id="er-${d.id}" value="${reasons[d.id]||''}" placeholder="📌 কারণ (ঐচ্ছিক)" style="margin-top:8px;font-size:13px;padding:8px">
+        </div>`;
+      }).join('')}
+      <label>মন্তব্য</label>
+      <textarea id="e_rmk" rows="2">${e.Remark||''}</textarea>
+      <button onclick="saveEditedEntry()">সেভ করুন</button>
+      <button class="danger" onclick="confirmDeleteEntry('${e._row}')">🗑️ ডিলিট করুন</button>
+    </div>
+  `;
 }
 
 async function saveEditedEntry(){
-const e = EDIT_ENTRY.entry;
-const params = { row: e._row, teacher_id: e.Teacher_ID, supervisor_id: e.Supervisor_ID, remark: document.getElementById('e_rmk').value };
-DUTIES.forEach(d => { params[d.id] = document.getElementById(d.id).value; });
-const reasons = {};
-DUTIES.forEach(d => { const r = document.getElementById('er-'+d.id).value.trim(); if (r) reasons[d.id] = r; });
-params.reasons = JSON.stringify(reasons);
-document.getElementById('app').innerHTML = loading();
-const r = await api('updateEntry', params);
-if (r.success) { toast('✅ আপডেট হয়েছে', 'ok'); EDIT_ENTRY = null; SHOW_ENTRY_DETAIL = null; await loadAllData(); }
-else { toast('❌ ব্যর্থ', 'err'); render(); }
+  const e = EDIT_ENTRY.entry;
+  const duties = getTeacherDuties(e.Teacher_ID);
+  const params = { row: e._row, teacher_id: e.Teacher_ID, supervisor_id: e.Supervisor_ID, remark: document.getElementById('e_rmk').value };
+  duties.forEach(d => { const el = document.getElementById('e-'+d.id); if (el) params[d.id] = el.value; });
+  const reasons = {};
+  duties.forEach(d => { const r = document.getElementById('er-'+d.id); if (r && r.value.trim()) reasons[d.id] = r.value.trim(); });
+  params.reasons = JSON.stringify(reasons);
+  document.getElementById('app').innerHTML = loading();
+  const r = await api('updateEntry', params);
+  if (r.success) { toast('✅ আপডেট হয়েছে', 'ok'); EDIT_ENTRY = null; SHOW_ENTRY_DETAIL = null; await loadAllData(); }
+  else { toast('❌ ব্যর্থ', 'err'); render(); }
 }
 
 async function confirmDeleteEntry(row){
@@ -668,7 +707,6 @@ ${avatarHtml(x.photo, x.name)}
 else if (CURRENT_TAB === 'teachers') renderTeachersList();
 else if (CURRENT_TAB === 'entry') renderEntryForm();
 else if (CURRENT_TAB === 'reports') renderReports();
-else if (CURRENT_TAB === 'negrani') renderNegraniView();
 else if (CURRENT_TAB === 'attendance') renderAttendanceView();
 else if (CURRENT_TAB === 'routine') renderRoutineView();
 else if (CURRENT_TAB === 'awards') renderAwardsView();
@@ -712,7 +750,6 @@ ${avatarHtml(tch.Photo_URL, tch.Name_Bangla)}
 else if (CURRENT_TAB === 'entry') renderEntryForm();
 else if (CURRENT_TAB === 'teachers') renderTeachersList();
 else if (CURRENT_TAB === 'reports') renderReports();
-else if (CURRENT_TAB === 'negrani') renderNegraniView();
 else if (CURRENT_TAB === 'attendance') renderAttendanceView();
 else if (CURRENT_TAB === 'search') renderSearchView();
 else if (CURRENT_TAB === 'leaves') renderLeavesTab();
@@ -783,7 +820,6 @@ ${(() => {
 setTimeout(() => { if (CURRENT_TAB === 'home') renderLeaveList(); }, 100);
 }
 else if (CURRENT_TAB === 'reports') renderReports();
-else if (CURRENT_TAB === 'negrani') renderNegraniView();
 else if (CURRENT_TAB === 'attendance') renderAttendanceView();
 else if (CURRENT_TAB === 'teachers') openProfile(USER.id);
 else renderTeacher();
@@ -799,8 +835,9 @@ const attendance = CACHE.attendance.filter(a => a.Teacher_ID === id).slice(0, 10
 const negrani = CACHE.negrani.filter(n => n.Teacher_ID === id).slice(0, 10);
 const weekly = CACHE.dashboard?.weekly?.find(w => w.id === id);
 const monthly = CACHE.dashboard?.monthly?.find(m => m.id === id);
-const dutySum = {}; DUTIES.forEach(d => dutySum[d.key] = { sum: 0, n: 0 });
-entries.forEach(e => { DUTIES.forEach(d => { const v = parseFloat(e[d.key]) || 0; if (v > 0) { dutySum[d.key].sum += v; dutySum[d.key].n++; } }); });
+const profileDuties = getTeacherDuties(id);
+const dutySum = {}; profileDuties.forEach(d => dutySum[d.key] = { sum: 0, n: 0 });
+entries.forEach(e => { profileDuties.forEach(d => { const v = parseFloat(e[d.key]) || 0; if (v > 0) { dutySum[d.key].sum += v; dutySum[d.key].n++; } }); });
 const canEdit = USER.role === 'admin' || USER.role === 'supervisor';
 
 document.getElementById('app').innerHTML = `
@@ -838,7 +875,7 @@ ${USER.role === 'admin' ? `<button class="secondary" onclick="toggleEdit('${tch.
 <div class="card">
 <h4>📊 দায়িত্বভিত্তিক স্কোর</h4>
 <div class="duty-grid">
-${DUTIES.map(d => {
+${profileDuties.map(d => {
 const s = dutySum[d.key];
 const avgD = s.n ? (s.sum/s.n).toFixed(1) : '0.0';
 const pct = (parseFloat(avgD)/10)*100;
@@ -961,29 +998,56 @@ q = q.toLowerCase();
 document.querySelectorAll('#tlist .t-row').forEach(r=>{ r.style.display = r.dataset.name.toLowerCase().includes(q) ? 'flex' : 'none'; });
 }
 
-// --------- ENTRY FORM ---------
 function renderEntryForm(){
-if (DUP_WARNING) return renderDupWarning();
-let list = CACHE.teachers;
-if (USER.role === 'supervisor') list = list.filter(t => (USER.assigned || []).includes(t.ID));
-if (!list.length) { document.getElementById('app').innerHTML = `<div class="card"><p>কোনো শিক্ষক নেই</p></div>`; return; }
-document.getElementById('app').innerHTML = `
-<div class="card">
-<h3>✍️ দৈনিক এন্ট্রি</h3>
-<label>শিক্ষক নির্বাচন করুন</label>
-<select id="tid">${list.map(tch=>`<option value="${tch.ID}">${tch.Name_Bangla} (${tch.ID})</option>`).join('')}</select>
-<label>তারিখ</label>
-<input type="date" id="dt" value="${new Date().toISOString().slice(0,10)}">
-${DUTIES.map(d=>`
-<div class="slider-box">
-<label><span>${d.bn}</span><span class="slider-val" id="v-${d.id}">7</span></label>
-<input type="range" min="1" max="10" value="7" id="${d.id}" oninput="document.getElementById('v-${d.id}').textContent=this.value">
-<input type="text" id="reason-${d.id}" placeholder="📌 কারণ (ঐচ্ছিক)" style="margin-top:8px;font-size:13px;padding:8px">
-</div>`).join('')}
-<label>মন্তব্য (ঐচ্ছিক)</label>
-<textarea id="rmk" rows="2"></textarea>
-<button onclick="submitEntry(false)">সাবমিট করুন</button>
-</div>`;
+  if (DUP_WARNING) return renderDupWarning();
+  let list = CACHE.teachers;
+  if (USER.role === 'supervisor') list = list.filter(t => (USER.assigned || []).includes(t.ID));
+  if (!list.length) { document.getElementById('app').innerHTML = `<div class="card"><p>কোনো শিক্ষক নেই</p></div>`; return; }
+
+  const firstTid = list[0].ID;
+  const firstGroup = getTeacherGroup(firstTid);
+  const firstDuties = getTeacherDuties(firstTid);
+  const groupNames = { shariah: "🕌 শরীয়াহ", hifz: "📖 তাহফিযুল কুরআন", nurani: "📚 নূরানী/নাযেরা", nonres: "🏡 অনাবাসিক" };
+
+  document.getElementById('app').innerHTML = `
+    <div class="card">
+      <h3>✍️ দৈনিক এন্ট্রি</h3>
+      <label>শিক্ষক নির্বাচন করুন</label>
+      <select id="tid" onchange="onTeacherChange()">
+        ${list.map(tch=>`<option value="${tch.ID}">${tch.Name_Bangla} (${tch.ID}) — ${groupNames[getTeacherGroup(tch.ID)]||''}</option>`).join('')}
+      </select>
+      <label>তারিখ</label>
+      <input type="date" id="dt" value="${new Date().toISOString().slice(0,10)}">
+      <div id="ratingGroupLabel" style="margin-top:12px;padding:10px;background:var(--bg);border-radius:10px;text-align:center;font-weight:700;color:var(--primary)">
+        ${groupNames[firstGroup]||''} — ১০টি বিষয়
+      </div>
+      <div id="dutyForm">
+        ${renderDutySliders(firstDuties)}
+      </div>
+      <label>মন্তব্য (ঐচ্ছিক)</label>
+      <textarea id="rmk" rows="2"></textarea>
+      <button onclick="submitEntry(false)">সাবমিট করুন</button>
+    </div>
+  `;
+}
+
+function renderDutySliders(duties){
+  return duties.map(d=>`
+    <div class="slider-box">
+      <label><span>${d.bn}</span><span class="slider-val" id="v-${d.id}">7</span></label>
+      <input type="range" min="1" max="10" value="7" id="${d.id}" oninput="document.getElementById('v-${d.id}').textContent=this.value">
+      <input type="text" id="reason-${d.id}" placeholder="📌 কারণ (ঐচ্ছিক)" style="margin-top:8px;font-size:13px;padding:8px">
+    </div>
+  `).join('');
+}
+
+function onTeacherChange(){
+  const tid = document.getElementById('tid').value;
+  const group = getTeacherGroup(tid);
+  const duties = getTeacherDuties(tid);
+  const groupNames = { shariah: "🕌 শরীয়াহ", hifz: "📖 তাহফিযুল কুরআন", nurani: "📚 নূরানী/নাযেরা", nonres: "🏡 অনাবাসিক" };
+  document.getElementById('ratingGroupLabel').innerHTML = (groupNames[group]||'') + ' — ১০টি বিষয়';
+  document.getElementById('dutyForm').innerHTML = renderDutySliders(duties);
 }
 
 function renderDupWarning(){
@@ -1000,27 +1064,32 @@ document.getElementById('app').innerHTML = `
 }
 
 async function submitEntry(force){
-const reasons = {};
-DUTIES.forEach(d => {
-const r = document.getElementById('reason-'+d.id).value.trim();
-if (r) reasons[d.id] = r;
-});
-const params = {
-teacher_id: document.getElementById('tid').value,
-supervisor_id: USER.role === 'supervisor' ? USER.id : 'ADMIN',
-date: document.getElementById('dt').value,
-remark: document.getElementById('rmk').value,
-reasons: JSON.stringify(reasons)
-};
-DUTIES.forEach(d => params[d.id] = document.getElementById(d.id).value);
-if (force) params.force = "1";
-document.getElementById('app').innerHTML = loading();
-try {
-const r = await api('addEntry', params);
-if (r.success) { toast('✅ এন্ট্রি সেভ — গড়: ' + r.average, 'ok'); DUP_WARNING=null; await loadAllData(); CURRENT_TAB='home'; render(); }
-else if (r.error === 'duplicate') { DUP_WARNING = { message: r.message, params }; renderDupWarning(); }
-else { toast('❌ ' + (r.error||''), 'err'); render(); }
-} catch(e) { toast('ত্রুটি: ' + e.message, 'err'); render(); }
+  const tid = document.getElementById('tid').value;
+  const duties = getTeacherDuties(tid);
+  const reasons = {};
+  duties.forEach(d => {
+    const r = document.getElementById('reason-'+d.id);
+    if (r && r.value.trim()) reasons[d.id] = r.value.trim();
+  });
+  const params = {
+    teacher_id: tid,
+    supervisor_id: USER.role === 'supervisor' ? USER.id : 'ADMIN',
+    date: document.getElementById('dt').value,
+    remark: document.getElementById('rmk').value,
+    reasons: JSON.stringify(reasons)
+  };
+  duties.forEach(d => {
+    const el = document.getElementById(d.id);
+    if (el) params[d.id] = el.value;
+  });
+  if (force) params.force = "1";
+  document.getElementById('app').innerHTML = loading();
+  try {
+    const r = await api('addEntry', params);
+    if (r.success) { toast('✅ এন্ট্রি সেভ — গড়: ' + r.average, 'ok'); DUP_WARNING=null; await loadAllData(); CURRENT_TAB='home'; render(); }
+    else if (r.error === 'duplicate') { DUP_WARNING = { message: r.message, params }; renderDupWarning(); }
+    else { toast('❌ ' + (r.error||''), 'err'); render(); }
+  } catch(e) { toast('ত্রুটি: ' + e.message, 'err'); render(); }
 }
 
 // ---------- ATTENDANCE ----------
@@ -1214,61 +1283,6 @@ if (r.success) { toast('✅ সেভ', 'ok'); await loadAllData(); CURRENT_TAB=
 else if (r.error === 'duplicate') { DUP_WARNING = { message: r.message, params }; renderDupWarning(); }
 else { toast('❌ ' + (r.error||''), 'err'); render(); }
 } catch(e) { toast('ত্রুটি: '+e.message, 'err'); render(); }
-}
-
-// --------- NEGRANI ---------
-function renderNegraniView(){
-if (USER.role === 'teacher') return renderTeacherNegrani();
-let list = CACHE.negrani || [];
-if (USER.role === 'supervisor') list = list.filter(n => (USER.assigned||[]).includes(n.Teacher_ID));
-document.getElementById('app').innerHTML = `
-<div class="card">
-<h3>👁️ নেগরানী রিপোর্ট</h3>
-<p style="font-size:13px;color:var(--text-muted);margin-bottom:12px">ছাত্রদের পড়াশোনা ও আচরণের পরিদর্শন</p>
-${list.length ? list.slice(0,50).map(n=>{
-const tch = CACHE.teachers.find(x=>x.ID===n.Teacher_ID);
-return `<div class="attendance-row">
-<div style="display:flex;justify-content:space-between;font-weight:700">
-<span>${tch ? tch.Name_Bangla : n.Teacher_ID}</span><span>${String(n.Date).slice(0,10)}</span></div>
-<div style="margin-top:8px;display:flex;gap:16px">
-<div>📖 দৈনিক: <b>${n.Daily_Negrani||0}</b>/১০</div>
-<div>📅 সাপ্তাহিক: <b>${n.Weekly_Negrani||0}</b>/১০</div>
-</div>
-${n.Remarks ? `<div style="margin-top:6px;font-size:13px;color:var(--text-muted)">💬 ${n.Remarks}</div>` : ''}
-</div>`;}).join('') : '<p style="color:var(--text-muted);text-align:center;padding:20px">কোনো ডাটা নেই</p>'}
-</div>`;
-}
-function renderTeacherNegrani(){
-const myNegrani = CACHE.negrani.filter(n => n.Teacher_ID === USER.id).slice(0, 10);
-document.getElementById('app').innerHTML = `
-<div class="card">
-<h3>👁️ নেগরানী এন্ট্রি</h3>
-<label>তারিখ</label>
-<input type="date" id="ng_dt" value="${new Date().toISOString().slice(0,10)}">
-<div class="slider-box">
-<label><span>📖 দৈনিক নেগরানী</span><span class="slider-val" id="v-ngd">7</span></label>
-<input type="range" min="1" max="10" value="7" id="ng_daily" oninput="document.getElementById('v-ngd').textContent=this.value">
-</div>
-<div class="slider-box">
-<label><span>📅 সাপ্তাহিক নেগরানী</span><span class="slider-val" id="v-ngw">7</span></label>
-<input type="range" min="1" max="10" value="7" id="ng_weekly" oninput="document.getElementById('v-ngw').textContent=this.value">
-</div>
-<label>মন্তব্য</label>
-<textarea id="ng_rem" rows="3" placeholder="যেমন: ১ম শ্রেণি সময়মতো পড়তে বসেছে..."></textarea>
-<button onclick="submitNegrani()">সেভ করুন</button>
-</div>
-${myNegrani.length ? `<div class="card"><h4>📋 আমার ইতিহাস</h4>
-${myNegrani.map(n=>`<div class="attendance-row">
-<div style="display:flex;justify-content:space-between;font-weight:700"><span>${String(n.Date).slice(0,10)}</span><span>📖 ${n.Daily_Negrani} | 📅 ${n.Weekly_Negrani}</span></div>
-${n.Remarks ? `<div style="margin-top:6px;font-size:13px;color:var(--text-muted)">💬 ${n.Remarks}</div>` : ''}
-</div>`).join('')}</div>` : ''}`;
-}
-async function submitNegrani(){
-const params = { teacher_id: USER.id, date: document.getElementById('ng_dt').value, daily_negrani: document.getElementById('ng_daily').value, weekly_negrani: document.getElementById('ng_weekly').value, remarks: document.getElementById('ng_rem').value };
-document.getElementById('app').innerHTML = loading();
-const r = await api('addNegrani', params);
-if (r.success) { toast('✅ সেভ', 'ok'); await loadAllData(); CURRENT_TAB='home'; render(); }
-else { toast('❌ ব্যর্থ', 'err'); render(); }
 }
 
 // --------- ROUTINE ---------
@@ -1622,9 +1636,10 @@ document.getElementById('reportContent').innerHTML = `
 setTimeout(()=>{
 const last30 = entries.slice(-30);
 drawLineChart('t30', last30.map(e=>({label:String(e.Date).slice(5,10), value:parseFloat(e.Average)})));
-const sums = {}; DUTIES.forEach(d => sums[d.id] = 0);
-last30.forEach(e=>{ DUTIES.forEach(d=>{ sums[d.id] += parseFloat(e[d.key] || 0); }); });
-drawBarChart('dutyC', DUTIES.map(d=>({label:d.short, value:last30.length ? sums[d.id]/last30.length : 0})));
+const myDuties = getTeacherDuties(USER.id);
+const sums = {}; myDuties.forEach(d => sums[d.id] = 0);
+last30.forEach(e=>{ myDuties.forEach(d=>{ sums[d.id] += parseFloat(e[d.key] || 0); }); });
+drawBarChart('dutyC', myDuties.map(d=>({label:d.short, value:last30.length ? sums[d.id]/last30.length : 0})));
 }, 100);
 }
 
