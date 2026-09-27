@@ -201,6 +201,35 @@ canvas{display:block;max-width:100%}
   .chart-box { display: none !important; }
   #printHeader { display: block !important; text-align: center; margin-bottom: 20px; padding: 10px; }
 }
+/* ---------- ATTENDANCE TABLE ---------- */
+.att-table-wrap{overflow-x:auto;margin-top:12px}
+.att-table{width:100%;border-collapse:collapse;font-size:13px;background:var(--card);border-radius:10px;overflow:hidden}
+.att-table th,.att-table td{padding:8px 6px;text-align:center;border-bottom:1px solid var(--border);vertical-align:middle}
+.att-table th{background:var(--primary);color:#fff;font-weight:700;font-size:12px}
+.att-table tr:last-child td{border-bottom:none}
+.att-table .row-class{font-weight:700;text-align:right;padding-right:8px}
+.att-table .row-entry{background:var(--card)}
+.att-table .row-empty{background:#fafafa;color:var(--text-muted)}
+.att-table .num-total{font-weight:700;color:var(--primary)}
+.att-table .num-present{font-weight:700;color:var(--good)}
+.att-table .num-absent{font-weight:700;color:var(--bad)}
+.att-table .reasons-cell{font-size:11px;line-height:1.4;text-align:left;padding:6px}
+.att-table .reasons-cell .reason{display:inline-block;background:#fdeaea;color:var(--bad);padding:2px 6px;border-radius:6px;margin:2px 2px 0 0;font-weight:600}
+.att-table .action-cell{font-size:12px}
+.att-table .edit-btn{background:var(--info);color:#fff;border:none;padding:4px 8px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit;width:auto;margin:0}
+.att-table tfoot td{background:var(--bg);font-weight:800;font-size:14px;padding:12px 6px;border-top:3px solid var(--primary)}
+
+.report-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.report-tabs button{flex:0 0 auto;padding:8px 16px;font-size:13px;border-radius:20px;background:var(--border);color:var(--text);font-weight:700;width:auto;margin:0}
+.report-tabs button.active{background:var(--primary);color:#fff}
+
+@media print{
+  .att-table{font-size:11px}
+  .att-table th,.att-table td{padding:5px 3px}
+  .att-table .edit-btn{display:none!important}
+  .report-tabs,.print-buttons{display:none!important}
+  @page{size:A4;margin:10mm}
+}
 
 #printHeader { display: none; }
 </style>
@@ -993,11 +1022,14 @@ else { toast('❌ ' + (r.error||''), 'err'); render(); }
 } catch(e) { toast('ত্রুটি: ' + e.message, 'err'); render(); }
 }
 
-// --------- ATTENDANCE ---------
+// ---------- ATTENDANCE ----------
 function renderAttendanceView(){
 if (EDIT_ATTENDANCE) return renderEditAttendanceForm();
 if (DUP_WARNING) return renderDupWarning();
 if (USER.role === 'teacher') return renderTeacherAttendanceForm();
+if (USER.role === 'admin' || USER.role === 'supervisor') {
+    return renderClassReportPage();
+}
 let list = CACHE.attendance || [];
 if (USER.role === 'supervisor') list = list.filter(a => (USER.assigned || []).includes(a.Teacher_ID));
 const as = CACHE.attendanceSummary;
@@ -2173,6 +2205,352 @@ async function loadAdminLog(){
       </div>`).join('')}
     </div>
   `;
+}
+
+// ============================================
+// CLASS-BASED ATTENDANCE REPORT UI
+// ============================================
+let CLASS_REPORT_DATE = new Date().toISOString().slice(0,10);
+let CLASS_REPORT_VIEW = 'both'; // both | residential | nonResidential
+
+function renderClassReportPage(){
+  const data = CACHE.classReport || null;
+  const canEdit = USER.role === 'admin' || USER.role === 'supervisor';
+
+  document.getElementById('app').innerHTML = `
+    <div class="card">
+      <h3>🎓 ছাত্র উপস্থিতির রিপোর্ট</h3>
+      <label>তারিখ নির্বাচন</label>
+      <input type="date" id="cr_date" value="${CLASS_REPORT_DATE}" onchange="reloadClassReport(this.value)">
+      <div class="report-tabs" style="margin-top:12px">
+        <button class="${CLASS_REPORT_VIEW==='both'?'active':''}" onclick="setClassView('both')">📋 সব</button>
+        <button class="${CLASS_REPORT_VIEW==='residential'?'active':''}" onclick="setClassView('residential')">🏠 আবাসিক</button>
+        <button class="${CLASS_REPORT_VIEW==='nonResidential'?'active':''}" onclick="setClassView('nonResidential')">🏡 অনাবাসিক</button>
+      </div>
+      <div class="print-buttons" style="display:flex;gap:8px;margin-top:10px">
+        <button class="secondary" style="margin:0;flex:1" onclick="printClassReport()">🖨️ প্রিন্ট A4</button>
+        <button class="secondary" style="margin:0;flex:1" onclick="shareClassReport()">📤 শেয়ার</button>
+      </div>
+    </div>
+
+    ${!data ? '<div class="card"><p style="text-align:center;color:var(--text-muted)">ডাটা লোড হচ্ছে...</p></div>' : ''}
+    ${data && (CLASS_REPORT_VIEW === 'both' || CLASS_REPORT_VIEW === 'residential') ? renderClassTable('আবাসিক শাখা', data.residential, data.resTotals, canEdit, 'residential') : ''}
+    ${data && (CLASS_REPORT_VIEW === 'both' || CLASS_REPORT_VIEW === 'nonResidential') ? renderClassTable('অনাবাসিক শাখা', data.nonResidential, data.nonResTotals, canEdit, 'nonResidential') : ''}
+  `;
+}
+
+function setClassView(v){ CLASS_REPORT_VIEW = v; renderClassReportPage(); }
+
+async function reloadClassReport(date){
+  CLASS_REPORT_DATE = date;
+  document.getElementById('app').innerHTML = loading();
+  const r = await api('getClassReport', { date: date });
+  if (r.success) {
+    CACHE.classReport = r;
+    renderClassReportPage();
+  } else {
+    toast('ডাটা লোড ব্যর্থ', 'err');
+    renderClassReportPage();
+  }
+}
+
+function renderClassTable(title, rows, totals, canEdit, type){
+  let counter = 0;
+  return `
+  <div class="card" id="report-${type}">
+    <h3 style="justify-content:center;font-size:17px">📚 ${title} — ${CLASS_REPORT_DATE}</h3>
+    <div class="att-table-wrap">
+      <table class="att-table">
+        <thead>
+          <tr>
+            <th style="width:32px">#</th>
+            <th style="width:80px">শ্রেণি ও শাখা</th>
+            <th style="width:45px">ছাত্র</th>
+            <th style="width:50px">উপস্থিত</th>
+            <th style="width:50px">অনুপস্থিত</th>
+            <th>অনুপস্থিতির কারণ</th>
+            <th style="width:50px">${canEdit?'এডিট':''}</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map(function(r){
+            counter++;
+            const entryCls = r.has_entry ? 'row-entry' : 'row-empty';
+            const reasons = (r.reasons || []).map(function(x){
+              return `<span class="reason">${x.reason}: ${x.count}</span>`;
+            }).join('');
+            return `<tr class="${entryCls}">
+              <td>${counter}</td>
+              <td class="row-class">${r.class_group} ${r.section}</td>
+              <td class="num-total">${r.total !== null ? r.total : '—'}</td>
+              <td class="num-present">${r.present !== null ? r.present : '—'}</td>
+              <td class="num-absent">${r.absent !== null ? r.absent : '—'}</td>
+              <td class="reasons-cell">${reasons || (r.has_entry ? '—' : '<span style="color:#999">এন্ট্রি হয়নি</span>')}</td>
+              <td class="action-cell">
+                ${canEdit ? `<button class="edit-btn" onclick="editClassEntry('${r.class_group}','${r.section}','${r.entry_row||''}')">${r.has_entry?'✏️':'➕'}</button>` : ''}
+              </td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2" style="text-align:right">সর্বমোট</td>
+            <td class="num-total">${totals.total}</td>
+            <td class="num-present">${totals.present}</td>
+            <td class="num-absent">${totals.absent}</td>
+            <td colspan="2"></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>`;
+}
+
+async function editClassEntry(cls, sec, row){
+  // আগের এন্ট্রি আছে কি চেক
+  const r = await api('getAttendanceByClass', {
+    class_group: cls, section: sec, date: CLASS_REPORT_DATE
+  });
+
+  if (r.success && r.data) {
+    // আগের এন্ট্রি আছে — এডিট
+    openAttendanceEditForm(r.data, cls, sec);
+  } else {
+    // নতুন এন্ট্রি
+    openAttendanceNewForm(cls, sec);
+  }
+}
+
+function openAttendanceNewForm(cls, sec){
+  document.getElementById('app').innerHTML = `
+    <div class="card">
+      <button class="secondary small" onclick="renderClassReportPage()" style="margin-bottom:12px">← ফিরে যান</button>
+      <h3>➕ নতুন এন্ট্রি — ${cls} ${sec}</h3>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:10px">তারিখ: ${CLASS_REPORT_DATE}</p>
+      <label>উস্তাযের নাম</label>
+      <input id="ea_ustaz" value="${USER.name || ''}">
+      <label>মোট ছাত্র</label>
+      <input type="number" id="ea_total" placeholder="0">
+      <label>উপস্থিত</label>
+      <input type="number" id="ea_present" placeholder="0">
+      <div class="divider"></div>
+      <h4>অনুপস্থিতের কারণ</h4>
+      <div id="ea_reasons"></div>
+      <button class="secondary" onclick="addEditReasonRow()">➕ কারণ যোগ করুন</button>
+      <button onclick="saveClassAttendance('${cls}','${sec}',null)">✅ সেভ করুন</button>
+    </div>
+  `;
+  addEditReasonRow();
+}
+
+function openAttendanceEditForm(data, cls, sec){
+  document.getElementById('app').innerHTML = `
+    <div class="card">
+      <button class="secondary small" onclick="renderClassReportPage()" style="margin-bottom:12px">← ফিরে যান</button>
+      <h3>✏️ এডিট — ${cls} ${sec}</h3>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:10px">তারিখ: ${CLASS_REPORT_DATE}</p>
+      <div class="alert info">📌 এই শ্রেণিতে আগে এন্ট্রি করা হয়েছে। আপনি এখন এডিট করছেন।</div>
+      <label>উস্তাযের নাম</label>
+      <input id="ea_ustaz" value="${data.ustaz_name || ''}">
+      <label>মোট ছাত্র</label>
+      <input type="number" id="ea_total" value="${data.total_students || 0}">
+      <label>উপস্থিত</label>
+      <input type="number" id="ea_present" value="${data.present || 0}">
+      <div class="divider"></div>
+      <h4>অনুপস্থিতের কারণ</h4>
+      <div id="ea_reasons"></div>
+      <button class="secondary" onclick="addEditReasonRow()">➕ কারণ যোগ করুন</button>
+      <button onclick="saveClassAttendance('${cls}','${sec}',${data.row})">✅ আপডেট করুন</button>
+    </div>
+  `;
+  (data.reasons || []).forEach(function(r){ addEditReasonRow(r.reason, r.count); });
+  if (!(data.reasons || []).length) addEditReasonRow();
+}
+
+function addEditReasonRow(reason, count){
+  const box = document.getElementById('ea_reasons');
+  if (!box) return;
+  const div = document.createElement('div');
+  div.className = 'reason-input-row';
+  div.innerHTML = `<input placeholder="কারণ" class="reason-input" value="${reason||''}" style="flex:2;margin:0"><input type="number" min="0" placeholder="সংখ্যা" class="count-input" value="${count||''}" style="flex:1;margin:0"><button class="danger tiny" onclick="this.parentElement.remove()" style="margin:0">✕</button>`;
+  box.appendChild(div);
+}
+
+async function saveClassAttendance(cls, sec, row){
+  const reasons = [];
+  document.querySelectorAll('#ea_reasons .reason-input').forEach(function(r, i){
+    const c = document.querySelectorAll('#ea_reasons .count-input')[i];
+    if (r.value.trim() && c.value) reasons.push({ reason: r.value.trim(), count: Number(c.value) });
+  });
+  const total = Number(document.getElementById('ea_total').value) || 0;
+  const present = Number(document.getElementById('ea_present').value) || 0;
+  const ustaz = document.getElementById('ea_ustaz').value.trim();
+
+  if (!total) { toast('মোট ছাত্র দিন', 'err'); return; }
+  if (present > total) { toast('উপস্থিত ছাত্রের সংখ্যা মোটের বেশি হতে পারে না', 'err'); return; }
+
+  document.getElementById('app').innerHTML = loading();
+
+  if (row) {
+    // এডিট
+    const r = await api('updateAttendance', {
+      row: row,
+      teacher_id: USER.id,
+      class_group: cls,
+      section: sec,
+      ustaz_name: ustaz,
+      total_students: total,
+      present: present,
+      absent_details: JSON.stringify(reasons)
+    });
+    if (r.success) { toast('✅ আপডেট হয়েছে', 'ok'); }
+    else { toast('❌ ব্যর্থ', 'err'); }
+  } else {
+    // নতুন
+    const r = await api('addAttendance', {
+      teacher_id: USER.id,
+      date: CLASS_REPORT_DATE,
+      class_group: cls,
+      section: sec,
+      ustaz_name: ustaz,
+      total_students: total,
+      present: present,
+      absent_details: JSON.stringify(reasons)
+    });
+    if (r.success) { toast('✅ সেভ হয়েছে', 'ok'); }
+    else if (r.error === 'duplicate') { toast('⚠️ এই শ্রেণির এন্ট্রি আগেই করা হয়েছে', 'err'); }
+    else { toast('❌ ' + (r.error||''), 'err'); }
+  }
+
+  // রিপোর্টে ফিরে যাই
+  await reloadClassReport(CLASS_REPORT_DATE);
+}
+
+// ---------- PRINT ----------
+function printClassReport(){
+  const data = CACHE.classReport;
+  if (!data) { toast('ডাটা নেই', 'err'); return; }
+  const includeRes = (CLASS_REPORT_VIEW === 'both' || CLASS_REPORT_VIEW === 'residential');
+  const includeNonRes = (CLASS_REPORT_VIEW === 'both' || CLASS_REPORT_VIEW === 'nonResidential');
+
+  let html = `<div style="text-align:center;margin-bottom:16px">
+    <h1 style="color:#0b3d2e;font-size:20px;margin-bottom:6px">📚 তালিমাত / تعليمات</h1>
+    <h2 style="font-size:16px;color:#333;margin-bottom:4px">ছাত্র উপস্থিতির রিপোর্ট</h2>
+    <p style="font-size:13px;color:#666">তারিখ: ${data.date}</p>
+  </div>`;
+
+  if (includeRes) html += buildPrintTable('আবাসিক শাখা', data.residential, data.resTotals);
+  if (includeNonRes) html += buildPrintTable('অনাবাসিক শাখা', data.nonResidential, data.nonResTotals);
+
+  html += `<div style="margin-top:24px;text-align:center;font-size:12px;color:#666;border-top:1px solid #ccc;padding-top:8px">
+    তৈরি: ${new Date().toLocaleString('bn-BD')} • তালিমাত অ্যাপ
+  </div>`;
+
+  printHtml(html);
+}
+
+function buildPrintTable(title, rows, totals){
+  let counter = 0;
+  return `
+  <div style="margin-bottom:20px">
+    <h3 style="background:#0b3d2e;color:#fff;padding:8px;border-radius:6px;font-size:14px;margin-bottom:8px;text-align:center">${title}</h3>
+    <table style="width:100%;border-collapse:collapse;font-size:11px">
+      <thead>
+        <tr style="background:#e8f5ee">
+          <th style="border:1px solid #ccc;padding:6px 4px;width:30px">#</th>
+          <th style="border:1px solid #ccc;padding:6px 4px;width:80px">শ্রেণি ও শাখা</th>
+          <th style="border:1px solid #ccc;padding:6px 4px;width:50px">ছাত্র</th>
+          <th style="border:1px solid #ccc;padding:6px 4px;width:50px">উপস্থিত</th>
+          <th style="border:1px solid #ccc;padding:6px 4px;width:50px">অনুপস্থিত</th>
+          <th style="border:1px solid #ccc;padding:6px 4px">কারণ</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(function(r){
+          counter++;
+          const reasons = (r.reasons || []).map(function(x){ return x.reason + ': ' + x.count; }).join(', ');
+          return `<tr>
+            <td style="border:1px solid #ccc;padding:5px 4px;text-align:center">${counter}</td>
+            <td style="border:1px solid #ccc;padding:5px 4px;font-weight:700;text-align:right">${r.class_group} ${r.section}</td>
+            <td style="border:1px solid #ccc;padding:5px 4px;text-align:center">${r.total !== null ? r.total : '—'}</td>
+            <td style="border:1px solid #ccc;padding:5px 4px;text-align:center;color:#0a7d3e;font-weight:700">${r.present !== null ? r.present : '—'}</td>
+            <td style="border:1px solid #ccc;padding:5px 4px;text-align:center;color:#c0392b;font-weight:700">${r.absent !== null ? r.absent : '—'}</td>
+            <td style="border:1px solid #ccc;padding:5px 4px;font-size:10px">${reasons || (r.has_entry ? '—' : '')}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+      <tfoot>
+        <tr style="background:#f0f4f2;font-weight:800">
+          <td colspan="2" style="border:1px solid #ccc;padding:8px 6px;text-align:right">সর্বমোট</td>
+          <td style="border:1px solid #ccc;padding:8px 6px;text-align:center">${totals.total}</td>
+          <td style="border:1px solid #ccc;padding:8px 6px;text-align:center;color:#0a7d3e">${totals.present}</td>
+          <td style="border:1px solid #ccc;padding:8px 6px;text-align:center;color:#c0392b">${totals.absent}</td>
+          <td style="border:1px solid #ccc;padding:8px 6px"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>`;
+}
+
+// ---------- SHARE ----------
+async function shareClassReport(){
+  const data = CACHE.classReport;
+  if (!data) { toast('ডাটা নেই', 'err'); return; }
+
+  const includeRes = (CLASS_REPORT_VIEW === 'both' || CLASS_REPORT_VIEW === 'residential');
+  const includeNonRes = (CLASS_REPORT_VIEW === 'both' || CLASS_REPORT_VIEW === 'nonResidential');
+
+  // টেক্সট আকারে তৈরি
+  let text = '📚 তালিমাত / تعليمات\n';
+  text += 'ছাত্র উপস্থিতির রিপোর্ট\n';
+  text += 'তারিখ: ' + data.date + '\n\n';
+
+  if (includeRes) {
+    text += '🏠 আবাসিক শাখা\n';
+    text += '─────────────────\n';
+    data.residential.forEach(function(r, i){
+      if (r.has_entry) {
+        text += (i+1) + '. ' + r.class_group + ' ' + r.section + ' → ';
+        text += 'ছাত্র: ' + r.total + ' | উপস্থিত: ' + r.present + ' | অনুপস্থিত: ' + r.absent + '\n';
+      }
+    });
+    text += '\nমোট: ' + data.resTotals.total + ' | উপস্থিত: ' + data.resTotals.present + ' | অনুপস্থিত: ' + data.resTotals.absent + '\n\n';
+  }
+  if (includeNonRes) {
+    text += '🏡 অনাবাসিক শাখা\n';
+    text += '─────────────────\n';
+    data.nonResidential.forEach(function(r, i){
+      if (r.has_entry) {
+        text += (i+1) + '. ' + r.class_group + ' ' + r.section + ' → ';
+        text += 'ছাত্র: ' + r.total + ' | উপস্থিত: ' + r.present + ' | অনুপস্থিত: ' + r.absent + '\n';
+      }
+    });
+    text += '\nমোট: ' + data.nonResTotals.total + ' | উপস্থিত: ' + data.nonResTotals.present + ' | অনুপস্থিত: ' + data.nonResTotals.absent + '\n';
+  }
+
+  // Web Share API দিয়ে শেয়ার
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: 'ছাত্র উপস্থিতির রিপোর্ট', text: text });
+      toast('✅ শেয়ার সম্পন্ন', 'ok');
+    } catch(e) {
+      if (e.name !== 'AbortError') copyToClipboard(text);
+    }
+  } else {
+    copyToClipboard(text);
+  }
+}
+
+function copyToClipboard(text){
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function(){
+      toast('✅ কপি হয়েছে — যেকোনো জায়গায় পেস্ট করুন', 'ok');
+    }).catch(function(){
+      prompt('কপি করুন:', text);
+    });
+  } else {
+    prompt('কপি করুন:', text);
+  }
 }
 
 // ---------- LEAVE REQUESTS UI ----------
